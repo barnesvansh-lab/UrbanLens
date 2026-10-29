@@ -28,6 +28,7 @@ export const DataStatusBadge: React.FC<DataStatusBadgeProps> = ({
         </span>
       );
 
+    case 'synthetic_demo':
     case 'synthetic_test':
     case 'synthetic':
       return (

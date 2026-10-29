@@ -3,6 +3,7 @@ import cors from 'cors';
 import healthRouter from './routes/health';
 import dataRouter from './routes/data';
 import neighborhoodsRouter from './routes/neighborhoods';
+import forecastingRouter from './routes/forecasting';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use('/api', healthRouter);
 app.use('/api/data', dataRouter);
 app.use('/api/neighborhoods', neighborhoodsRouter);
+app.use('/api/forecasting', forecastingRouter);
 
 // Global error handler — never exposes stack traces
 app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {

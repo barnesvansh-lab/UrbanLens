@@ -1,4 +1,4 @@
-export type DataStatus = 'real' | 'synthetic_test' | 'unavailable';
+export type DataStatus = 'real' | 'synthetic_test' | 'synthetic_demo' | 'unavailable';
 export type GeographyLevel = 'city' | 'district' | 'neighborhood';
 export type MetricName = 'hpi_assessment' | 'hpi_market' | 'amenity_count';
 
@@ -83,3 +83,43 @@ export interface ApiError {
   code: string;
   details?: string;
 }
+
+export type ForecastStatus = 'ok' | 'unavailable' | 'insufficient_data';
+
+export interface ApiForecastPoint {
+  date: string;
+  point_forecast: number;
+  lower_bound: number | null;
+  upper_bound: number | null;
+}
+
+export interface ApiForecastEvaluation {
+  model: { MAE: number; RMSE: number };
+  baseline_naive_last: { MAE: number; RMSE: number };
+  vs_baseline: { MAE_reduction_pct: number; RMSE_reduction_pct: number };
+}
+
+export interface ApiForecastResponse {
+  status: ForecastStatus;
+  geography: string;
+  metric: string;
+  unit: string;
+  geography_level: string;
+  data_status: string;
+  source_names: string[];
+  training_period: { start: string; end: string } | null;
+  validation_period: { start: string; end: string } | null;
+  n_training: number;
+  n_validation: number;
+  model_name: string;
+  model_version: string;
+  horizon: number;
+  observations: ApiForecastPoint[];
+  forecast: ApiForecastPoint[];
+  evaluation: ApiForecastEvaluation | null;
+  warnings: string[];
+  limitations: string[];
+  generated_at: string;
+  reason?: string;
+}
+

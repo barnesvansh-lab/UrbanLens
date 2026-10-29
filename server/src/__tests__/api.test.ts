@@ -129,4 +129,53 @@ describe('UrbanLens Express API Endpoints', () => {
     assert.strictEqual(res.status, 400);
     assert.strictEqual(res.body.code, 'INVALID_DATE_RANGE');
   });
+
+  it('11. GET /api/forecasting/predict?mode=demo → 200, status: ok, data_status: synthetic_demo', async () => {
+    const res = await request('GET', '/api/forecasting/predict?mode=demo');
+    assert.strictEqual(res.status, 200);
+    assert.strictEqual(res.body.status, 'ok');
+    assert.strictEqual(res.body.data_status, 'synthetic_demo');
+    assert.ok(Array.isArray(res.body.observations));
+    assert.ok(Array.isArray(res.body.forecast));
+    assert.ok(res.body.evaluation);
+  });
+
+  it('12. GET /api/forecasting/predict?mode=demo&geography=mumbai-central&horizon=6 → 200', async () => {
+    const res = await request('GET', '/api/forecasting/predict?mode=demo&geography=mumbai-central&horizon=6');
+    assert.strictEqual(res.status, 200);
+    assert.strictEqual(res.body.status, 'ok');
+    assert.strictEqual(res.body.horizon, 6);
+    assert.strictEqual(res.body.forecast.length, 6);
+  });
+
+  it('13. GET /api/forecasting/predict?mode=real → 200, status: unavailable (no real data)', async () => {
+    const res = await request('GET', '/api/forecasting/predict?mode=real');
+    assert.strictEqual(res.status, 200);
+    assert.strictEqual(res.body.status, 'unavailable');
+    assert.ok(res.body.reason);
+  });
+
+  it('14. GET /api/forecasting/predict?horizon=99 → 400 INVALID_HORIZON', async () => {
+    const res = await request('GET', '/api/forecasting/predict?horizon=99');
+    assert.strictEqual(res.status, 400);
+    assert.strictEqual(res.body.code, 'INVALID_HORIZON');
+  });
+
+  it('15. GET /api/forecasting/predict?mode=bad → 400 INVALID_MODE', async () => {
+    const res = await request('GET', '/api/forecasting/predict?mode=bad');
+    assert.strictEqual(res.status, 400);
+    assert.strictEqual(res.body.code, 'INVALID_MODE');
+  });
+
+  it('16. GET /api/forecasting/predict?geography=../../etc → 400 INVALID_GEOGRAPHY', async () => {
+    const res = await request('GET', '/api/forecasting/predict?geography=../../etc');
+    assert.strictEqual(res.status, 400);
+    assert.strictEqual(res.body.code, 'INVALID_GEOGRAPHY');
+  });
+
+  it('17. GET /api/forecasting/predict?metric=price_per_sqft → 400 INVALID_METRIC', async () => {
+    const res = await request('GET', '/api/forecasting/predict?metric=price_per_sqft');
+    assert.strictEqual(res.status, 400);
+    assert.strictEqual(res.body.code, 'INVALID_METRIC');
+  });
 });

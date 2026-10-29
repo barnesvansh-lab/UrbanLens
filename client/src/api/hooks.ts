@@ -7,6 +7,7 @@ import {
   ApiSummary,
   ApiAmenity,
   ApiError,
+  ApiForecastResponse,
 } from './types';
 
 export function useDataSources(): {
@@ -159,3 +160,41 @@ export function useAmenities(params?: Record<string, string>): {
 
   return { amenities, loading, error, refetch: fetchAmenities };
 }
+
+export function useForecast(params: {
+  geography?: string;
+  metric?: string;
+  horizon?: number;
+  mode?: 'demo' | 'real';
+}): {
+  forecast: ApiForecastResponse | null;
+  loading: boolean;
+  error: ApiError | null;
+  refetch: () => void;
+} {
+  const [forecast, setForecast] = useState<ApiForecastResponse | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<ApiError | null>(null);
+
+  const serializedParams = JSON.stringify(params || {});
+
+  const fetchForecast = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    const parsedParams = JSON.parse(serializedParams);
+    const { data, error: err } = await apiClient.getForecast(parsedParams);
+    if (err) {
+      setError(err);
+    } else if (data) {
+      setForecast(data);
+    }
+    setLoading(false);
+  }, [serializedParams]);
+
+  useEffect(() => {
+    fetchForecast();
+  }, [fetchForecast]);
+
+  return { forecast, loading, error, refetch: fetchForecast };
+}
+

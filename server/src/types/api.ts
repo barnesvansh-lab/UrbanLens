@@ -87,3 +87,50 @@ export interface AmenityQueryParams {
   geography?: string;
   amenity_type?: string;
 }
+
+export type ForecastStatus = 'ok' | 'unavailable' | 'insufficient_data';
+
+export interface ForecastPoint {
+  date: string;           // ISO YYYY-MM-DD
+  point_forecast: number;
+  lower_bound: number | null;
+  upper_bound: number | null;
+}
+
+export interface ForecastEvaluation {
+  model: { MAE: number; RMSE: number };
+  baseline_naive_last: { MAE: number; RMSE: number };
+  vs_baseline: { MAE_reduction_pct: number; RMSE_reduction_pct: number };
+}
+
+export interface ForecastResponse {
+  status: ForecastStatus;
+  geography: string;
+  metric: string;
+  unit: string;
+  geography_level: string;
+  data_status: string;           // "real" | "synthetic_test" | "synthetic_demo"
+  source_names: string[];
+  training_period: { start: string; end: string } | null;
+  validation_period: { start: string; end: string } | null;
+  n_training: number;
+  n_validation: number;
+  model_name: string;
+  model_version: string;
+  horizon: number;
+  observations: ForecastPoint[];   // historical points used for training
+  forecast: ForecastPoint[];       // future predictions
+  evaluation: ForecastEvaluation | null;
+  warnings: string[];
+  limitations: string[];
+  generated_at: string;
+  reason?: string;   // human-readable explanation when status != "ok"
+}
+
+export interface ForecastQueryParams {
+  geography?: string;
+  metric?: string;
+  horizon?: string;
+  mode?: string;   // "demo" | "real"
+}
+

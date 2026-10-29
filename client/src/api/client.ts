@@ -6,6 +6,7 @@ import {
   ApiAmenity,
   ApiHealthResponse,
   ApiError,
+  ApiForecastResponse,
 } from './types';
 
 const API_BASE = '/api';
@@ -54,4 +55,8 @@ export const apiClient = {
   getDataSummary: () => apiFetch<ApiSummary>('/data/summary'),
   getAmenities: (params?: Record<string, string>) =>
     apiFetch<ApiAmenity[]>(`/neighborhoods/amenities${cleanParams(params)}`),
+  getForecast: (params: { geography?: string; metric?: string; horizon?: number; mode?: string }) =>
+    apiFetch<ApiForecastResponse>(`/forecasting/predict?${new URLSearchParams(
+      Object.fromEntries(Object.entries(params).filter(([, v]) => v !== undefined).map(([k, v]) => [k, String(v)]))
+    )}`),
 };
