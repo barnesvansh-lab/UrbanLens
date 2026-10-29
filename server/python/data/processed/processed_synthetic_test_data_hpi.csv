@@ -1,0 +1,14 @@
+observation_date,geography_name,geography_level,metric_name,metric_value,unit,source_name,source_url,retrieved_at,data_status
+2020-01-01,Mumbai,city,hpi_assessment,100.0,index_points,SYNTHETIC_TEST_DATA,https://example.com/test,2025-01-01T00:00:00Z,synthetic_test
+2020-04-01,Mumbai,city,hpi_assessment,98.5,index_points,SYNTHETIC_TEST_DATA,https://example.com/test,2025-01-01T00:00:00Z,synthetic_test
+2020-07-01,Mumbai,city,hpi_assessment,101.2,index_points,SYNTHETIC_TEST_DATA,https://example.com/test,2025-01-01T00:00:00Z,synthetic_test
+2020-10-01,Mumbai,city,hpi_assessment,103.8,index_points,SYNTHETIC_TEST_DATA,https://example.com/test,2025-01-01T00:00:00Z,synthetic_test
+2021-01-01,Mumbai,city,hpi_assessment,105.1,index_points,SYNTHETIC_TEST_DATA,https://example.com/test,2025-01-01T00:00:00Z,synthetic_test
+2021-04-01,Mumbai,city,hpi_assessment,104.3,index_points,SYNTHETIC_TEST_DATA,https://example.com/test,2025-01-01T00:00:00Z,synthetic_test
+2021-07-01,Mumbai,city,hpi_assessment,107.6,index_points,SYNTHETIC_TEST_DATA,https://example.com/test,2025-01-01T00:00:00Z,synthetic_test
+2021-10-01,Mumbai,city,hpi_assessment,110.2,index_points,SYNTHETIC_TEST_DATA,https://example.com/test,2025-01-01T00:00:00Z,synthetic_test
+2020-01-01,Delhi,city,hpi_assessment,100.0,index_points,SYNTHETIC_TEST_DATA,https://example.com/test,2025-01-01T00:00:00Z,synthetic_test
+2020-04-01,Delhi,city,hpi_assessment,97.2,index_points,SYNTHETIC_TEST_DATA,https://example.com/test,2025-01-01T00:00:00Z,synthetic_test
+2020-07-01,Delhi,city,hpi_assessment,99.8,index_points,SYNTHETIC_TEST_DATA,https://example.com/test,2025-01-01T00:00:00Z,synthetic_test
+2020-10-01,Delhi,city,hpi_assessment,102.4,index_points,SYNTHETIC_TEST_DATA,https://example.com/test,2025-01-01T00:00:00Z,synthetic_test
+2021-01-01,Delhi,city,hpi_assessment,104.0,index_points,SYNTHETIC_TEST_DATA,https://example.com/test,2025-01-01T00:00:00Z,synthetic_test

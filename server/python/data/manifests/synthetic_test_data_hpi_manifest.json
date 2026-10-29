@@ -1,0 +1,43 @@
+{
+  "dataset_name": "synthetic_test_data_hpi",
+  "dataset_type": "hpi",
+  "source_name": "SYNTHETIC_TEST_DATA",
+  "source_url": "https://example.com/test",
+  "data_status": "synthetic_test",
+  "processed_file": "processed_synthetic_test_data_hpi.csv",
+  "processed_at": "2026-10-29T08:09:32.895884+00:00",
+  "record_count": 13,
+  "quality_report": {
+    "dataset_name": "synthetic_test_data_hpi",
+    "generated_at": "2026-10-29T08:09:32.895844+00:00",
+    "raw_row_count": 14,
+    "valid_row_count": 13,
+    "rejected_row_count": 0,
+    "duplicate_count": 1,
+    "missing_value_counts": {
+      "observation_date": 0,
+      "geography_name": 0,
+      "geography_level": 0,
+      "metric_name": 0,
+      "metric_value": 0,
+      "unit": 0,
+      "source_name": 0,
+      "source_url": 0,
+      "retrieved_at": 0,
+      "data_status": 0
+    },
+    "date_range": {
+      "min": "2020-01-01",
+      "max": "2021-10-01"
+    },
+    "geographies": [
+      "Delhi",
+      "Mumbai"
+    ],
+    "metric_names": [
+      "hpi_assessment"
+    ],
+    "warnings": [],
+    "data_status": "synthetic_test"
+  }
+}

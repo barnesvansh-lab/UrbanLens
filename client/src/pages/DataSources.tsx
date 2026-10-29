@@ -1,20 +1,40 @@
 import React from 'react';
-import { Database, AlertTriangle, RefreshCw, Globe } from 'lucide-react';
+import { Database, AlertTriangle, ShieldCheck, CheckCircle2, AlertCircle } from 'lucide-react';
 import { DemoNotice } from '../components/ui/DemoNotice';
+import { DataSourceCard } from '../components/ui/DataSourceCard';
+import { DataStatusBadge } from '../components/ui/DataStatusBadge';
+import { ApiErrorState } from '../components/ui/ApiErrorState';
+import { LoadingSpinner } from '../components/ui/LoadingSpinner';
+import { useDataSources, useDataQuality } from '../api/hooks';
 
 export const DataSources: React.FC = () => {
+  const { sources, loading: sourcesLoading, error: sourcesError, refetch: refetchSources } = useDataSources();
+  const { reports, loading: qualityLoading, error: qualityError, refetch: refetchQuality } = useDataQuality();
+
   const dictionaryItems = [
+    {
+      field: 'observation_date',
+      type: 'ISO Date (YYYY-MM-DD)',
+      source: 'Ingestion Pipeline Normalizer',
+      description: 'First calendar date of quarterly observation period (e.g. 2020-04-01 for Indian FY Q1).',
+    },
+    {
+      field: 'hpi_assessment',
+      type: 'Float (Index Points)',
+      source: 'RBI DBIE / NHB RESIDEX Registry',
+      description: 'Dimensionless housing price index normalized to base year (100). Never to be confused with ₹/sqft.',
+    },
     {
       field: 'avgPrice',
       type: 'Float (₹ / sq.ft)',
       source: 'Synthetic Engine (Monte Carlo + Seasonality)',
-      description: 'Capital valuation rate per square foot of super built-up residential area.',
+      description: 'Capital valuation rate per square foot of super built-up residential area in demo mode.',
     },
     {
-      field: 'transactions',
-      type: 'Integer',
-      source: 'Simulated Registrar Deed Logs',
-      description: 'Estimated monthly unit property registrations executed within the postal boundary.',
+      field: 'amenity_type',
+      type: 'Categorical String',
+      source: 'OpenStreetMap Overpass Interpreter',
+      description: 'Civic facility category (school, hospital, park, clinic, public_transport).',
     },
     {
       field: 'walkScore',
@@ -23,22 +43,10 @@ export const DataSources: React.FC = () => {
       description: 'Pedestrian walkability rating based on proximity to 12 daily errand destinations.',
     },
     {
-      field: 'transitScore',
-      type: 'Integer (0–100)',
-      source: 'Simulated GTFS Transit Feed',
-      description: 'Frequency and multi-modal transit connectivity (suburban rail, metro, bus corridors).',
-    },
-    {
       field: 'affordabilityScore',
       type: 'Integer (0–100)',
       source: 'Ratio Formulation (Income vs. EMI)',
       description: 'Proportion of representative metro household income required to service median mortgage.',
-    },
-    {
-      field: 'gentrificationRisk',
-      type: 'Categorical (Low/Med/High)',
-      source: 'Multivariate Vulnerability Model',
-      description: 'Assessed likelihood of resident displacement due to rapid capital appreciation and luxury conversions.',
     },
   ];
 
@@ -54,10 +62,10 @@ export const DataSources: React.FC = () => {
           </div>
           <div>
             <h2 className="text-base font-bold text-slate-800">
-              Data Architecture & Provenance Directory
+              Data Architecture &amp; Provenance Directory
             </h2>
             <p className="text-xs text-slate-500">
-              Complete catalog of synthetic ingestion streams and planned enterprise production connectors
+              Audited catalog of official public data sources, manual ingestion workflows, and pipeline validation reports
             </p>
           </div>
         </div>
@@ -65,79 +73,143 @@ export const DataSources: React.FC = () => {
         <div className="mt-4 p-3.5 bg-amber-50 rounded-lg border border-amber-200 flex items-start gap-3 text-xs text-amber-900 leading-relaxed">
           <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
           <div>
-            <span className="font-semibold block mb-0.5">Synthetic Integrity Disclaimer</span>
-            All numerical datasets currently served in Milestone 1 are computationally synthesized using seasonal Gaussian random-walk processes and parametric urban heuristics. No real customer or sensitive proprietary property records are accessed.
+            <span className="font-semibold block mb-0.5">Methodological Integrity Disclaimer</span>
+            Official macroeconomic housing price indices (such as RBI-HPI and NHB-RESIDEX) are published as dimensionless index points relative to a base year (100). They reflect relative price movements rather than absolute ₹/sq.ft capital rates. The pipeline strictly isolates index points from transactional unit rates.
           </div>
         </div>
       </div>
 
-      {/* Synthetic Dataset Inventory */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-xs">
-          <div className="flex items-center justify-between text-xs font-semibold text-slate-500 mb-2">
-            <span>Macro Indices</span>
-            <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-[10px]">
-              Synthetic Active
-            </span>
-          </div>
-          <h4 className="text-sm font-bold text-slate-900 mb-1">
-            Historical Price Dynamics
-          </h4>
-          <p className="text-xs text-slate-500 mb-3">
-            60 monthly intervals (2020–2024) across 5 synthetic sub-markets with seasonal fluctuations.
-          </p>
-          <div className="text-[11px] text-slate-400 flex items-center gap-1.5 pt-2 border-t border-slate-100">
-            <RefreshCw className="w-3 h-3 text-slate-400" />
-            <span>Simulated Frequency: Monthly</span>
+      {/* Registered Data Sources Section */}
+      <div>
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <h3 className="text-base font-semibold text-slate-800">
+              Registered Data Sources &amp; Connectors
+            </h3>
+            <p className="text-xs text-slate-500">
+              Official institutional sources evaluated, verified, and mapped for UrbanLens market analytics
+            </p>
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-xs">
-          <div className="flex items-center justify-between text-xs font-semibold text-slate-500 mb-2">
-            <span>Spatial Layer</span>
-            <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-[10px]">
-              Synthetic Active
-            </span>
+        {sourcesLoading ? (
+          <div className="bg-white rounded-xl border border-slate-200 p-8">
+            <LoadingSpinner label="Querying registered source catalogue from backend..." />
           </div>
-          <h4 className="text-sm font-bold text-slate-900 mb-1">
-            Neighborhood Points of Interest
-          </h4>
-          <p className="text-xs text-slate-500 mb-3">
-            Simulated schools, hospitals, green parks, and transit station proximity vectors.
-          </p>
-          <div className="text-[11px] text-slate-400 flex items-center gap-1.5 pt-2 border-t border-slate-100">
-            <RefreshCw className="w-3 h-3 text-slate-400" />
-            <span>Simulated Frequency: Quarterly</span>
+        ) : sourcesError ? (
+          <ApiErrorState error={sourcesError} onRetry={refetchSources} />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {sources.map((source) => (
+              <DataSourceCard key={source.id} source={source} />
+            ))}
           </div>
-        </div>
-
-        <div className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-xs">
-          <div className="flex items-center justify-between text-xs font-semibold text-slate-500 mb-2">
-            <span>Demographic Data</span>
-            <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-[10px]">
-              Synthetic Active
-            </span>
-          </div>
-          <h4 className="text-sm font-bold text-slate-900 mb-1">
-            Household Income Distributions
-          </h4>
-          <p className="text-xs text-slate-500 mb-3">
-            Income decile stratifications for calculating debt service capacity and affordability ratings.
-          </p>
-          <div className="text-[11px] text-slate-400 flex items-center gap-1.5 pt-2 border-t border-slate-100">
-            <RefreshCw className="w-3 h-3 text-slate-400" />
-            <span>Simulated Frequency: Annual</span>
-          </div>
-        </div>
+        )}
       </div>
+
+      {/* Pipeline Quality & Audit Reports */}
+      {reports && reports.length > 0 && (
+        <div className="bg-white rounded-xl border border-slate-200/80 p-5 shadow-xs">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h3 className="text-base font-semibold text-slate-800 flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <span>Automated Ingestion Quality Reports</span>
+              </h3>
+              <p className="text-xs text-slate-500">
+                Integrity metrics, validation summaries, deduplication results, and date coverage audits
+              </p>
+            </div>
+          </div>
+
+          {qualityLoading ? (
+            <LoadingSpinner label="Loading dataset quality audits..." />
+          ) : qualityError ? (
+            <ApiErrorState error={qualityError} onRetry={refetchQuality} />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {reports.map((report) => (
+                <div
+                  key={report.dataset_name}
+                  className="p-4 rounded-xl border border-slate-200 bg-slate-50/60 text-xs"
+                >
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <span className="font-mono font-bold text-slate-900">
+                      {report.dataset_name}
+                    </span>
+                    <DataStatusBadge status={report.data_status} size="sm" />
+                  </div>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 py-2.5 my-2 border-y border-slate-200/80 text-[11px]">
+                    <div>
+                      <span className="text-slate-400 block text-[10px]">RAW ROWS</span>
+                      <span className="font-semibold text-slate-800">{report.raw_row_count}</span>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 block text-[10px]">VALID ROWS</span>
+                      <span className="font-semibold text-emerald-700">{report.valid_row_count}</span>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 block text-[10px]">DUPLICATES</span>
+                      <span className="font-semibold text-amber-700">{report.duplicate_count}</span>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 block text-[10px]">REJECTED</span>
+                      <span className="font-semibold text-rose-700">{report.rejected_row_count}</span>
+                    </div>
+                  </div>
+
+                  {report.date_range && (
+                    <div className="text-[11px] text-slate-600 mb-1.5">
+                      <span className="text-slate-400">Date Span: </span>
+                      <span className="font-medium text-slate-800">
+                        {report.date_range.min} to {report.date_range.max}
+                      </span>
+                    </div>
+                  )}
+
+                  <div className="text-[11px] text-slate-600 mb-2">
+                    <span className="text-slate-400">Geographies: </span>
+                    <span className="font-medium text-slate-800">
+                      {report.geographies.join(', ') || 'Metropolitan aggregate'}
+                    </span>
+                  </div>
+
+                  {report.warnings && report.warnings.length > 0 && (
+                    <div className="p-2 bg-amber-50 rounded border border-amber-200 text-[10px] text-amber-900 mt-2">
+                      <div className="font-semibold flex items-center gap-1 mb-1 text-amber-800">
+                        <AlertCircle className="w-3 h-3 text-amber-600" />
+                        <span>Quality Warnings:</span>
+                      </div>
+                      <ul className="list-disc pl-3.5 space-y-0.5">
+                        {report.warnings.map((w, idx) => (
+                          <li key={idx}>{w}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  <div className="pt-2 mt-2 border-t border-slate-200/60 text-[10px] text-slate-400 flex items-center justify-between">
+                    <span>Generated: {new Date(report.generated_at).toLocaleString()}</span>
+                    <span className="text-emerald-700 font-medium flex items-center gap-1">
+                      <CheckCircle2 className="w-3 h-3" />
+                      Audit Complete
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Data Dictionary */}
       <div className="bg-white rounded-xl border border-slate-200/80 p-5 shadow-xs overflow-hidden">
         <h3 className="text-base font-semibold text-slate-800 mb-1">
-          Synthetic Data Schema & Dictionary
+          Data Schema &amp; Dictionary
         </h3>
         <p className="text-xs text-slate-500 mb-4">
-          Field specifications, primitive datatypes, and computational generation logic
+          Field specifications, primitive datatypes, and pipeline normalization mappings
         </p>
 
         <div className="overflow-x-auto">
@@ -146,7 +218,7 @@ export const DataSources: React.FC = () => {
               <tr>
                 <th scope="col" className="px-4 py-3">Field Name</th>
                 <th scope="col" className="px-4 py-3">Data Type</th>
-                <th scope="col" className="px-4 py-3">Synthetic Engine Origin</th>
+                <th scope="col" className="px-4 py-3">Source Origin</th>
                 <th scope="col" className="px-4 py-3">Description</th>
               </tr>
             </thead>
@@ -163,55 +235,6 @@ export const DataSources: React.FC = () => {
               ))}
             </tbody>
           </table>
-        </div>
-      </div>
-
-      {/* Production Integration Roadmap */}
-      <div className="bg-white rounded-xl border border-slate-200/80 p-5 shadow-xs">
-        <h3 className="text-base font-semibold text-slate-800 mb-2 flex items-center gap-2">
-          <Globe className="w-4 h-4 text-indigo-600" />
-          <span>Planned Production Integrations (Phase 2+)</span>
-        </h3>
-        <p className="text-xs text-slate-500 mb-4">
-          Live government registries and open spatial APIs targeted for upcoming production integration:
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-          <div className="p-3.5 rounded-lg border border-slate-200 bg-slate-50">
-            <span className="font-semibold text-slate-900 block mb-1">
-              National Housing Bank (NHB) RESIDEX
-            </span>
-            <p className="text-slate-600 leading-relaxed">
-              Official quarterly housing price indices covering 50+ major Indian metropolitan cities based on disbursed home loan valuations.
-            </p>
-          </div>
-
-          <div className="p-3.5 rounded-lg border border-slate-200 bg-slate-50">
-            <span className="font-semibold text-slate-900 block mb-1">
-              State RERA (Real Estate Regulatory Authority)
-            </span>
-            <p className="text-slate-600 leading-relaxed">
-              Official project registration disclosures, sanctioned floor space indices, developer delivery track records, and encumbrance filings.
-            </p>
-          </div>
-
-          <div className="p-3.5 rounded-lg border border-slate-200 bg-slate-50">
-            <span className="font-semibold text-slate-900 block mb-1">
-              OpenStreetMap (OSM) Overpass API
-            </span>
-            <p className="text-slate-600 leading-relaxed">
-              Direct vector spatial queries for transit stop coordinates, green parks, schools, medical facilities, and road network topology.
-            </p>
-          </div>
-
-          <div className="p-3.5 rounded-lg border border-slate-200 bg-slate-50">
-            <span className="font-semibold text-slate-900 block mb-1">
-              Ministry of Statistics (MoSPI) & Census of India
-            </span>
-            <p className="text-slate-600 leading-relaxed">
-              Ward-level demographic censuses, household income surveys, and urban population density decennial projections.
-            </p>
-          </div>
         </div>
       </div>
     </div>

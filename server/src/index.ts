@@ -1,5 +1,8 @@
 import express from 'express';
 import cors from 'cors';
+import healthRouter from './routes/health';
+import dataRouter from './routes/data';
+import neighborhoodsRouter from './routes/neighborhoods';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -7,16 +10,21 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
-app.get('/api/health', (_req, res) => {
-  res.json({
-    status: 'ok',
-    service: 'UrbanLens API',
-    version: '0.1.0',
-    mode: 'demo',
-    timestamp: new Date().toISOString()
-  });
+app.use('/api', healthRouter);
+app.use('/api/data', dataRouter);
+app.use('/api/neighborhoods', neighborhoodsRouter);
+
+// Global error handler — never exposes stack traces
+app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  console.error('[UrbanLens API Error]', err.message);
+  res.status(500).json({ error: 'Internal server error', code: 'INTERNAL_ERROR' });
 });
 
-app.listen(PORT, () => {
-  console.log(`UrbanLens API running on http://localhost:${PORT}`);
-});
+if (require.main === module && process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`UrbanLens API v0.2.0 running on http://localhost:${PORT}`);
+  });
+}
+
+export { app };
+export default app;

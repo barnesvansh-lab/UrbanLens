@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, MapPin } from 'lucide-react';
+import { ArrowRight, MapPin, Database, Sparkles } from 'lucide-react';
 import { DemoNotice } from '../components/ui/DemoNotice';
 import { MetricCard } from '../components/ui/MetricCard';
+import { DataStatusBadge } from '../components/ui/DataStatusBadge';
 import { PriceTrendChart } from '../components/charts/PriceTrendChart';
 import { MarketOverviewChart } from '../components/charts/MarketOverviewChart';
+import { useApiSummary } from '../api/hooks';
 import {
   marketIndicators,
   neighborhoods,
@@ -14,6 +16,7 @@ import {
 export const Overview: React.FC = () => {
   // Recent 24 months for overview chart
   const recentData = priceTimeSeries.slice(-24);
+  const { summary, loading: summaryLoading } = useApiSummary();
 
   const getRiskBadge = (risk: 'Low' | 'Medium' | 'High') => {
     switch (risk) {
@@ -25,6 +28,9 @@ export const Overview: React.FC = () => {
         return 'bg-rose-50 text-rose-700 border-rose-200';
     }
   };
+
+  const hasRealData = (summary?.data_status_breakdown.real || 0) > 0;
+  const activeStatus = hasRealData ? 'real' : 'synthetic_test';
 
   return (
     <div className="space-y-6">
@@ -45,6 +51,71 @@ export const Overview: React.FC = () => {
             description={metric.description}
           />
         ))}
+      </div>
+
+      {/* Data Ingestion Status Bar */}
+      <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-xs">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shrink-0">
+              <Database className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-slate-800">
+                  Data Pipeline &amp; Ingestion Status
+                </span>
+                <DataStatusBadge status={activeStatus} size="sm" />
+              </div>
+              <p className="text-[11px] text-slate-500 mt-0.5">
+                Real-data indicators appear when an institutional dataset (e.g. RBI-HPI, NHB-RESIDEX) has been imported. Currently showing synthetic demo data.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4 text-xs shrink-0 self-end md:self-center">
+            {summaryLoading ? (
+              <span className="text-slate-400 text-[11px]">Connecting to data pipeline...</span>
+            ) : summary ? (
+              <>
+                <div className="text-right">
+                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">
+                    Observations
+                  </span>
+                  <span className="font-semibold text-slate-800 font-mono">
+                    {summary.total_observations.toLocaleString()}
+                  </span>
+                </div>
+                <div className="text-right">
+                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">
+                    Datasets Audited
+                  </span>
+                  <span className="font-semibold text-slate-800 font-mono">
+                    {summary.total_datasets}
+                  </span>
+                </div>
+                {summary.date_coverage.min && summary.date_coverage.max && (
+                  <div className="text-right hidden sm:block">
+                    <span className="text-slate-400 block text-[10px] uppercase font-semibold">
+                      Date Range
+                    </span>
+                    <span className="text-slate-700 font-mono text-[11px]">
+                      {summary.date_coverage.min.slice(0, 7)} → {summary.date_coverage.max.slice(0, 7)}
+                    </span>
+                  </div>
+                )}
+                <Link
+                  to="/data-sources"
+                  className="px-2.5 py-1 text-[11px] font-semibold text-indigo-600 hover:text-indigo-800 bg-indigo-50 rounded border border-indigo-100 transition"
+                >
+                  View Sources &rarr;
+                </Link>
+              </>
+            ) : (
+              <span className="text-slate-400 text-[11px]">Pipeline standby (demo fixture ready)</span>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* Primary Analytics Charts */}
@@ -72,7 +143,7 @@ export const Overview: React.FC = () => {
             to="/neighborhood"
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-700 transition"
           >
-            <span>Explore Map & Geospatial Data</span>
+            <span>Explore Map &amp; Geospatial Data</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>

@@ -1,0 +1,5 @@
+lat,lon,amenity_type,name,geography_name,retrieved_at,source_name,data_status,source_url
+19.076,72.8777,school,Test School A,Mumbai,2025-01-01T00:00:00Z,SYNTHETIC_TEST_DATA,synthetic_test,https://example.com/test
+19.08,72.88,hospital,Test Hospital B,Mumbai,2025-01-01T00:00:00Z,SYNTHETIC_TEST_DATA,synthetic_test,https://example.com/test
+19.09,72.89,park,Test Park C,Mumbai,2025-01-01T00:00:00Z,SYNTHETIC_TEST_DATA,synthetic_test,https://example.com/test
+19.075,72.875,school,Test School D,Mumbai,2025-01-01T00:00:00Z,SYNTHETIC_TEST_DATA,synthetic_test,https://example.com/test

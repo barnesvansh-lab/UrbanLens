@@ -1,0 +1,7 @@
+# SYNTHETIC_TEST_DATA — NOT REAL DATA. For pipeline testing only.
+lat,lon,amenity_type,name,geography_name,retrieved_at,source_name,data_status
+19.0760,72.8777,school,Test School A,Mumbai,2025-01-01T00:00:00Z,SYNTHETIC_TEST_DATA,synthetic_test
+19.0800,72.8800,hospital,Test Hospital B,Mumbai,2025-01-01T00:00:00Z,SYNTHETIC_TEST_DATA,synthetic_test
+19.0900,72.8900,park,Test Park C,Mumbai,2025-01-01T00:00:00Z,SYNTHETIC_TEST_DATA,synthetic_test
+19.0750,72.8750,school,Test School D,Mumbai,2025-01-01T00:00:00Z,SYNTHETIC_TEST_DATA,synthetic_test
+19.0760,72.8777,school,Test School A,Mumbai,2025-01-01T00:00:00Z,SYNTHETIC_TEST_DATA,synthetic_test

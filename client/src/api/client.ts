@@ -1,0 +1,57 @@
+import {
+  ApiDataSource,
+  ApiObservation,
+  ApiQualityReport,
+  ApiSummary,
+  ApiAmenity,
+  ApiHealthResponse,
+  ApiError,
+} from './types';
+
+const API_BASE = '/api';
+
+async function apiFetch<T>(path: string): Promise<{ data: T | null; error: ApiError | null }> {
+  try {
+    const res = await fetch(`${API_BASE}${path}`);
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({
+        error: `HTTP error ${res.status}: ${res.statusText}`,
+        code: `HTTP_${res.status}`,
+      }));
+      return { data: null, error: err };
+    }
+    const data = await res.json();
+    return { data, error: null };
+  } catch (e: any) {
+    return {
+      data: null,
+      error: {
+        error: e.message || 'Network error connecting to UrbanLens backend API',
+        code: 'NETWORK_ERROR',
+      },
+    };
+  }
+}
+
+function cleanParams(params?: Record<string, string | undefined>): string {
+  if (!params) return '';
+  const searchParams = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) {
+    if (value !== undefined && value !== '') {
+      searchParams.append(key, value);
+    }
+  }
+  const queryString = searchParams.toString();
+  return queryString ? `?${queryString}` : '';
+}
+
+export const apiClient = {
+  getHealth: () => apiFetch<ApiHealthResponse>('/health'),
+  getDataSources: () => apiFetch<ApiDataSource[]>('/data/sources'),
+  getDataSeries: (params?: Record<string, string>) =>
+    apiFetch<ApiObservation[]>(`/data/series${cleanParams(params)}`),
+  getDataQuality: () => apiFetch<ApiQualityReport[]>('/data/quality'),
+  getDataSummary: () => apiFetch<ApiSummary>('/data/summary'),
+  getAmenities: (params?: Record<string, string>) =>
+    apiFetch<ApiAmenity[]>(`/neighborhoods/amenities${cleanParams(params)}`),
+};
