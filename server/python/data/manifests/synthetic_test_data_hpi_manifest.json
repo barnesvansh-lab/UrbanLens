@@ -5,11 +5,11 @@
   "source_url": "https://example.com/test",
   "data_status": "synthetic_test",
   "processed_file": "processed_synthetic_test_data_hpi.csv",
-  "processed_at": "2026-10-29T08:09:32.895884+00:00",
+  "processed_at": "2026-10-29T08:20:34.136058+00:00",
   "record_count": 13,
   "quality_report": {
     "dataset_name": "synthetic_test_data_hpi",
-    "generated_at": "2026-10-29T08:09:32.895844+00:00",
+    "generated_at": "2026-10-29T08:20:34.136019+00:00",
     "raw_row_count": 14,
     "valid_row_count": 13,
     "rejected_row_count": 0,

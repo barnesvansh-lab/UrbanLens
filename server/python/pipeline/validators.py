@@ -145,11 +145,11 @@ def validate_hpi_csv(df: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
             warnings.append(f"Row {idx}: Rejected empty geography_name")
             continue
 
-        row_copy = row.copy()
-        row_copy["observation_date"] = iso_date
-        row_copy["geography_name"] = norm_geo
-        row_copy["metric_value"] = norm_val
-        valid_rows.append(row_copy)
+        row_dict = row.to_dict()
+        row_dict["observation_date"] = iso_date
+        row_dict["geography_name"] = norm_geo
+        row_dict["metric_value"] = norm_val
+        valid_rows.append(row_dict)
 
     if not valid_rows:
         warnings.append("All rows were rejected during HPI validation")
@@ -219,13 +219,13 @@ def validate_amenities_csv(df: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
 
         name = str(row.get("name", "")).strip() or "Unnamed Facility"
 
-        row_copy = row.copy()
-        row_copy["lat"] = lat
-        row_copy["lon"] = lon
-        row_copy["amenity_type"] = amenity_type
-        row_copy["name"] = name
-        row_copy["geography_name"] = geo_name
-        valid_rows.append(row_copy)
+        row_dict = row.to_dict()
+        row_dict["lat"] = lat
+        row_dict["lon"] = lon
+        row_dict["amenity_type"] = amenity_type
+        row_dict["name"] = name
+        row_dict["geography_name"] = geo_name
+        valid_rows.append(row_dict)
 
     if not valid_rows:
         warnings.append("All rows were rejected during Amenities validation")
