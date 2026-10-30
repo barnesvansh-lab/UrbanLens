@@ -7,6 +7,13 @@ import {
   ApiHealthResponse,
   ApiError,
   ApiForecastResponse,
+  ApiNeighborhoodsResponse,
+  ApiBoundariesResponse,
+  ApiNeighborhoodRegionDetail,
+  ApiNeighborhoodAnalyticsResponse,
+  ApiNeighborhoodCompareResponse,
+  ApiTransformationSummaryResponse,
+  ApiTransformationIndicatorsResponse,
 } from './types';
 
 const API_BASE = '/api';
@@ -59,4 +66,13 @@ export const apiClient = {
     apiFetch<ApiForecastResponse>(`/forecasting/predict?${new URLSearchParams(
       Object.fromEntries(Object.entries(params).filter(([, v]) => v !== undefined).map(([k, v]) => [k, String(v)]))
     )}`),
+  getNeighborhoods: () => apiFetch<ApiNeighborhoodsResponse>('/neighborhoods'),
+  getNeighborhoodBoundaries: () => apiFetch<ApiBoundariesResponse>('/neighborhoods/boundaries'),
+  getNeighborhoodDetail: (id: string) => apiFetch<ApiNeighborhoodRegionDetail>(`/neighborhoods/${encodeURIComponent(id)}`),
+  getNeighborhoodAnalytics: (id: string) => apiFetch<ApiNeighborhoodAnalyticsResponse>(`/neighborhoods/${encodeURIComponent(id)}/analytics`),
+  compareNeighborhoods: (ids: string[]) => apiFetch<ApiNeighborhoodCompareResponse>(`/neighborhoods/compare?ids=${encodeURIComponent(ids.join(','))}`),
+  getTransformationIndicators: (params?: { category?: string; data_status?: string }) =>
+    apiFetch<ApiTransformationIndicatorsResponse>(`/transformation/indicators${cleanParams(params)}`),
+  getTransformationSummary: () => apiFetch<ApiTransformationSummaryResponse>('/transformation/summary'),
 };
+

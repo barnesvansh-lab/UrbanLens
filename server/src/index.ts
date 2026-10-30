@@ -4,6 +4,7 @@ import healthRouter from './routes/health';
 import dataRouter from './routes/data';
 import neighborhoodsRouter from './routes/neighborhoods';
 import forecastingRouter from './routes/forecasting';
+import transformationRouter from './routes/transformation';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -15,6 +16,7 @@ app.use('/api', healthRouter);
 app.use('/api/data', dataRouter);
 app.use('/api/neighborhoods', neighborhoodsRouter);
 app.use('/api/forecasting', forecastingRouter);
+app.use('/api/transformation', transformationRouter);
 
 // Global error handler — never exposes stack traces
 app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {

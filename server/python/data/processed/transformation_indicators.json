@@ -1,0 +1,264 @@
+{
+  "generated_at": "2026-10-30T12:18:27.266886+00:00",
+  "pipeline_version": "1.0.0",
+  "geographic_scope": "South Mumbai (city-level for RBI HPI; South Mumbai bounding box for OSM)",
+  "summary": {
+    "total_indicators": 12,
+    "real_indicators": 4,
+    "unavailable_indicators": 8,
+    "notes": "Real indicators derive from RBI HPI (city-level) and OSM amenity count (single snapshot). Neighbourhood-level transformation indicators are unavailable from free official sources. This platform does NOT claim to measure gentrification or displacement."
+  },
+  "data_integrity_statement": "Urban transformation is a complex socio-economic process. UrbanLens does NOT label any area as 'gentrifying' based solely on housing price index or amenity count data. The indicators presented are descriptive only. All data limitations are documented transparently.",
+  "hpi_city_trend": {
+    "start_date": "2010-06-30",
+    "end_date": "2025-03-31",
+    "start_value": 88.82,
+    "end_value": 417.8,
+    "total_change_pct": 370.39,
+    "five_year_change_pct": 5.64,
+    "annualized_change_pct": 10.87,
+    "n_observations": 60,
+    "unit": "index_points"
+  },
+  "indicators": [
+    {
+      "id": "city-hpi-total-change",
+      "name": "Mumbai HPI \u2014 Total Change (2010\u20132025)",
+      "category": "housing_price",
+      "geography_level": "city",
+      "geography_name": "Mumbai",
+      "data_status": "real",
+      "value": 370.39,
+      "unit": "percent_change",
+      "display_value": "+370.39% since 2010",
+      "source": "RBI House Price Index (DBIE portal)",
+      "coverage": "2010-06-30 to 2025-03-31",
+      "methodology": "Percentage change in HPI index points from first to last observation. Base year FY2010-11 = 100. Index reflects assessment-based valuations.",
+      "limitations": [
+        "City-level aggregate only; does not reflect neighborhood-level variation.",
+        "HPI measures relative index movement, not absolute \u20b9/sqft transaction prices.",
+        "Rising HPI alone does not indicate gentrification."
+      ],
+      "interpretation": "Mumbai's HPI has risen significantly over 15 years. This reflects city-wide price appreciation in aggregate assessment values. Sub-area trends may differ substantially."
+    },
+    {
+      "id": "city-hpi-5yr-change",
+      "name": "Mumbai HPI \u2014 5-Year Change",
+      "category": "housing_price",
+      "geography_level": "city",
+      "geography_name": "Mumbai",
+      "data_status": "real",
+      "value": 5.64,
+      "unit": "percent_change",
+      "display_value": "+5.64% over last 5 years",
+      "source": "RBI House Price Index (DBIE portal)",
+      "coverage": "2010-06-30 to 2025-03-31",
+      "methodology": "Percentage change from the observation ~5 years before the most recent quarter.",
+      "limitations": [
+        "City-level aggregate. Ward or neighbourhood-level data not available from RBI.",
+        "HPI index points, not transaction prices."
+      ],
+      "interpretation": "5-year HPI change gives a medium-term picture of city-wide price momentum."
+    },
+    {
+      "id": "city-hpi-annualized",
+      "name": "Mumbai HPI \u2014 Annualised Growth Rate",
+      "category": "housing_price",
+      "geography_level": "city",
+      "geography_name": "Mumbai",
+      "data_status": "real",
+      "value": 10.87,
+      "unit": "percent_per_year",
+      "display_value": "10.87% per year (CAGR)",
+      "source": "RBI House Price Index (DBIE portal)",
+      "coverage": "2010-06-30 to 2025-03-31",
+      "methodology": "Compound annual growth rate (CAGR) from first to last HPI observation.",
+      "limitations": [
+        "CAGR smooths out cyclical volatility; year-to-year variation may be substantial.",
+        "City-level only."
+      ],
+      "interpretation": "The annualised growth rate contextualises long-run price appreciation speed."
+    },
+    {
+      "id": "south-mumbai-amenity-total",
+      "name": "South Mumbai \u2014 Total OSM Amenity Count",
+      "category": "amenity_infrastructure",
+      "geography_level": "neighborhood",
+      "geography_name": "South Mumbai",
+      "data_status": "real",
+      "value": 232,
+      "unit": "count",
+      "display_value": "232 OSM amenity features",
+      "source": "OpenStreetMap via Overpass API",
+      "coverage": "Single snapshot (2026-10-30)",
+      "methodology": "Count of OSM amenity nodes in bounding box [18.92, 72.80] \u2013 [18.98, 72.85]. Categories: parking, clinic, hospital, school, stop_position, driving_school, motorcycle_parking, parking_entrance.",
+      "limitations": [
+        "Single point-in-time snapshot; historical trend is NOT measurable.",
+        "OSM coverage is community-maintained and may be incomplete.",
+        "Amenity counts do NOT indicate social or economic transformation.",
+        "Count includes all OSM-tagged features; completeness varies by category."
+      ],
+      "interpretation": "232 amenity features are mapped in this area of South Mumbai. This is a descriptive count, not a transformation signal."
+    },
+    {
+      "id": "neighborhood-hpi",
+      "name": "Neighbourhood-Level House Price Index",
+      "category": "housing_price",
+      "geography_level": "neighborhood",
+      "geography_name": "South Mumbai",
+      "data_status": "unavailable",
+      "value": null,
+      "unit": null,
+      "display_value": "Data not available",
+      "source": null,
+      "coverage": null,
+      "methodology": null,
+      "unavailability_reason": "RBI HPI is published only at city/metropolitan level. No official sub-district or ward-level HPI exists for Mumbai.",
+      "possible_proxy": "Not available from any free, official source.",
+      "limitations": [
+        "This indicator cannot be computed from currently available official data."
+      ],
+      "interpretation": null
+    },
+    {
+      "id": "population-density-change",
+      "name": "Population Density Change",
+      "category": "demographics",
+      "geography_level": "neighborhood",
+      "geography_name": "South Mumbai",
+      "data_status": "unavailable",
+      "value": null,
+      "unit": null,
+      "display_value": "Data not available",
+      "source": null,
+      "coverage": null,
+      "methodology": null,
+      "unavailability_reason": "Census of India 2021 is not yet publicly released at ward level. 2011 Census ward data is available in tabular form but not integrated.",
+      "possible_proxy": "2011 Census ward-level population tables (manual integration required).",
+      "limitations": [
+        "This indicator cannot be computed from currently available official data."
+      ],
+      "interpretation": null
+    },
+    {
+      "id": "income-level-change",
+      "name": "Household Income Distribution Change",
+      "category": "socioeconomic",
+      "geography_level": "neighborhood",
+      "geography_name": "South Mumbai",
+      "data_status": "unavailable",
+      "value": null,
+      "unit": null,
+      "display_value": "Data not available",
+      "source": null,
+      "coverage": null,
+      "methodology": null,
+      "unavailability_reason": "No official ward-level income statistics are publicly available in India. PLFS/NSSO data is only available at state/district level.",
+      "possible_proxy": "PLFS district-level estimates (too coarse for neighbourhood analysis).",
+      "limitations": [
+        "This indicator cannot be computed from currently available official data."
+      ],
+      "interpretation": null
+    },
+    {
+      "id": "rental-price-index",
+      "name": "Rental Price Index",
+      "category": "housing_price",
+      "geography_level": "neighborhood",
+      "geography_name": "South Mumbai",
+      "data_status": "unavailable",
+      "value": null,
+      "unit": null,
+      "display_value": "Data not available",
+      "source": null,
+      "coverage": null,
+      "methodology": null,
+      "unavailability_reason": "No official rental price index exists for Indian cities at any geographic level. Private portals (Magicbricks, 99acres) publish listings data but licensing and representativeness are not verified.",
+      "possible_proxy": "Private real-estate portal listings (not integrated; licensing unclear).",
+      "limitations": [
+        "This indicator cannot be computed from currently available official data."
+      ],
+      "interpretation": null
+    },
+    {
+      "id": "new-construction-permits",
+      "name": "New Construction Permits (IOD/CC)",
+      "category": "urban_development",
+      "geography_level": "neighborhood",
+      "geography_name": "South Mumbai",
+      "data_status": "unavailable",
+      "value": null,
+      "unit": null,
+      "display_value": "Data not available",
+      "source": null,
+      "coverage": null,
+      "methodology": null,
+      "unavailability_reason": "MCGM IOD/CC permit data is not available in a machine-readable public API. Data would need to be scraped from MCGM portal (legal review required).",
+      "possible_proxy": "MCGM development plan documents (PDF only; not machine-readable).",
+      "limitations": [
+        "This indicator cannot be computed from currently available official data."
+      ],
+      "interpretation": null
+    },
+    {
+      "id": "slum-redevelopment-area",
+      "name": "Slum Redevelopment Authority (SRA) Project Footprint",
+      "category": "urban_development",
+      "geography_level": "neighborhood",
+      "geography_name": "South Mumbai",
+      "data_status": "unavailable",
+      "value": null,
+      "unit": null,
+      "display_value": "Data not available",
+      "source": null,
+      "coverage": null,
+      "methodology": null,
+      "unavailability_reason": "SRA project boundaries are not available in GeoJSON or CSV format publicly. SRA website publishes project lists without geographic coordinates.",
+      "possible_proxy": "SRA annual reports (PDF; no machine-readable download available).",
+      "limitations": [
+        "This indicator cannot be computed from currently available official data."
+      ],
+      "interpretation": null
+    },
+    {
+      "id": "commercial-footprint-change",
+      "name": "Commercial Establishment Footprint Change",
+      "category": "land_use",
+      "geography_level": "neighborhood",
+      "geography_name": "South Mumbai",
+      "data_status": "unavailable",
+      "value": null,
+      "unit": null,
+      "display_value": "Data not available",
+      "source": null,
+      "coverage": null,
+      "methodology": null,
+      "unavailability_reason": "No time-series OSM data is available (current OSM is a single snapshot). MCGM property tax records require official data sharing agreement.",
+      "possible_proxy": "Historical OSM exports via Overpass temporal API (rate-limited; requires integration).",
+      "limitations": [
+        "This indicator cannot be computed from currently available official data."
+      ],
+      "interpretation": null
+    },
+    {
+      "id": "green-cover-change",
+      "name": "Urban Green Cover Change",
+      "category": "environment",
+      "geography_level": "neighborhood",
+      "geography_name": "South Mumbai",
+      "data_status": "unavailable",
+      "value": null,
+      "unit": null,
+      "display_value": "Data not available",
+      "source": null,
+      "coverage": null,
+      "methodology": null,
+      "unavailability_reason": "NDVI time-series requires satellite imagery (Sentinel-2 or Landsat). Downloading and processing imagery requires significant compute and storage.",
+      "possible_proxy": "Google Earth Engine NDVI time-series (requires GEE account and compute).",
+      "limitations": [
+        "This indicator cannot be computed from currently available official data."
+      ],
+      "interpretation": null
+    }
+  ]
+}

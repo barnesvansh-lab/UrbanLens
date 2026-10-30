@@ -1,0 +1,229 @@
+{
+  "generated_at": "2026-10-30T12:18:27.237627+00:00",
+  "pipeline_version": "1.0.0",
+  "source": "OpenStreetMap via Overpass API",
+  "osm_snapshot_date": "2026-10-30",
+  "geographic_scope": "South Mumbai",
+  "total_amenities_loaded": 232,
+  "total_amenities_assigned": 232,
+  "total_amenities_unassigned": 0,
+  "boundary_methodology": "approximate_bounding_box",
+  "boundary_warning": "No official MCGM ward boundary GeoJSON is available programmatically. Approximate bounding boxes are used for research and demonstration purposes only.",
+  "data_status": "real",
+  "regions": [
+    {
+      "id": "south-mumbai-colaba",
+      "name": "Colaba & Cuffe Parade",
+      "description": "Southernmost tip of Mumbai peninsula. Historic district with Gateway of India, Colaba Causeway, and Cuffe Parade residential towers. Approximate bounding box; NOT an official ward boundary.",
+      "known_landmarks": [
+        "Gateway of India",
+        "Taj Hotel",
+        "Cuffe Parade"
+      ],
+      "boundary_type": "approximate_bounding_box",
+      "boundary_note": "NOT an official MCGM ward boundary. Approximate bounding box derived from landmark references for research purposes only.",
+      "bbox": {
+        "lat_min": 18.9,
+        "lat_max": 18.935,
+        "lon_min": 72.805,
+        "lon_max": 72.84
+      },
+      "centroid": {
+        "lat": 18.9175,
+        "lon": 72.8225
+      },
+      "area_km2": 14.3282,
+      "total_amenities": 26,
+      "amenity_density_per_km2": 1.81,
+      "amenity_categories": {
+        "clinic": 3,
+        "hospital": 6,
+        "parking": 1,
+        "parking_entrance": 6,
+        "stop_position": 10
+      },
+      "nearest_facility_km": {
+        "stop_position": 0.8634,
+        "parking_entrance": 0.7937,
+        "parking": 0.9411,
+        "hospital": 0.8157,
+        "clinic": 0.7561
+      },
+      "within_500m_count": 0,
+      "within_1km_count": 10,
+      "data_status": "real",
+      "data_source": "OpenStreetMap (Overpass API)",
+      "osm_snapshot_date": "2026-10-30",
+      "limitations": [
+        "Single OSM snapshot; does not represent historical amenity growth.",
+        "OSM amenity coverage is community-maintained and may be incomplete.",
+        "Bounding box regions are NOT official administrative boundaries.",
+        "City-level RBI HPI data is not applicable at this geographic level."
+      ]
+    },
+    {
+      "id": "south-mumbai-fort",
+      "name": "Fort & Marine Lines",
+      "description": "Fort business district and Marine Lines residential corridor. Home to stock exchange, courts, and colonial-era architecture. Approximate bounding box; NOT an official ward boundary.",
+      "known_landmarks": [
+        "BSE",
+        "Bombay High Court",
+        "Marine Drive"
+      ],
+      "boundary_type": "approximate_bounding_box",
+      "boundary_note": "NOT an official MCGM ward boundary. Approximate bounding box derived from landmark references for research purposes only.",
+      "bbox": {
+        "lat_min": 18.935,
+        "lat_max": 18.96,
+        "lon_min": 72.82,
+        "lon_max": 72.845
+      },
+      "centroid": {
+        "lat": 18.9475,
+        "lon": 72.8325
+      },
+      "area_km2": 7.309,
+      "total_amenities": 67,
+      "amenity_density_per_km2": 9.17,
+      "amenity_categories": {
+        "clinic": 4,
+        "hospital": 19,
+        "parking": 4,
+        "parking_entrance": 3,
+        "school": 3,
+        "stop_position": 34
+      },
+      "nearest_facility_km": {
+        "parking": 0.6343,
+        "stop_position": 0.5615,
+        "hospital": 0.3002,
+        "clinic": 1.0628,
+        "school": 1.065,
+        "parking_entrance": 1.078
+      },
+      "within_500m_count": 1,
+      "within_1km_count": 42,
+      "data_status": "real",
+      "data_source": "OpenStreetMap (Overpass API)",
+      "osm_snapshot_date": "2026-10-30",
+      "limitations": [
+        "Single OSM snapshot; does not represent historical amenity growth.",
+        "OSM amenity coverage is community-maintained and may be incomplete.",
+        "Bounding box regions are NOT official administrative boundaries.",
+        "City-level RBI HPI data is not applicable at this geographic level."
+      ]
+    },
+    {
+      "id": "south-mumbai-malabar-hill",
+      "name": "Malabar Hill & Walkeshwar",
+      "description": "Elevated residential enclave with some of Mumbai's highest-value properties. Includes Hanging Gardens and Banganga Tank. Approximate bounding box; NOT an official ward boundary.",
+      "known_landmarks": [
+        "Hanging Gardens",
+        "Banganga Tank",
+        "Raj Bhavan"
+      ],
+      "boundary_type": "approximate_bounding_box",
+      "boundary_note": "NOT an official MCGM ward boundary. Approximate bounding box derived from landmark references for research purposes only.",
+      "bbox": {
+        "lat_min": 18.95,
+        "lat_max": 18.98,
+        "lon_min": 72.8,
+        "lon_max": 72.825
+      },
+      "centroid": {
+        "lat": 18.965,
+        "lon": 72.8125
+      },
+      "area_km2": 8.7699,
+      "total_amenities": 105,
+      "amenity_density_per_km2": 11.97,
+      "amenity_categories": {
+        "clinic": 23,
+        "hospital": 25,
+        "parking": 3,
+        "parking_entrance": 20,
+        "school": 8,
+        "stop_position": 26
+      },
+      "nearest_facility_km": {
+        "parking": 0.7036,
+        "stop_position": 0.4102,
+        "school": 0.1588,
+        "hospital": 0.1042,
+        "clinic": 0.2687,
+        "parking_entrance": 0.3039
+      },
+      "within_500m_count": 19,
+      "within_1km_count": 65,
+      "data_status": "real",
+      "data_source": "OpenStreetMap (Overpass API)",
+      "osm_snapshot_date": "2026-10-30",
+      "limitations": [
+        "Single OSM snapshot; does not represent historical amenity growth.",
+        "OSM amenity coverage is community-maintained and may be incomplete.",
+        "Bounding box regions are NOT official administrative boundaries.",
+        "City-level RBI HPI data is not applicable at this geographic level."
+      ]
+    },
+    {
+      "id": "south-mumbai-grant-road",
+      "name": "Grant Road & Girgaon",
+      "description": "Mixed residential and commercial area with Grant Road station and Girgaon neighbourhoods. Dense lower-middle-income housing with active street markets. Approximate bounding box; NOT an official ward boundary.",
+      "known_landmarks": [
+        "Grant Road Station",
+        "Girgaon Chowpatty"
+      ],
+      "boundary_type": "approximate_bounding_box",
+      "boundary_note": "NOT an official MCGM ward boundary. Approximate bounding box derived from landmark references for research purposes only.",
+      "bbox": {
+        "lat_min": 18.955,
+        "lat_max": 18.98,
+        "lon_min": 72.825,
+        "lon_max": 72.85
+      },
+      "centroid": {
+        "lat": 18.9675,
+        "lon": 72.8375
+      },
+      "area_km2": 7.3081,
+      "total_amenities": 34,
+      "amenity_density_per_km2": 4.65,
+      "amenity_categories": {
+        "clinic": 3,
+        "driving_school": 1,
+        "hospital": 13,
+        "motorcycle_parking": 1,
+        "parking_entrance": 1,
+        "school": 1,
+        "stop_position": 14
+      },
+      "nearest_facility_km": {
+        "stop_position": 0.6593,
+        "clinic": 0.8363,
+        "hospital": 0.1316,
+        "driving_school": 1.3201,
+        "school": 1.1527,
+        "motorcycle_parking": 1.135,
+        "parking_entrance": 1.0021
+      },
+      "within_500m_count": 2,
+      "within_1km_count": 17,
+      "data_status": "real",
+      "data_source": "OpenStreetMap (Overpass API)",
+      "osm_snapshot_date": "2026-10-30",
+      "limitations": [
+        "Single OSM snapshot; does not represent historical amenity growth.",
+        "OSM amenity coverage is community-maintained and may be incomplete.",
+        "Bounding box regions are NOT official administrative boundaries.",
+        "City-level RBI HPI data is not applicable at this geographic level."
+      ]
+    }
+  ],
+  "limitations": [
+    "OSM amenity data is a single-point-in-time snapshot; historical trends cannot be inferred.",
+    "Bounding box approximations do NOT represent official Mumbai ward/ward-committee boundaries.",
+    "Amenity density may be underestimated where OSM coverage is incomplete.",
+    "No socioeconomic, demographic, or property-price data is included at neighborhood level.",
+    "City-level RBI HPI must NOT be disaggregated to these sub-regions."
+  ]
+}

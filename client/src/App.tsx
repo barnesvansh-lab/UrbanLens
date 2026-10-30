@@ -8,6 +8,8 @@ import { Overview } from './pages/Overview';
 import { MarketTrends } from './pages/MarketTrends';
 import { Forecasting } from './pages/Forecasting';
 import { NeighborhoodIntelligence } from './pages/NeighborhoodIntelligence';
+import { NeighborhoodComparison } from './pages/NeighborhoodComparison';
+import { UrbanTransformation } from './pages/UrbanTransformation';
 import { Affordability } from './pages/Affordability';
 import { DataSources } from './pages/DataSources';
 import { Methodology } from './pages/Methodology';
@@ -44,6 +46,11 @@ export const App: React.FC = () => {
               <Route path="/market-trends" element={<MarketTrends />} />
               <Route path="/forecasting" element={<Forecasting />} />
               <Route path="/neighborhood" element={<NeighborhoodIntelligence />} />
+              <Route path="/neighborhoods" element={<NeighborhoodIntelligence />} />
+              <Route path="/neighborhood/compare" element={<NeighborhoodComparison />} />
+              <Route path="/neighborhoods/compare" element={<NeighborhoodComparison />} />
+              <Route path="/transformation" element={<UrbanTransformation />} />
+              <Route path="/urban-transformation" element={<UrbanTransformation />} />
               <Route path="/affordability" element={<Affordability />} />
               <Route path="/data-sources" element={<DataSources />} />
               <Route path="/methodology" element={<Methodology />} />

@@ -215,4 +215,78 @@ describe('UrbanLens Express API Endpoints', () => {
       assert.strictEqual(obs.geography_level, 'city');
     }
   });
+
+  it('21. GET /api/neighborhoods → 200, array of regions with analytics', async () => {
+    const res = await request('GET', '/api/neighborhoods');
+    assert.strictEqual(res.status, 200);
+    assert.ok(Array.isArray(res.body.regions), 'regions must be an array');
+    assert.ok(res.body.regions.length >= 1, 'Expected at least 1 region');
+    assert.ok(res.body.data_status, 'Missing data_status');
+    assert.ok(res.body.boundary_warning, 'Missing boundary_warning');
+    for (const r of res.body.regions) {
+      assert.ok(r.id, 'Region missing id');
+      assert.ok(r.name, 'Region missing name');
+      assert.ok(typeof r.total_amenities === 'number', 'Region missing total_amenities');
+    }
+  });
+
+  it('22. GET /api/neighborhoods/boundaries → 200, GeoJSON FeatureCollection', async () => {
+    const res = await request('GET', '/api/neighborhoods/boundaries');
+    assert.strictEqual(res.status, 200);
+    assert.strictEqual(res.body.type, 'FeatureCollection');
+    assert.ok(Array.isArray(res.body.features));
+    assert.ok(res.body.metadata, 'Missing metadata');
+    // Each feature should have GeoJSON polygon geometry
+    for (const feature of res.body.features) {
+      assert.strictEqual(feature.type, 'Feature');
+      assert.strictEqual(feature.geometry.type, 'Polygon');
+      assert.ok(feature.properties.id, 'Feature missing id property');
+    }
+  });
+
+  it('23. GET /api/neighborhoods/south-mumbai-colaba/analytics → 200', async () => {
+    const res = await request('GET', '/api/neighborhoods/south-mumbai-colaba/analytics');
+    assert.strictEqual(res.status, 200);
+    assert.ok(res.body.region, 'Missing region object');
+    assert.strictEqual(res.body.region.id, 'south-mumbai-colaba');
+    assert.ok(typeof res.body.region.total_amenities === 'number');
+    assert.ok(typeof res.body.region.amenity_density_per_km2 === 'number');
+    assert.ok(res.body.context, 'Missing context');
+  });
+
+  it('24. GET /api/neighborhoods/compare?ids=south-mumbai-colaba,south-mumbai-fort → 200', async () => {
+    const res = await request('GET', '/api/neighborhoods/compare?ids=south-mumbai-colaba,south-mumbai-fort');
+    assert.strictEqual(res.status, 200);
+    assert.ok(Array.isArray(res.body.regions));
+    assert.ok(res.body.regions.length >= 1);
+    assert.ok(res.body.comparison_note, 'Missing comparison_note');
+  });
+
+  it('25. GET /api/transformation/indicators → 200, array with defined fields', async () => {
+    const res = await request('GET', '/api/transformation/indicators');
+    assert.strictEqual(res.status, 200);
+    assert.ok(Array.isArray(res.body.indicators), 'indicators must be an array');
+    assert.ok(res.body.indicators.length >= 4, 'Expected at least 4 indicators');
+    assert.ok(res.body.data_integrity_statement, 'Missing data_integrity_statement');
+    for (const ind of res.body.indicators) {
+      assert.ok(ind.id, 'Indicator missing id');
+      assert.ok(ind.name, 'Indicator missing name');
+      assert.ok(['real', 'unavailable', 'synthetic_test'].includes(ind.data_status),
+        `Unexpected data_status: ${ind.data_status}`);
+    }
+    // Must have at least one real indicator
+    const realInds = res.body.indicators.filter((i: any) => i.data_status === 'real');
+    assert.ok(realInds.length >= 1, 'Expected at least 1 real indicator');
+  });
+
+  it('26. GET /api/transformation/summary → 200', async () => {
+    const res = await request('GET', '/api/transformation/summary');
+    assert.strictEqual(res.status, 200);
+    assert.ok(res.body.summary, 'Missing summary');
+    assert.ok(typeof res.body.summary.total_indicators === 'number');
+    assert.ok(res.body.hpi_city_trend, 'Missing hpi_city_trend');
+    assert.ok(typeof res.body.hpi_city_trend.total_change_pct === 'number');
+    assert.ok(res.body.data_integrity_statement, 'Missing data_integrity_statement');
+    assert.ok(Array.isArray(res.body.indicator_categories));
+  });
 });

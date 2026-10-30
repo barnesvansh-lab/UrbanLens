@@ -12,6 +12,8 @@ import {
   ChevronRight,
   Building2,
   ShieldAlert,
+  Scale,
+  Sparkles,
 } from 'lucide-react';
 import clsx from 'clsx';
 
@@ -27,6 +29,8 @@ const NAV_ITEMS = [
   { path: '/market-trends', label: 'Market Trends', icon: TrendingUp },
   { path: '/forecasting', label: 'Forecasting & ML', icon: LineChart },
   { path: '/neighborhood', label: 'Neighborhood Intel', icon: MapPin },
+  { path: '/neighborhood/compare', label: 'Area Comparison', icon: Scale },
+  { path: '/transformation', label: 'Transformation', icon: Sparkles },
   { path: '/affordability', label: 'Affordability & EMI', icon: Calculator },
   { path: '/data-sources', label: 'Data Sources', icon: Database },
   { path: '/methodology', label: 'Methodology', icon: BookOpen },
