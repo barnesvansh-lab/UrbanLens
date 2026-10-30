@@ -23,6 +23,8 @@ OBSERVATION_SCHEMA = {
     "source_url": "URL string",
     "retrieved_at": "ISO timestamp of data retrieval",
     "data_status": "real | synthetic_test | unavailable",
+    "index_base": "optional string (e.g. 2010-11=100)",
+    "frequency": "optional string (e.g. quarterly, monthly, annual)",
 }
 
 AMENITIES_SCHEMA = {
@@ -46,6 +48,11 @@ HPI_REQUIRED_COLUMNS = [
     "source_name",
 ]
 
+HPI_OPTIONAL_COLUMNS = [
+    "index_base",
+    "frequency",
+]
+
 AMENITIES_REQUIRED_COLUMNS = [
     "lat",
     "lon",
@@ -59,7 +66,7 @@ AMENITIES_REQUIRED_COLUMNS = [
 INDEX_METRICS = {"hpi_assessment", "hpi_market", "housing_price_index"}
 CURRENCY_METRICS = {"rupees_per_sqft", "avg_price", "price_per_sqft", "avg_price_inr", "inr_per_sqft"}
 
-class ObservationRecord(TypedDict):
+class ObservationRecord(TypedDict, total=False):
     observation_date: str
     geography_name: str
     geography_level: str
@@ -70,6 +77,8 @@ class ObservationRecord(TypedDict):
     source_url: str
     retrieved_at: str
     data_status: str
+    index_base: Optional[str]
+    frequency: Optional[str]
 
 class AmenityRecord(TypedDict):
     lat: float

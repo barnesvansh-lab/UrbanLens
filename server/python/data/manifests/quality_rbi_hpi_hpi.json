@@ -1,0 +1,43 @@
+{
+  "dataset_name": "rbi_hpi_hpi",
+  "generated_at": "2026-10-30T07:24:23.004114+00:00",
+  "raw_row_count": 600,
+  "valid_row_count": 600,
+  "rejected_row_count": 0,
+  "duplicate_count": 0,
+  "missing_value_counts": {
+    "observation_date": 0,
+    "geography_name": 0,
+    "geography_level": 0,
+    "metric_name": 0,
+    "metric_value": 0,
+    "unit": 0,
+    "source_name": 0,
+    "source_url": 0,
+    "retrieved_at": 0,
+    "data_status": 0,
+    "index_base": 0,
+    "frequency": 0
+  },
+  "date_range": {
+    "min": "2010-06-30",
+    "max": "2025-03-31"
+  },
+  "geographies": [
+    "Ahmedabad",
+    "All India",
+    "Bengaluru",
+    "Chennai",
+    "Delhi",
+    "Jaipur",
+    "Kanpur",
+    "Kolkata",
+    "Lucknow",
+    "Mumbai"
+  ],
+  "metric_names": [
+    "hpi_assessment"
+  ],
+  "warnings": [],
+  "data_status": "real"
+}

@@ -45,17 +45,34 @@ function formatMonthLabel(dateStr: string): string {
   return dateStr;
 }
 
+const REAL_CITIES = [
+  'All India',
+  'Mumbai',
+  'Delhi',
+  'Bengaluru',
+  'Chennai',
+  'Kolkata',
+  'Ahmedabad',
+  'Jaipur',
+  'Kanpur',
+  'Lucknow',
+];
+
 export const Forecasting: React.FC = () => {
   const [selectedNeighborhoodId, setSelectedNeighborhoodId] =
     useState<string>('mumbai-central');
+  const [selectedRealCity, setSelectedRealCity] = useState<string>('All India');
   const [mode, setMode] = useState<'demo' | 'real'>('demo');
   const [horizon] = useState<number>(12);
+
+  const isRealMode = mode === 'real';
+  const activeGeography = isRealMode ? selectedRealCity : selectedNeighborhoodId;
 
   const selectedNeighborhood =
     neighborhoods.find((n) => n.id === selectedNeighborhoodId) || neighborhoods[0];
 
   const { forecast, loading, error, refetch } = useForecast({
-    geography: selectedNeighborhoodId,
+    geography: activeGeography,
     horizon,
     mode,
   });
@@ -194,26 +211,41 @@ export const Forecasting: React.FC = () => {
             </button>
           </div>
 
-          {/* Sector Selector */}
+          {/* Geography Selector (City for Real Mode, Sector for Demo Mode) */}
           <div className="flex items-center gap-2">
             <label
-              htmlFor="neighborhood-select"
+              htmlFor="geography-select"
               className="text-xs font-semibold text-slate-600 whitespace-nowrap"
             >
-              Sector:
+              {isRealMode ? 'City (HPI):' : 'Sector:'}
             </label>
-            <select
-              id="neighborhood-select"
-              value={selectedNeighborhoodId}
-              onChange={(e) => setSelectedNeighborhoodId(e.target.value)}
-              className="text-xs font-semibold bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
-            >
-              {neighborhoods.map((n) => (
-                <option key={n.id} value={n.id}>
-                  {n.name} (₹{n.avgPrice.toLocaleString('en-IN')})
-                </option>
-              ))}
-            </select>
+            {isRealMode ? (
+              <select
+                id="geography-select"
+                value={selectedRealCity}
+                onChange={(e) => setSelectedRealCity(e.target.value)}
+                className="text-xs font-semibold bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
+              >
+                {REAL_CITIES.map((c) => (
+                  <option key={c} value={c}>
+                    {c} (RBI HPI)
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <select
+                id="geography-select"
+                value={selectedNeighborhoodId}
+                onChange={(e) => setSelectedNeighborhoodId(e.target.value)}
+                className="text-xs font-semibold bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
+              >
+                {neighborhoods.map((n) => (
+                  <option key={n.id} value={n.id}>
+                    {n.name} (₹{n.avgPrice.toLocaleString('en-IN')})
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
         </div>
       </div>
@@ -264,24 +296,43 @@ export const Forecasting: React.FC = () => {
       {/* Main Content when status is ok */}
       {!loading && !error && forecast && forecast.status === 'ok' && (
         <>
+          {/* Real Mode Informational Disclaimer */}
+          {isRealMode && (
+            <div className="p-3.5 bg-indigo-50/80 rounded-xl border border-indigo-200 text-xs text-indigo-900 flex items-start gap-3">
+              <Info className="w-4 h-4 text-indigo-600 shrink-0 mt-0.5" />
+              <div>
+                <span className="font-bold block mb-0.5">
+                  Official RBI House Price Index (Base: 2010-11 = 100)
+                </span>
+                Displaying genuine quarterly index points from the Reserve Bank of India DBIE. Values represent city-level macroeconomic property price index changes, NOT micro-market ₹/sq.ft property valuation rates.
+              </div>
+            </div>
+          )}
+
           {/* Summary KPI Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-xs">
               <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                Latest Baseline (Dec 2024)
+                Latest Baseline ({forecast.observations?.[forecast.observations.length - 1]?.date || 'Recent'})
               </span>
               <div className="text-2xl font-bold text-slate-900 mt-1">
-                ₹{latestHistoricalPrice.toLocaleString('en-IN')}
+                {isRealMode
+                  ? `${latestHistoricalPrice.toFixed(1)} pts`
+                  : `₹${latestHistoricalPrice.toLocaleString('en-IN')}`}
               </div>
-              <span className="text-xs text-slate-400">Transacted average rate</span>
+              <span className="text-xs text-slate-400">
+                {isRealMode ? 'HPI Index Points (Base 100)' : 'Transacted average rate'}
+              </span>
             </div>
 
             <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-xs">
               <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                Projected in 6 Months (Jun 2025)
+                Projected in 6 {isRealMode ? 'Quarters' : 'Months'}
               </span>
               <div className="text-2xl font-bold text-indigo-600 mt-1">
-                ₹{predicted6m.toLocaleString('en-IN')}
+                {isRealMode
+                  ? `${predicted6m.toFixed(1)} pts`
+                  : `₹${predicted6m.toLocaleString('en-IN')}`}
               </div>
               <span className="text-xs text-emerald-600 font-medium">
                 +{growth6m}% vs. baseline
@@ -290,10 +341,12 @@ export const Forecasting: React.FC = () => {
 
             <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-xs">
               <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                Projected in 12 Months (Dec 2025)
+                Projected in 12 {isRealMode ? 'Quarters' : 'Months'}
               </span>
               <div className="text-2xl font-bold text-indigo-600 mt-1">
-                ₹{predicted12m.toLocaleString('en-IN')}
+                {isRealMode
+                  ? `${predicted12m.toFixed(1)} pts`
+                  : `₹${predicted12m.toLocaleString('en-IN')}`}
               </div>
               <span className="text-xs text-emerald-600 font-medium">
                 +{projectedGrowth}% Annualized
@@ -320,10 +373,12 @@ export const Forecasting: React.FC = () => {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
               <div>
                 <h3 className="text-base font-semibold text-slate-800">
-                  Trajectory & Forecast Horizon ({selectedNeighborhood.name})
+                  Trajectory &amp; Forecast Horizon ({isRealMode ? selectedRealCity : selectedNeighborhood.name})
                 </h3>
                 <p className="text-xs text-slate-500">
-                  Solid line: Historical monthly rates | Dashed line: Point forecast estimates | Shaded: 95% Confidence range
+                  {isRealMode
+                    ? 'Official quarterly RBI House Price Index (Base 2010-11=100) — city level index points'
+                    : 'Solid line: Historical monthly rates | Dashed line: Point forecast estimates | Shaded: 95% Confidence range'}
                 </p>
               </div>
               <div className="flex items-center gap-2">
@@ -365,7 +420,9 @@ export const Forecasting: React.FC = () => {
                     tickLine={false}
                     axisLine={false}
                     domain={['auto', 'auto']}
-                    tickFormatter={(val: number) => `₹${Math.round(val / 1000)}k`}
+                    tickFormatter={(val: number) =>
+                      isRealMode ? `${Math.round(val)} pts` : `₹${Math.round(val / 1000)}k`
+                    }
                   />
                   <Tooltip
                     contentStyle={{
@@ -378,15 +435,15 @@ export const Forecasting: React.FC = () => {
                     formatter={(val: any, name: any) => {
                       if (val === null || val === undefined) return [null, null];
                       const labels: Record<string, string> = {
-                        historical: 'Historical Rate',
-                        predicted: 'Forecasted Rate',
+                        historical: isRealMode ? 'Historical HPI' : 'Historical Rate',
+                        predicted: isRealMode ? 'Forecasted HPI' : 'Forecasted Rate',
                         lowerBound: 'Lower 95% CI',
                         upperBound: 'Upper 95% CI',
                       };
-                      return [
-                        `₹${Number(val).toLocaleString('en-IN')}/sq.ft`,
-                        labels[name] || name,
-                      ];
+                      const valStr = isRealMode
+                        ? `${Number(val).toFixed(1)} index pts`
+                        : `₹${Number(val).toLocaleString('en-IN')}/sq.ft`;
+                      return [valStr, labels[name] || name];
                     }}
                   />
                   <Legend wrapperStyle={{ paddingTop: '10px', fontSize: '12px' }} />
@@ -414,7 +471,7 @@ export const Forecasting: React.FC = () => {
                     stroke="#0f172a"
                     strokeWidth={2.5}
                     dot={false}
-                    name="Historical Rate"
+                    name={isRealMode ? 'Historical HPI' : 'Historical Rate'}
                   />
 
                   {/* Forecast Line */}
@@ -471,10 +528,14 @@ export const Forecasting: React.FC = () => {
                         Mean Absolute Error (MAE)
                       </td>
                       <td className="py-2.5 px-4 font-mono font-medium text-indigo-600">
-                        ₹{forecast.evaluation.model.MAE.toLocaleString('en-IN')}
+                        {isRealMode
+                          ? `${forecast.evaluation.model.MAE} pts`
+                          : `₹${forecast.evaluation.model.MAE.toLocaleString('en-IN')}`}
                       </td>
                       <td className="py-2.5 px-4 font-mono text-slate-500">
-                        ₹{forecast.evaluation.baseline_naive_last.MAE.toLocaleString('en-IN')}
+                        {isRealMode
+                          ? `${forecast.evaluation.baseline_naive_last.MAE} pts`
+                          : `₹${forecast.evaluation.baseline_naive_last.MAE.toLocaleString('en-IN')}`}
                       </td>
                       <td className="py-2.5 px-4">
                         {forecast.evaluation.vs_baseline.MAE_reduction_pct > 0 ? (
@@ -499,10 +560,14 @@ export const Forecasting: React.FC = () => {
                         Root Mean Squared Error (RMSE)
                       </td>
                       <td className="py-2.5 px-4 font-mono font-medium text-indigo-600">
-                        ₹{forecast.evaluation.model.RMSE.toLocaleString('en-IN')}
+                        {isRealMode
+                          ? `${forecast.evaluation.model.RMSE} pts`
+                          : `₹${forecast.evaluation.model.RMSE.toLocaleString('en-IN')}`}
                       </td>
                       <td className="py-2.5 px-4 font-mono text-slate-500">
-                        ₹{forecast.evaluation.baseline_naive_last.RMSE.toLocaleString('en-IN')}
+                        {isRealMode
+                          ? `${forecast.evaluation.baseline_naive_last.RMSE} pts`
+                          : `₹${forecast.evaluation.baseline_naive_last.RMSE.toLocaleString('en-IN')}`}
                       </td>
                       <td className="py-2.5 px-4">
                         {forecast.evaluation.vs_baseline.RMSE_reduction_pct > 0 ? (

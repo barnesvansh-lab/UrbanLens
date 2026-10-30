@@ -3,15 +3,33 @@ import {
   ResponsiveContainer,
   BarChart,
   Bar,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
 } from 'recharts';
-import { Filter, Calendar, BarChart3, Calculator } from 'lucide-react';
+import { Filter, Calendar, BarChart3, Calculator, Database, TrendingUp, Info } from 'lucide-react';
 import { DemoNotice } from '../components/ui/DemoNotice';
+import { DataStatusBadge } from '../components/ui/DataStatusBadge';
+import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 import { PriceTrendChart } from '../components/charts/PriceTrendChart';
 import { priceTimeSeries } from '../data/syntheticData';
+import { useDataSeries } from '../api/hooks';
+
+const REAL_CITIES = [
+  'All India',
+  'Mumbai',
+  'Delhi',
+  'Bengaluru',
+  'Chennai',
+  'Kolkata',
+  'Ahmedabad',
+  'Jaipur',
+  'Kanpur',
+  'Lucknow',
+];
 
 const NEIGHBORHOOD_KEYS = [
   { key: 'mumbaiCentral', label: 'Mumbai Central', color: '#6366f1' },
@@ -23,6 +41,27 @@ const NEIGHBORHOOD_KEYS = [
 ];
 
 export const MarketTrends: React.FC = () => {
+  const [selectedCity, setSelectedCity] = useState<string>('All India');
+  const { series: rbiSeries, loading: rbiLoading } = useDataSeries({
+    geography: selectedCity,
+    metric: 'hpi_assessment',
+  });
+
+  const rbiChartData = useMemo(() => {
+    return rbiSeries
+      .filter((o) => o.data_status === 'real')
+      .map((o) => ({
+        date: o.observation_date,
+        quarter: o.observation_date.slice(0, 7),
+        hpi: o.metric_value,
+      }));
+  }, [rbiSeries]);
+
+  const latestRbiValue = useMemo(() => {
+    if (rbiChartData.length === 0) return null;
+    return rbiChartData[rbiChartData.length - 1];
+  }, [rbiChartData]);
+
   const [selectedLines, setSelectedLines] = useState<string[]>([
     'mumbaiCentral',
     'bandraWest',
@@ -138,6 +177,144 @@ export const MarketTrends: React.FC = () => {
   return (
     <div className="space-y-6">
       <DemoNotice />
+
+      {/* Real Data Module: Official RBI House Price Index */}
+      <div className="bg-white rounded-xl border border-slate-200/80 p-5 shadow-xs">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 pb-3 border-b border-slate-100">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <h2 className="text-base font-bold text-slate-800 flex items-center gap-2">
+                <Database className="w-5 h-5 text-indigo-600" />
+                <span>Reserve Bank of India House Price Index (RBI-HPI)</span>
+              </h2>
+              <DataStatusBadge status="real" size="sm" />
+            </div>
+            <p className="text-xs text-slate-500">
+              Verified quarterly institutional time series from RBI Database on Indian Economy (Base: 2010-11 = 100)
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <label htmlFor="rbi-city-select" className="text-xs font-semibold text-slate-600">
+              Metropolitan Region:
+            </label>
+            <select
+              id="rbi-city-select"
+              value={selectedCity}
+              onChange={(e) => setSelectedCity(e.target.value)}
+              className="text-xs font-semibold bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
+            >
+              {REAL_CITIES.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* Methodological Isolation Notice */}
+        <div className="mb-4 p-3 bg-indigo-50/70 rounded-lg border border-indigo-100 flex items-start gap-2.5 text-xs text-indigo-900 leading-relaxed">
+          <Info className="w-4 h-4 text-indigo-600 shrink-0 mt-0.5" />
+          <div>
+            <span className="font-semibold block mb-0.5">City-Level Macroeconomic Index (Index Points)</span>
+            Values shown are dimensionless index points (2010-11=100) published quarterly by the Reserve Bank of India. This tracks metropolitan housing inflation and must <strong>never</strong> be conflated with the micro-market ₹/sq.ft capital valuation rates displayed in the neighborhood section below.
+          </div>
+        </div>
+
+        {rbiLoading ? (
+          <div className="h-64 flex items-center justify-center">
+            <LoadingSpinner label="Loading official RBI HPI time series..." />
+          </div>
+        ) : (
+          <div>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                  data={rbiChartData}
+                  margin={{ top: 10, right: 20, left: 0, bottom: 15 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+                  <XAxis
+                    dataKey="quarter"
+                    stroke="#94a3b8"
+                    fontSize={11}
+                    tickLine={false}
+                    tickFormatter={(val: string) => {
+                      if (val.endsWith('-06') || val.endsWith('-03')) return val;
+                      return '';
+                    }}
+                  />
+                  <YAxis
+                    stroke="#94a3b8"
+                    fontSize={11}
+                    tickLine={false}
+                    axisLine={false}
+                    domain={['auto', 'auto']}
+                    tickFormatter={(v) => `${Math.round(v)} pts`}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: '#0f172a',
+                      borderRadius: '8px',
+                      border: 'none',
+                      color: '#fff',
+                      fontSize: '12px',
+                    }}
+                    formatter={(val: any) => [
+                      `${Number(val).toFixed(2)} index points`,
+                      'RBI HPI (Base 100)',
+                    ]}
+                    labelFormatter={(label) => `Quarter: ${label}`}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="hpi"
+                    stroke="#4f46e5"
+                    strokeWidth={2.5}
+                    dot={false}
+                    name="RBI HPI (Index Points)"
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+
+            {/* Quick Metrics Bar for Selected City */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4 pt-3 border-t border-slate-100 text-xs">
+              <div className="p-2.5 bg-slate-50 rounded-lg">
+                <span className="text-slate-400 block text-[10px] uppercase font-semibold">
+                  Index Base Standard
+                </span>
+                <span className="font-semibold text-slate-800">
+                  FY 2010-11 = 100.0 (Official RBI Base)
+                </span>
+              </div>
+              <div className="p-2.5 bg-slate-50 rounded-lg">
+                <span className="text-slate-400 block text-[10px] uppercase font-semibold">
+                  Latest Observation ({latestRbiValue?.quarter || 'Recent'})
+                </span>
+                <span className="font-bold text-indigo-600 text-sm">
+                  {latestRbiValue ? `${latestRbiValue.hpi.toFixed(2)} pts` : '—'}
+                </span>
+              </div>
+              <div className="p-2.5 bg-slate-50 rounded-lg">
+                <span className="text-slate-400 block text-[10px] uppercase font-semibold">
+                  Temporal Coverage &amp; Frequency
+                </span>
+                <span className="font-semibold text-slate-800">
+                  {rbiChartData.length} Quarters (2010-06 to 2025-03)
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="pt-2">
+        <h3 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-2">
+          Neighborhood-Level Market Intelligence (Micro-Market ₹/sq.ft Demo)
+        </h3>
+      </div>
 
       {/* Interactive Filter Toolbar */}
       <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-xs">

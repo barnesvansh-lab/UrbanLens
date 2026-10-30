@@ -178,4 +178,41 @@ describe('UrbanLens Express API Endpoints', () => {
     assert.strictEqual(res.status, 400);
     assert.strictEqual(res.body.code, 'INVALID_METRIC');
   });
+
+  it('18. GET /api/forecasting/predict?mode=real&geography=All%20India → 200 status:ok data_status:real', async () => {
+    const res = await request('GET', '/api/forecasting/predict?mode=real&geography=All%20India');
+    assert.strictEqual(res.status, 200);
+    assert.strictEqual(res.body.status, 'ok');
+    assert.strictEqual(res.body.data_status, 'real');
+    assert.strictEqual(res.body.unit, 'index_points');
+    assert.strictEqual(res.body.geography_level, 'city');
+    assert.ok(Array.isArray(res.body.forecast));
+    assert.ok(Array.isArray(res.body.observations));
+    assert.ok(res.body.evaluation);
+  });
+
+  it('19. GET /api/data/sources → RBI-HPI and OSM status is "integrated"', async () => {
+    const res = await request('GET', '/api/data/sources');
+    assert.strictEqual(res.status, 200);
+    assert.ok(Array.isArray(res.body));
+    const rbiSource = res.body.find((s: any) => s.id === 'rbi-hpi');
+    assert.ok(rbiSource, 'rbi-hpi source not found');
+    assert.strictEqual(rbiSource.status, 'integrated');
+    const osmSource = res.body.find((s: any) => s.id === 'osm-amenities');
+    assert.ok(osmSource, 'osm-amenities source not found');
+    assert.strictEqual(osmSource.status, 'integrated');
+  });
+
+  it('20. GET /api/data/series?geography=Mumbai&metric=hpi_assessment → returns real observations', async () => {
+    const res = await request('GET', '/api/data/series?geography=Mumbai&metric=hpi_assessment');
+    assert.strictEqual(res.status, 200);
+    assert.ok(Array.isArray(res.body));
+    assert.ok(res.body.length > 0);
+    const realObs = res.body.filter((o: any) => o.data_status === 'real');
+    assert.ok(realObs.length >= 50, 'Expected at least 50 real observations for Mumbai');
+    for (const obs of realObs) {
+      assert.strictEqual(obs.unit, 'index_points');
+      assert.strictEqual(obs.geography_level, 'city');
+    }
+  });
 });

@@ -1,0 +1,233 @@
+lat,lon,amenity_type,name,geography_name,retrieved_at,source_name,data_status,source_url
+18.942228,72.8272935,parking,Premier,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9424,72.8269,parking,Liberty,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9567099,72.8369017,parking,Qamar,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9643233,72.8058471,parking,Kemp's Corner,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9784419,72.8140041,stop_position,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9406037,72.8350795,stop_position,Mumbai CSMT (Suburban),Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9632656,72.8159839,stop_position,Grant Road,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9520361,72.8179252,stop_position,Charni Road,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.962847,72.8159021,stop_position,Grant Road,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9626624,72.815886,stop_position,Grant Road,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9527932,72.8168508,stop_position,Charni Road,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9521256,72.818007,stop_position,Charni Road,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9520922,72.8179808,stop_position,Charni Road,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9465849,72.8230857,stop_position,Marine Lines,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9465688,72.8230534,stop_position,Marine Lines,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9707096,72.8188347,stop_position,Mumbai Central (local),Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9429658,72.8288401,parking,Metro BIG Cinema,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9664287,72.8442814,stop_position,Dockyard Road,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9406335,72.8353869,stop_position,Mumbai CSMT (Suburban),Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9518287,72.8382092,stop_position,Masjid,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9618375,72.8393604,stop_position,Sandhurst Road,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9518279,72.8380655,stop_position,Masjid,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9343947,72.8272055,stop_position,Churchgate,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.954849,72.8187582,parking,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9599377,72.8314957,hospital,Saifee Ambulance,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9408204,72.836017,stop_position,Mumbai CSMT (Suburban),Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.94081,72.8359068,stop_position,Mumbai CSMT (Suburban),Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9408811,72.8362973,stop_position,Mumbai CSMT,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9417555,72.8367595,stop_position,Mumbai CSMT,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9408763,72.8361599,stop_position,Mumbai CSMT,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9452282,72.8376755,stop_position,CSMT,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9406221,72.8352693,stop_position,Mumbai CSMT (Suburban),Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9344455,72.8275534,stop_position,Churchgate,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9344286,72.8274374,stop_position,Churchgate,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9344117,72.8273215,stop_position,Churchgate,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9466312,72.8231784,stop_position,Marine Lines,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9466502,72.8232164,stop_position,Marine Lines,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9406445,72.8355003,stop_position,Mumbai CSMT (Suburban),Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9406128,72.8351737,stop_position,Mumbai CSMT (Suburban),Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9406523,72.8355803,stop_position,Mumbai CSMT (Suburban),Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9408662,72.8364907,stop_position,Mumbai CSMT,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9408787,72.8363407,stop_position,Mumbai CSMT,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9417671,72.8366107,stop_position,Mumbai CSMT,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9451809,72.837865,stop_position,CSMT,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9451945,72.8378123,stop_position,CSMT,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9452855,72.8374542,stop_position,CSMT,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9453265,72.837319,stop_position,CSMT,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9518303,72.8381797,stop_position,Masjid,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9700757,72.8195845,stop_position,Mumbai Central,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9700768,72.8195436,stop_position,Mumbai Central,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9700908,72.8193557,stop_position,Mumbai Central,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.970091,72.8193067,stop_position,Mumbai Central,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9608485,72.8395868,stop_position,Sandhurst Road,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9608688,72.8395412,stop_position,Sandhurst Road,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9765515,72.8326776,stop_position,Byculla,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9765534,72.8328591,stop_position,Byculla,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9706926,72.8190255,stop_position,Mumbai Central (local),Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9707063,72.8188911,stop_position,Mumbai Central (local),Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9600399,72.815365,school,Edubridge International School,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9543825,72.8149815,stop_position,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9557422,72.8089986,stop_position,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9771648,72.8115689,stop_position,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9518333,72.838314,stop_position,Masjid,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9618507,72.8394605,stop_position,Sandhurst Road,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9765536,72.8328865,stop_position,Byculla,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9765511,72.8327203,stop_position,Byculla,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9656765,72.8135089,hospital,Bhatia,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9253224,72.8194897,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9254613,72.8194642,parking,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9559804,72.8151134,clinic,Arete Clinics- Eye and Dental,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9534957,72.8371432,hospital,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9645402,72.8054881,hospital,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9632877,72.8106975,clinic,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.952126,72.8222346,stop_position,Girgaon,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9341699,72.83252,stop_position,Hutatma Chowk,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9794475,72.8254218,stop_position,Mahalaxmi,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9699801,72.8212029,stop_position,Jagannath Shankar Sheth Metro,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9632099,72.8180684,stop_position,Grant Road,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9463455,72.8272045,stop_position,Kalbadevi,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9314819,72.8269617,stop_position,Churchgate,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9248087,72.8255503,stop_position,Vidhan Bhavan,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9664494,72.8442516,stop_position,Dockyard Road,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9794669,72.8254052,stop_position,Mahalaxmi,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9699867,72.8211783,stop_position,Jagannath Shankar Sheth Metro,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9632154,72.8180434,stop_position,Grant Road,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9407842,72.8318464,stop_position,Chhatrapati Shivaji Maharaj Terminus,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9341779,72.8325079,stop_position,Hutatma Chowk,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9314857,72.8269319,stop_position,Churchgate,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9247501,72.8254387,stop_position,Vidhan Bhavan,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.970701,72.8186917,stop_position,Mumbai Central (local),Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9785446,72.8139768,stop_position,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9617036,72.8195439,clinic,Nicholson Eye Clinic,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9632818,72.8159514,stop_position,Grant Road,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9678956,72.8090102,clinic,Soonawala Clinic,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9603152,72.8102066,hospital,Mangeshikar Access Gynecology and Infertility Center,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9230941,72.8276074,hospital,Vinod Sharma Memorial Medical Centre,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9576821,72.821319,hospital,Dr. Yash Shah Total Eye Care,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9529564,72.8177213,clinic,Ursekar Laser and Microssurgery Eye Clinic,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9424725,72.8239059,clinic,Shroff Eye Clinic,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9358357,72.8332373,hospital,Banaji Eyesurgery and Laser Center,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9633325,72.8072011,clinic,Kapoor Eye Center,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9585078,72.8109965,clinic,The Vascular Clinic,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.956311,72.8133863,hospital,Foresight Eye Center,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9590608,72.8116697,hospital,Dr. Nisars Eye Care Centre,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9762105,72.8357385,clinic,"CGHS Dispensary No.11, Byculla",Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9534457,72.817065,clinic,Bay View Clinic,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9707774,72.8366089,hospital,Prince Aly Khan Hospital,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9568031,72.8190404,hospital,"Brahman Sabha, Mhaskar Gruh and General Nursing Home",Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9610166,72.81344,clinic,Dr. Gala's Nursing Home,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9747946,72.8128391,hospital,Shetty Nursing Home (Shetty Health Services Pvt. Ltd.),Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9527132,72.8337845,hospital,Dholkawalla Maternity Home,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9731718,72.813963,clinic,Aus Clinic and Lithotripsy Center,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.957344,72.8248367,hospital,Yogeshwar Surgical Clinic and Nursing Home - Mumbai,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9565951,72.8142688,clinic,Palshetkar Patil Nursing Home,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9595979,72.8331207,hospital,M.H. Saboo Siddique Maternity and General Hospital - Masjid,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9777793,72.8100577,clinic,Voras Nursing Home,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9580372,72.8095293,hospital,Bombay City Eye Institute and Research Centre,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9547128,72.8182693,hospital,Beramjis Hospital,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9565215,72.8141896,clinic,Narvekar Clinics,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.923141,72.8275739,hospital,Spectrum Health Care,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9685072,72.8286038,hospital,Nagori Clinic and Nursing Home,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9634974,72.8087763,hospital,Cumbala Hill Hospital and Heart Institute,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9772251,72.8485957,hospital,Sai Raj Hospital,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9661811,72.8195715,hospital,Sadhu-Kamal Eye Hospital,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9241039,72.8242117,clinic,Dr. Amins Clinic,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9353764,72.8281197,clinic,"CGHS Dispensary No.1, C.G.O.",Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9415002,72.8278414,hospital,Zain Eye Care,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9571912,72.8229122,hospital,Dr.Pai Dhungat Maternity and Nursing Home,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9498421,72.8201012,hospital,Smt. Kamladevi Gauridutt Mittal Ayurvedic Hospital,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9563909,72.8133488,hospital,Samyak Drishti Eye Centre,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9592421,72.8383537,hospital,Smt.Laxmiben Dhanji Devshi Health Centre,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9639954,72.8078722,hospital,Gynaecworld,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9734559,72.8145584,hospital,Anudhiti Care,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9230674,72.8275497,hospital,Abhishek Day Care Institute and Medical Research Centre,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9720742,72.8092001,clinic,Dr Satish wadhwa,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9654379,72.8116241,hospital,Infiniti Eye Hospital,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9666435,72.8289157,hospital,Dawood Multispeciality Nursing Home,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9637556,72.8306024,clinic,Municipality Clinic,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.966675,72.8284384,hospital,Tibbia Hospital,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9538884,72.8334612,hospital,Noor Hospital,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9456103,72.8345389,hospital,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.971194,72.820968,hospital,Nair Hospital Dental College,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9742153,72.8219188,hospital,BYL Nair hospital,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.95168,72.838827,hospital,"General Hospital, Janabai Rokade",Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9656479,72.8279768,clinic,Gaurabai Dispensary,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9737612,72.813493,school,The Golden Spiral School,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9651298,72.8140038,school,"The Universal School, Tardeo",Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9634363,72.8159226,school,Grant Road Central High School,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9709943,72.8173698,school,Tardeo Municipal Secondary School,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9675962,72.8185191,school,Education Inspector South,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9684792,72.8189721,school,Gilder Lane Muncipal School,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9749159,72.8276963,driving_school,Lucky Motor Training School,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9764347,72.8319417,school,Sadhvi Savitribai Phule Upper Primary School,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9540069,72.8340909,hospital,The Muslim Ambulance Society Diagnostic Center,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9596948,72.8368049,hospital,Habib Hospital,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9660613,72.831912,hospital,Nagpada Police Hospital,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9724219,72.8357505,hospital,Rajshree Maternity,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9749545,72.8357371,hospital,Masina Cancer Center,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9774327,72.8442643,stop_position,Reay Road,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9774257,72.8442202,stop_position,Reay Road,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9701022,72.8191416,stop_position,Mumbai Central,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.961983,72.8265104,hospital,"BMC Eye Hospital ,Kamathipura",Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9785849,72.8128747,hospital,All India Institute of Physical Medicine and Rehabilitation,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.959185,72.823862,hospital,Dr. Sanjay Shah Hospital,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9513853,72.8236501,hospital,Suryakant Wagal Maternity Hospital,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9670887,72.8053844,clinic,Zarah Medical & Comestic Skin Clinic,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.923038,72.832811,hospital,Kalajot Hospital,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.956001,72.807685,hospital,Desa's Hospital,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9584181,72.8114136,clinic,Ria Clinic,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9570962,72.8115973,hospital,Dolby Hospital,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.967509,72.838751,hospital,Dr. Shantilal Oza Hospital,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.96436,72.805654,clinic,Cheers Child Care Clinic,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9642646,72.807013,clinic,Dr. Nilen Shah's Clinic,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9586366,72.8136684,clinic,Cods Clinic,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9582867,72.8102818,hospital,Smt. Motiben B. Dalvi Hospital,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.957089,72.807333,hospital,Hospital For Women Care,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9559782,72.8084083,hospital,Dr. Nadeem Rais Endocrinologist,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9369719,72.8379477,clinic,Sun Clinic,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.923164,72.831908,clinic,R&R Eye Care Clinic,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9368113,72.8403416,hospital,Reliance Health Ventures Limited Hospital,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9730222,72.8219132,hospital,Nair Hospital,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9562488,72.8366214,school,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9686893,72.8204271,clinic,MUMBAI SPINE CARE CLINIC,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9463104,72.8271998,stop_position,Kalbadevi,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9520608,72.8221894,stop_position,Girgaon,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9764756,72.8416085,hospital,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9752297,72.8237596,hospital,Dr Mudit Khanna,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9585769,72.8219474,clinic,Mumbai Clinic,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9382992,72.8281421,school,The Blossom English Primary School,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.973182,72.812634,school,Bhausaheb Hiray Vidyalaya,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9630505,72.8099188,clinic,Shri Gowalia Tank Shankheswara Parshwanath Jain Medical Centre & Kankutara Diagnostic Medical Centre,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9783359,72.8271144,hospital,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9536335,72.8196898,clinic,Dr Pandit's Ayurveda and Panchakarma Clinic,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9408905,72.8357077,stop_position,Mumbai CSMT (Suburban),Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9676749,72.8267079,motorcycle_parking,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9666988,72.8288189,hospital,siddiqui,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9232674,72.831386,hospital,Apollo Hospitals,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9691403,72.8229819,parking,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9231434,72.8274992,hospital,Indian Cancer Society,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9563946,72.81902,clinic,Shree Chandraprabh Jain Medical Centre,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9598574,72.8212203,school,Sant Gadge Maharaj School,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9408731,72.8319001,stop_position,Chhatrapati Shivaji Maharaj Terminus,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9340636,72.8260061,clinic,Mira Physiotherapy Center,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.937827,72.8331786,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9245388,72.8212484,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9279476,72.8213875,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.927949,72.8209391,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9274623,72.8205444,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9282872,72.8224991,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9757941,72.8231917,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9781668,72.8245856,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.978197,72.8246295,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9681199,72.8099306,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9679716,72.8098372,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9747002,72.8088353,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9719947,72.811305,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9722028,72.8113383,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9590661,72.8215798,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9595207,72.8213965,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9683436,72.8202107,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9637462,72.8288362,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9630523,72.8027811,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9629593,72.8027209,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9549174,72.8026699,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9543229,72.8022363,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9543055,72.8019861,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9718328,72.8130614,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9598898,72.8127292,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9655023,72.809615,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9653111,72.8096291,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9625679,72.814627,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org
+18.9604852,72.8213401,parking_entrance,Unnamed Facility,Mumbai,2026-10-30T07:11:44.110506+00:00,OSM,real,https://www.openstreetmap.org

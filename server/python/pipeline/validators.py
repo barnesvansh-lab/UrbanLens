@@ -7,6 +7,7 @@ import pandas as pd
 from datetime import datetime, timezone
 from .schema import (
     HPI_REQUIRED_COLUMNS,
+    HPI_OPTIONAL_COLUMNS,
     AMENITIES_REQUIRED_COLUMNS,
     INDEX_METRICS,
     CURRENCY_METRICS,
@@ -105,6 +106,28 @@ def check_metric_type_consistency(df: pd.DataFrame) -> list[str]:
     return warnings
 
 
+def check_index_base_consistency(df: pd.DataFrame) -> list[str]:
+    """
+    Checks if multiple index_base values are present in an HPI dataset.
+    Emits a warning if mixed index bases are detected (e.g. 2008-09=100 and 2010-11=100).
+    """
+    warnings: list[str] = []
+    if df.empty or "index_base" not in df.columns:
+        return warnings
+
+    distinct_bases = [
+        str(b).strip()
+        for b in df["index_base"].dropna().unique()
+        if str(b).strip()
+    ]
+    if len(set(distinct_bases)) > 1:
+        warnings.append(
+            f"WARNING: Multiple index bases detected in dataset: {sorted(list(set(distinct_bases)))}. "
+            "Mixing index bases without rebasing will cause misleading price trends."
+        )
+    return warnings
+
+
 def validate_hpi_csv(df: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
     """
     Validates a Housing Price Index DataFrame.
@@ -159,6 +182,9 @@ def validate_hpi_csv(df: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
 
     # Metric type consistency check
     warnings.extend(check_metric_type_consistency(valid_df))
+
+    # Index base consistency check
+    warnings.extend(check_index_base_consistency(valid_df))
 
     # Date range warnings
     warnings.extend(check_date_range(valid_df, "observation_date"))

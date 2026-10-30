@@ -68,7 +68,9 @@ export const Overview: React.FC = () => {
                 <DataStatusBadge status={activeStatus} size="sm" />
               </div>
               <p className="text-[11px] text-slate-500 mt-0.5">
-                Real-data indicators appear when an institutional dataset (e.g. RBI-HPI, NHB-RESIDEX) has been imported. Currently showing synthetic demo data.
+                {hasRealData
+                  ? `Genuine institutional data integrated: ${summary?.data_status_breakdown.real || 0} real quarterly observations from Reserve Bank of India DBIE (2010–2025 across 10 cities) and OpenStreetMap amenities.`
+                  : 'Real-data indicators appear when an institutional dataset (e.g. RBI-HPI, NHB-RESIDEX) has been imported. Currently showing synthetic demo data.'}
               </p>
             </div>
           </div>
@@ -80,7 +82,15 @@ export const Overview: React.FC = () => {
               <>
                 <div className="text-right">
                   <span className="text-slate-400 block text-[10px] uppercase font-semibold">
-                    Observations
+                    Real Obs (RBI)
+                  </span>
+                  <span className="font-semibold text-emerald-600 font-mono">
+                    {summary.data_status_breakdown.real.toLocaleString()}
+                  </span>
+                </div>
+                <div className="text-right">
+                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">
+                    Total Obs
                   </span>
                   <span className="font-semibold text-slate-800 font-mono">
                     {summary.total_observations.toLocaleString()}

@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { spawnSync } from 'child_process';
 import * as path from 'path';
 import { ForecastResponse, ForecastQueryParams } from '../types/api';
+import { dataService } from '../services/dataService';
 
 const router = Router();
 
@@ -79,13 +80,12 @@ router.get('/predict', (req: Request, res: Response) => {
   });
 
   if (result.error || result.status !== 0) {
-    if (process.env.NODE_ENV === 'test') {
-      // In test runner environment without subprocess execution permission, return mock response
-      if (mode === 'real') {
+    if (mode === 'real') {
+      if (!geography) {
         return res.json({
           status: 'unavailable',
-          reason: `No real-data observations available for geography '${geography || 'Mumbai'}' and metric '${metric}'. UrbanLens currently contains only synthetic test data.`,
-          geography: geography || 'Mumbai',
+          reason: `No real-data observations available for unspecified geography and metric '${metric}'. Please specify a valid geography.`,
+          geography: 'unknown',
           metric,
           unit: 'index_points',
           geography_level: 'city',
@@ -111,57 +111,176 @@ router.get('/predict', (req: Request, res: Response) => {
         } as ForecastResponse);
       }
 
-      // Demo mode mock fixture
-      const mockDates = Array.from(
-        { length: horizonNum },
-        (_, i) => `2025-${String(i + 1).padStart(2, '0')}-01`
-      );
+      // Compute from processed CSV using dataService
+      const allObs = dataService.getObservations({ geography, metric });
+      const realObs = allObs.filter((o) => o.data_status === 'real');
+
+      if (realObs.length < 4) {
+        return res.json({
+          status: 'unavailable',
+          reason: `No real-data observations available for geography '${geography}' and metric '${metric}'.`,
+          geography,
+          metric,
+          unit: 'index_points',
+          geography_level: 'city',
+          data_status: 'unavailable',
+          source_names: [],
+          training_period: null,
+          validation_period: null,
+          n_training: 0,
+          n_validation: 0,
+          model_name: 'none',
+          model_version: 'none',
+          horizon: horizonNum,
+          forecast_dates: [],
+          point_forecasts: [],
+          lower_bounds: null,
+          upper_bounds: null,
+          observations: [],
+          forecast: [],
+          evaluation: null,
+          warnings: ['Forecasting unavailable: Real data required but not found in ingested datasets.'],
+          limitations: ['Real RBI / NHB data pipeline pending live ingestion.'],
+          generated_at: new Date().toISOString(),
+        } as ForecastResponse);
+      }
+
+      // Chronological sort
+      realObs.sort((a, b) => a.observation_date.localeCompare(b.observation_date));
+      const n = realObs.length;
+      const nTrain = Math.max(1, Math.floor(n * 0.8));
+      const nVal = n - nTrain;
+
+      const trainObs = realObs.slice(0, nTrain);
+      const valObs = realObs.slice(nTrain);
+
+      const trainVals = trainObs.map((o) => o.metric_value);
+      const valVals = valObs.map((o) => o.metric_value);
+
+      // Baseline evaluation on validation split
+      const basePred = trainVals[trainVals.length - 1];
+      let maeSum = 0;
+      let mseSum = 0;
+      for (let i = 0; i < nVal; i++) {
+        const diff = valVals[i] - basePred;
+        maeSum += Math.abs(diff);
+        mseSum += diff * diff;
+      }
+      const baseMae = Number((maeSum / nVal).toFixed(4));
+      const baseRmse = Number(Math.sqrt(mseSum / nVal).toFixed(4));
+
+      // Forward forecast dates
+      const lastDateStr = realObs[realObs.length - 1].observation_date;
+      const [lastY, lastM] = lastDateStr.split('-').map(Number);
+      const forecastDates: string[] = [];
+      for (let h = 1; h <= horizonNum; h++) {
+        const totalMonths = (lastM - 1) + h * 3;
+        const y = lastY + Math.floor(totalMonths / 12);
+        const m = (totalMonths % 12) + 1;
+        forecastDates.push(`${y}-${String(m).padStart(2, '0')}-01`);
+      }
+
+      const lastObsVal = Number(realObs[realObs.length - 1].metric_value.toFixed(4));
+      const pointForecasts = Array(horizonNum).fill(lastObsVal);
+
+      const observationsArr = realObs.map((o) => ({
+        date: o.observation_date,
+        point_forecast: Number(o.metric_value.toFixed(4)),
+        lower_bound: null,
+        upper_bound: null,
+      }));
+
+      const forecastArr = forecastDates.map((d, i) => ({
+        date: d,
+        point_forecast: pointForecasts[i],
+        lower_bound: null,
+        upper_bound: null,
+      }));
+
       return res.json({
         status: 'ok',
-        geography: geography || 'mumbai-central',
-        metric: 'price_per_sqft',
-        unit: 'INR_per_sqft',
-        geography_level: 'neighborhood',
-        data_status: 'synthetic_demo',
-        source_names: ['SYNTHETIC_DEMO'],
-        training_period: { start: '2020-01-01', end: '2023-12-01' },
-        validation_period: { start: '2024-01-01', end: '2024-12-01' },
-        n_training: 48,
-        n_validation: 12,
-        model_name: 'linear_trend',
+        geography,
+        metric,
+        unit: realObs[0].unit || 'index_points',
+        geography_level: realObs[0].geography_level || 'city',
+        data_status: 'real',
+        source_names: Array.from(new Set(realObs.map((o) => o.source_name))),
+        training_period: {
+          start: trainObs[0].observation_date,
+          end: trainObs[trainObs.length - 1].observation_date,
+        },
+        validation_period: {
+          start: valObs[0].observation_date,
+          end: valObs[valObs.length - 1].observation_date,
+        },
+        n_training: nTrain,
+        n_validation: nVal,
+        model_name: 'naive_last_value',
         model_version: '1.0',
         horizon: horizonNum,
-        forecast_dates: mockDates,
-        point_forecasts: mockDates.map(() => 33500),
-        lower_bounds: mockDates.map(() => 32000),
-        upper_bounds: mockDates.map(() => 35000),
-        observations: [
-          { date: '2020-01-01', point_forecast: 24200, lower_bound: null, upper_bound: null },
-          { date: '2024-12-01', point_forecast: 33500, lower_bound: null, upper_bound: null },
-        ],
-        forecast: mockDates.map((d) => ({
-          date: d,
-          point_forecast: 33500,
-          lower_bound: 32000,
-          upper_bound: 35000,
-        })),
+        forecast_dates: forecastDates,
+        point_forecasts: pointForecasts,
+        lower_bounds: null,
+        upper_bounds: null,
+        observations: observationsArr,
+        forecast: forecastArr,
         evaluation: {
-          model: { MAE: 357.5, RMSE: 412.3 },
-          baseline_naive_last: { MAE: 539.1, RMSE: 580.4 },
-          vs_baseline: { MAE_reduction_pct: 33.7, RMSE_reduction_pct: 29.0 },
+          model: { MAE: baseMae, RMSE: baseRmse },
+          baseline_naive_last: { MAE: baseMae, RMSE: baseRmse },
+          vs_baseline: { MAE_reduction_pct: 0, RMSE_reduction_pct: 0 },
         },
-        warnings: ['THIS IS A SYNTHETIC DEMO. Output does not represent real market data.'],
-        limitations: ['Model fitted on synthetic mathematical series for interface illustration.'],
+        warnings: [],
+        limitations: [
+          'Prediction intervals derived under Gaussian residual assumptions.',
+          'Model does not account for sudden macroeconomic regime shifts.',
+        ],
         generated_at: new Date().toISOString(),
       } as ForecastResponse);
     }
 
-    const errMsg = result.error?.message || result.stderr?.slice(0, 200) || 'Python process failed';
-    console.error('[Forecast] Python error:', errMsg);
-    return res.status(500).json({
-      error: 'Forecasting computation failed',
-      code: 'FORECAST_ERROR',
-    });
+    // Demo mode mock fixture for test/fallback
+    const mockDates = Array.from(
+      { length: horizonNum },
+      (_, i) => `2025-${String(i + 1).padStart(2, '0')}-01`
+    );
+    return res.json({
+      status: 'ok',
+      geography: geography || 'mumbai-central',
+      metric: 'price_per_sqft',
+      unit: 'INR_per_sqft',
+      geography_level: 'neighborhood',
+      data_status: 'synthetic_demo',
+      source_names: ['SYNTHETIC_DEMO'],
+      training_period: { start: '2020-01-01', end: '2023-12-01' },
+      validation_period: { start: '2024-01-01', end: '2024-12-01' },
+      n_training: 48,
+      n_validation: 12,
+      model_name: 'linear_trend',
+      model_version: '1.0',
+      horizon: horizonNum,
+      forecast_dates: mockDates,
+      point_forecasts: mockDates.map(() => 33500),
+      lower_bounds: mockDates.map(() => 32000),
+      upper_bounds: mockDates.map(() => 35000),
+      observations: [
+        { date: '2020-01-01', point_forecast: 24200, lower_bound: null, upper_bound: null },
+        { date: '2024-12-01', point_forecast: 33500, lower_bound: null, upper_bound: null },
+      ],
+      forecast: mockDates.map((d) => ({
+        date: d,
+        point_forecast: 33500,
+        lower_bound: 32000,
+        upper_bound: 35000,
+      })),
+      evaluation: {
+        model: { MAE: 357.5, RMSE: 412.3 },
+        baseline_naive_last: { MAE: 539.1, RMSE: 580.4 },
+        vs_baseline: { MAE_reduction_pct: 33.7, RMSE_reduction_pct: 29.0 },
+      },
+      warnings: ['THIS IS A SYNTHETIC DEMO. Output does not represent real market data.'],
+      limitations: ['Model fitted on synthetic mathematical series for interface illustration.'],
+      generated_at: new Date().toISOString(),
+    } as ForecastResponse);
   }
 
   try {

@@ -302,6 +302,27 @@ python3 run_pipeline.py --dataset amenities --file data/raw/osm_mumbai_amenities
 
 ---
 
+## 🚀 Milestone 4: Real Indian Data Acquisition, Validation & Real-Market Forecasting
+
+In Milestone 4, UrbanLens transitioned from purely synthetic test fixtures to genuine, validated Indian housing and geospatial data with zero data contamination:
+
+- **RBI House Price Index (HPI)**:
+  - 600 genuine quarterly observations spanning 2010-06-30 to 2025-03-31 (15 years) across 10 geographies: All India, Ahmedabad, Bengaluru, Chennai, Delhi, Jaipur, Kanpur, Kolkata, Lucknow, Mumbai.
+  - Dimensionless index standard: `unit: "index_points"`, Base: FY 2010-11 = 100.0.
+  - Normalization and deduplication pipeline (`normalize_rbi_hpi.py`) systematically resolved overlapping base years (2008-09 vs 2010-11) and pre-2010 series.
+- **OpenStreetMap Civic Amenities**:
+  - 232 real geospatial points of interest (schools, hospitals, transit, clinics, parking) across South Mumbai extracted via Overpass API and labeled with `data_status: "real"`.
+- **Real-Market Forecasting Engine**:
+  - Evaluated on hold-out validation sets (first 80% train, last 20% hold-out).
+  - Out-of-sample MAE/RMSE benchmarked: All India MAE = 16.20 pts (RMSE 17.62 pts); Mumbai MAE = 17.63 pts (RMSE 19.20 pts).
+  - Naive last-value persistence selected as optimal empirical baseline on post-COVID stabilization window.
+- **Full-Stack Integration & Strict Separation**:
+  - Express endpoints `/api/data/series`, `/api/data/sources`, `/api/data/summary`, and `/api/forecasting/predict?mode=real` serve real data.
+  - Frontend charts strictly separate city-level HPI index points (Base: 2010-11=100) from neighborhood ₹/sq.ft estimates on independent axes with clear disclaimers.
+- **Verification**: 68/68 Python tests passing; 20/20 Express API tests passing; Vite production build passing.
+
+---
+
 ## ⚖️ Ethics, Provenance & Methodological Limitations
 
 1. **No Real Estate Marketplace Features**: UrbanLens contains no transactional property listings, buyer lead generation, broker advertisements, or commercial booking mechanisms.
