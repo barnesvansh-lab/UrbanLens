@@ -1,0 +1,24 @@
+{
+  "generated_at": "2026-10-30T13:33:49.427637+00:00",
+  "pipeline_version": "2.0.0",
+  "data_audit": {
+    "total_sources_evaluated": 9,
+    "verified_real_sources": 3,
+    "data_unavailable_sources": 4,
+    "documented_proxy_sources": 1,
+    "requires_validation_sources": 1
+  },
+  "indicators_audit": {
+    "total_indicators": 16,
+    "verified_real_count": 6,
+    "data_unavailable_count": 10,
+    "proxy_count": 1
+  },
+  "data_integrity_rules": [
+    "Never conflate city-level housing price rises with localized gentrification.",
+    "Never convert city-level HPI into fictional ward-level prices.",
+    "Never calculate historical civic expansion from a single-snapshot OpenStreetMap export.",
+    "Never simulate demographic or socioeconomic shifts when Census 2021 is unreleased.",
+    "Output INSUFFICIENT EVIDENCE when data fails rigorous sufficiency thresholds."
+  ]
+}

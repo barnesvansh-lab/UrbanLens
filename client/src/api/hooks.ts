@@ -14,6 +14,15 @@ import {
   ApiNeighborhoodCompareResponse,
   ApiTransformationSummaryResponse,
   ApiTransformationIndicatorsResponse,
+  ApiTransformationOverviewResponse,
+  ApiTransformationTrendsResponse,
+  ApiTransformationAnomaliesResponse,
+  ApiTransformationEvidenceResponse,
+  ApiTransformationQualityResponse,
+  ApiTransformationDataSourcesResponse,
+  ApiTransformationAreasResponse,
+  ApiTransformationAreaDetailResponse,
+  ApiNeighborhoodRegionDetail,
 } from './types';
 
 export function useDataSources(): {
@@ -391,3 +400,273 @@ export function useTransformationIndicators(params?: { category?: string; data_s
 }
 
 
+
+export function useTransformationOverview(): {
+  data: ApiTransformationOverviewResponse | null;
+  loading: boolean;
+  error: ApiError | null;
+  refetch: () => void;
+} {
+  const [data, setData] = useState<ApiTransformationOverviewResponse | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<ApiError | null>(null);
+
+  const fetchOverview = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    const { data: res, error: err } = await apiClient.getTransformationOverview();
+    if (err) {
+      setError(err);
+    } else if (res) {
+      setData(res);
+    }
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    fetchOverview();
+  }, [fetchOverview]);
+
+  return { data, loading, error, refetch: fetchOverview };
+}
+
+export function useTransformationTrends(): {
+  data: ApiTransformationTrendsResponse | null;
+  loading: boolean;
+  error: ApiError | null;
+  refetch: () => void;
+} {
+  const [data, setData] = useState<ApiTransformationTrendsResponse | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<ApiError | null>(null);
+
+  const fetchTrends = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    const { data: res, error: err } = await apiClient.getTransformationTrends();
+    if (err) {
+      setError(err);
+    } else if (res) {
+      setData(res);
+    }
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    fetchTrends();
+  }, [fetchTrends]);
+
+  return { data, loading, error, refetch: fetchTrends };
+}
+
+export function useTransformationAnomalies(): {
+  data: ApiTransformationAnomaliesResponse | null;
+  loading: boolean;
+  error: ApiError | null;
+  refetch: () => void;
+} {
+  const [data, setData] = useState<ApiTransformationAnomaliesResponse | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<ApiError | null>(null);
+
+  const fetchAnomalies = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    const { data: res, error: err } = await apiClient.getTransformationAnomalies();
+    if (err) {
+      setError(err);
+    } else if (res) {
+      setData(res);
+    }
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    fetchAnomalies();
+  }, [fetchAnomalies]);
+
+  return { data, loading, error, refetch: fetchAnomalies };
+}
+
+export function useTransformationEvidence(): {
+  data: ApiTransformationEvidenceResponse | null;
+  loading: boolean;
+  error: ApiError | null;
+  refetch: () => void;
+} {
+  const [data, setData] = useState<ApiTransformationEvidenceResponse | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<ApiError | null>(null);
+
+  const fetchEvidence = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    const { data: res, error: err } = await apiClient.getTransformationEvidence();
+    if (err) {
+      setError(err);
+    } else if (res) {
+      setData(res);
+    }
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    fetchEvidence();
+  }, [fetchEvidence]);
+
+  return { data, loading, error, refetch: fetchEvidence };
+}
+
+export function useTransformationQuality(): {
+  data: ApiTransformationQualityResponse | null;
+  loading: boolean;
+  error: ApiError | null;
+  refetch: () => void;
+} {
+  const [data, setData] = useState<ApiTransformationQualityResponse | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<ApiError | null>(null);
+
+  const fetchQuality = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    const { data: res, error: err } = await apiClient.getTransformationQuality();
+    if (err) {
+      setError(err);
+    } else if (res) {
+      setData(res);
+    }
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    fetchQuality();
+  }, [fetchQuality]);
+
+  return { data, loading, error, refetch: fetchQuality };
+}
+
+export function useTransformationDataSources(): {
+  data: ApiTransformationDataSourcesResponse | null;
+  loading: boolean;
+  error: ApiError | null;
+  refetch: () => void;
+} {
+  const [data, setData] = useState<ApiTransformationDataSourcesResponse | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<ApiError | null>(null);
+
+  const fetchSources = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    const { data: res, error: err } = await apiClient.getTransformationDataSources();
+    if (err) {
+      setError(err);
+    } else if (res) {
+      setData(res);
+    }
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    fetchSources();
+  }, [fetchSources]);
+
+  return { data, loading, error, refetch: fetchSources };
+}
+
+export function useTransformationAreas(): {
+  data: ApiTransformationAreasResponse | null;
+  loading: boolean;
+  error: ApiError | null;
+  refetch: () => void;
+} {
+  const [data, setData] = useState<ApiTransformationAreasResponse | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<ApiError | null>(null);
+
+  const fetchAreas = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    const { data: res, error: err } = await apiClient.getTransformationAreas();
+    if (err) {
+      setError(err);
+    } else if (res) {
+      setData(res);
+    }
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    fetchAreas();
+  }, [fetchAreas]);
+
+  return { data, loading, error, refetch: fetchAreas };
+}
+
+export function useTransformationAreaDetail(id: string): {
+  data: ApiTransformationAreaDetailResponse | null;
+  loading: boolean;
+  error: ApiError | null;
+  refetch: () => void;
+} {
+  const [data, setData] = useState<ApiTransformationAreaDetailResponse | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<ApiError | null>(null);
+
+  const fetchDetail = useCallback(async () => {
+    if (!id) return;
+    setLoading(true);
+    setError(null);
+    const { data: res, error: err } = await apiClient.getTransformationAreaDetail(id);
+    if (err) {
+      setError(err);
+    } else if (res) {
+      setData(res);
+    }
+    setLoading(false);
+  }, [id]);
+
+  useEffect(() => {
+    fetchDetail();
+  }, [fetchDetail]);
+
+  return { data, loading, error, refetch: fetchDetail };
+}
+
+export function useTransformationComparison(ids: string[]): {
+  data: { requested_ids: string[]; found_count: number; areas: ApiNeighborhoodRegionDetail[]; comparison_disclaimer: string } | null;
+  loading: boolean;
+  error: ApiError | null;
+  refetch: () => void;
+} {
+  const [data, setData] = useState<{ requested_ids: string[]; found_count: number; areas: ApiNeighborhoodRegionDetail[]; comparison_disclaimer: string } | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<ApiError | null>(null);
+
+  const serialized = JSON.stringify(ids);
+
+  const fetchCompare = useCallback(async () => {
+    const parsed: string[] = JSON.parse(serialized);
+    if (!parsed || parsed.length === 0) {
+      setData(null);
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    const { data: res, error: err } = await apiClient.compareTransformationAreas(parsed);
+    if (err) {
+      setError(err);
+    } else if (res) {
+      setData(res);
+    }
+    setLoading(false);
+  }, [serialized]);
+
+  useEffect(() => {
+    fetchCompare();
+  }, [fetchCompare]);
+
+  return { data, loading, error, refetch: fetchCompare };
+}

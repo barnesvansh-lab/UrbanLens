@@ -289,4 +289,98 @@ describe('UrbanLens Express API Endpoints', () => {
     assert.ok(res.body.data_integrity_statement, 'Missing data_integrity_statement');
     assert.ok(Array.isArray(res.body.indicator_categories));
   });
+
+  // ── Milestone 6: Advanced Urban Transformation Engine Tests ──────────────────
+
+  it('27. GET /api/transformation/overview → 200 with macro HPI and evidence summary', async () => {
+    const res = await request('GET', '/api/transformation/overview');
+    assert.strictEqual(res.status, 200);
+    assert.ok(res.body.hpi_summary, 'Missing hpi_summary');
+    assert.strictEqual(typeof res.body.hpi_summary.total_cumulative_change_pct, 'number');
+    assert.ok(res.body.evidence_summary, 'Missing evidence_summary');
+    assert.strictEqual(res.body.evidence_summary.overall_verdict, 'INSUFFICIENT EVIDENCE');
+    assert.ok(res.body.sources_summary, 'Missing sources_summary');
+  });
+
+  it('28. GET /api/transformation/trends → 200 with chronological points and rolling volatility', async () => {
+    const res = await request('GET', '/api/transformation/trends');
+    assert.strictEqual(res.status, 200);
+    assert.strictEqual(res.body.status, 'ok');
+    assert.ok(Array.isArray(res.body.points), 'points must be an array');
+    assert.ok(res.body.points.length >= 50, 'Expected at least 50 historical points');
+    assert.ok(res.body.summary, 'Missing summary object');
+    assert.ok(typeof res.body.summary.annualized_cagr_pct === 'number');
+  });
+
+  it('29. GET /api/transformation/areas → 200 with 4 South Mumbai sub-regions', async () => {
+    const res = await request('GET', '/api/transformation/areas');
+    assert.strictEqual(res.status, 200);
+    assert.ok(Array.isArray(res.body.areas));
+    assert.strictEqual(res.body.total, 4);
+    assert.ok(res.body.disclaimer, 'Missing boundary disclaimer');
+  });
+
+  it('30. GET /api/transformation/areas/south-mumbai-colaba → 200 with area detail', async () => {
+    const res = await request('GET', '/api/transformation/areas/south-mumbai-colaba');
+    assert.strictEqual(res.status, 200);
+    assert.ok(res.body.area, 'Missing area object');
+    assert.strictEqual(res.body.area.id, 'south-mumbai-colaba');
+    assert.ok(res.body.context, 'Missing context');
+  });
+
+  it('31. GET /api/transformation/areas/invalid@traversal.. → 400 INVALID_AREA_ID', async () => {
+    const res = await request('GET', '/api/transformation/areas/invalid@traversal..');
+    assert.strictEqual(res.status, 400);
+    assert.strictEqual(res.body.code, 'INVALID_AREA_ID');
+  });
+
+  it('32. GET /api/transformation/areas/non-existent-area → 404 AREA_NOT_FOUND', async () => {
+    const res = await request('GET', '/api/transformation/areas/non-existent-area');
+    assert.strictEqual(res.status, 404);
+    assert.strictEqual(res.body.code, 'AREA_NOT_FOUND');
+  });
+
+  it('33. GET /api/transformation/comparison?ids=south-mumbai-colaba,south-mumbai-fort → 200', async () => {
+    const res = await request('GET', '/api/transformation/comparison?ids=south-mumbai-colaba,south-mumbai-fort');
+    assert.strictEqual(res.status, 200);
+    assert.strictEqual(res.body.found_count, 2);
+    assert.ok(Array.isArray(res.body.areas));
+    assert.ok(res.body.comparison_disclaimer);
+  });
+
+  it('34. GET /api/transformation/anomalies → 200 with Z-score and IQR detected events', async () => {
+    const res = await request('GET', '/api/transformation/anomalies');
+    assert.strictEqual(res.status, 200);
+    assert.strictEqual(res.body.status, 'ok');
+    assert.ok(Array.isArray(res.body.anomalies));
+    assert.ok(res.body.summary, 'Missing anomalies summary');
+    assert.ok(typeof res.body.summary.total_anomalies_detected === 'number');
+    // Ensure all anomalies have required disclaimers
+    for (const anom of res.body.anomalies) {
+      assert.ok(anom.caveat, 'Anomaly missing caveat');
+      assert.ok(anom.method, 'Anomaly missing method');
+    }
+  });
+
+  it('35. GET /api/transformation/evidence → 200 with INSUFFICIENT EVIDENCE verdict and 5 pillars', async () => {
+    const res = await request('GET', '/api/transformation/evidence');
+    assert.strictEqual(res.status, 200);
+    assert.strictEqual(res.body.overall_verdict, 'INSUFFICIENT EVIDENCE');
+    assert.ok(Array.isArray(res.body.pillars));
+    assert.strictEqual(res.body.pillars.length, 5);
+    assert.ok(res.body.academic_mandate);
+  });
+
+  it('36. GET /api/transformation/data-sources & /api/transformation/quality → 200', async () => {
+    const dsRes = await request('GET', '/api/transformation/data-sources');
+    assert.strictEqual(dsRes.status, 200);
+    assert.ok(Array.isArray(dsRes.body.sources));
+    assert.ok(dsRes.body.total >= 8);
+
+    const qRes = await request('GET', '/api/transformation/quality');
+    assert.strictEqual(qRes.status, 200);
+    assert.ok(qRes.body.data_audit);
+    assert.ok(qRes.body.indicators_audit);
+    assert.ok(Array.isArray(qRes.body.data_integrity_rules));
+  });
 });

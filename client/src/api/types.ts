@@ -242,16 +242,19 @@ export interface ApiTransformationIndicator {
   geography_level: string;
   geography_name: string;
   data_status: DataStatus | 'unavailable';
+  status_label?: string;
   value: number | null;
   unit: string | null;
   display_value: string;
   source: string | null;
   coverage: string | null;
+  observation_period?: string | null;
   methodology: string | null;
   unavailability_reason?: string;
   possible_proxy?: string | null;
   limitations: string[];
   interpretation: string | null;
+  confidence?: string;
 }
 
 export interface ApiHpiCityTrend {
@@ -299,3 +302,202 @@ export interface ApiTransformationIndicatorsResponse {
 }
 
 
+
+// ── Milestone 6 Frontend Types: Transformation Analytics Engine ───────────────
+
+export interface ApiTrendPoint {
+  date: string;
+  value: number;
+  qoq_change_pct: number | null;
+  yoy_change_pct: number | null;
+  acceleration: number | null;
+  rolling_volatility_8q: number | null;
+}
+
+export interface ApiTrendSummary {
+  geography: string;
+  geography_level: string;
+  start_date: string;
+  end_date: string;
+  start_value: number;
+  end_value: number;
+  observation_count: number;
+  total_cumulative_change_pct: number;
+  annualized_cagr_pct: number;
+  three_year_cagr_pct: number | null;
+  five_year_cagr_pct: number | null;
+  recent_annual_growth_pct: number;
+  recent_market_regime: string;
+  regime_label: string;
+  mean_quarterly_volatility: number;
+}
+
+export interface ApiTransformationTrendsResponse {
+  status: string;
+  summary: ApiTrendSummary;
+  points: ApiTrendPoint[];
+}
+
+export interface ApiTransformationAnomaly {
+  id: string;
+  date: string;
+  indicator_name: string;
+  observed_value: number;
+  unit: string;
+  hpi_level: number;
+  method: string;
+  z_score?: number | null;
+  rolling_mean?: number;
+  rolling_std?: number;
+  iqr_lower?: number;
+  iqr_upper?: number;
+  direction: 'surge' | 'decline';
+  severity: 'high' | 'moderate';
+  threshold_used: string;
+  description: string;
+  caveat: string;
+}
+
+export interface ApiTransformationAnomaliesResponse {
+  status: string;
+  summary: {
+    total_anomalies_detected: number;
+    surge_count: number;
+    decline_count: number;
+    iqr_bounds: {
+      q1: number;
+      median: number;
+      q3: number;
+      iqr: number;
+      lower_bound: number;
+      upper_bound: number;
+    };
+    methodologies_used: string[];
+    interpretative_mandate: string;
+  };
+  anomalies: ApiTransformationAnomaly[];
+}
+
+export interface ApiTransformationPillar {
+  pillar_id: string;
+  name: string;
+  sufficiency_status: 'SUFFICIENT_MACRO_EVIDENCE' | 'PARTIAL_STATIC_EVIDENCE' | 'INSUFFICIENT_EVIDENCE';
+  confidence: 'High' | 'Medium' | 'Low' | 'None';
+  geographic_level?: string;
+  geographic_scope?: string;
+  observation_period?: string | null;
+  verified_indicators_count?: number;
+  key_findings: string[];
+  limitations: string[];
+  supports_transformation_hypothesis: boolean;
+  hypothesis_interpretation?: string;
+}
+
+export interface ApiTransformationEvidenceResponse {
+  assessment_id: string;
+  generated_at: string;
+  geographic_scope: string;
+  overall_verdict: string;
+  verdict_badge: string;
+  verdict_explanation: string;
+  pillars_summary: {
+    total_pillars: number;
+    sufficient_macro_count: number;
+    partial_static_count: number;
+    insufficient_count: number;
+  };
+  pillars: ApiTransformationPillar[];
+  academic_mandate: string;
+}
+
+export interface ApiTransformationQualityResponse {
+  generated_at: string;
+  pipeline_version: string;
+  data_audit: {
+    total_sources_evaluated: number;
+    verified_real_sources: number;
+    data_unavailable_sources: number;
+    documented_proxy_sources: number;
+    requires_validation_sources: number;
+  };
+  indicators_audit: {
+    total_indicators: number;
+    verified_real_count: number;
+    data_unavailable_count: number;
+    proxy_count: number;
+  };
+  data_integrity_rules: string[];
+}
+
+export interface ApiTransformationOverviewResponse {
+  generated_at: string;
+  geographic_scope: string;
+  hpi_summary: ApiTrendSummary;
+  indicators_summary: {
+    total_indicators: number;
+    verified_real_count: number;
+    data_unavailable_count: number;
+    proxy_count: number;
+  };
+  sources_summary: {
+    total_sources_evaluated: number;
+    verified_real_sources: number;
+    data_unavailable_sources: number;
+    documented_proxy_sources: number;
+    requires_validation_sources: number;
+  };
+  evidence_summary: {
+    overall_verdict: string;
+    verdict_badge: string;
+    verdict_explanation: string;
+    pillars_count: number;
+  };
+  anomalies_summary: {
+    total_anomalies_detected: number;
+    surge_count: number;
+    decline_count: number;
+  };
+}
+
+export interface ApiTransformationDataSourceItem {
+  id: string;
+  name: string;
+  publishing_organization: string;
+  source_url: string;
+  geographic_coverage: string;
+  geographic_level: string;
+  temporal_coverage: { start: string; end: string } | null;
+  observation_count: number;
+  frequency: string;
+  unit: string;
+  data_format: string;
+  license: string;
+  reuse_restrictions: string;
+  status: 'VERIFIED REAL DATA' | 'DOCUMENTED PROXY' | 'DATA UNAVAILABLE' | 'REQUIRES MANUAL VALIDATION';
+  missing_values_count: number;
+  reliability_limitations: string[];
+  suitable_for_historical_analysis: boolean;
+  integrated_in_pipeline: boolean;
+}
+
+export interface ApiTransformationDataSourcesResponse {
+  total: number;
+  sources: ApiTransformationDataSourceItem[];
+  provenance_mandate: string;
+}
+
+export interface ApiTransformationAreasResponse {
+  total: number;
+  geographic_scope: string;
+  boundary_type: string;
+  disclaimer: string;
+  areas: ApiNeighborhoodRegionSummary[];
+}
+
+export interface ApiTransformationAreaDetailResponse {
+  area: ApiNeighborhoodRegionDetail;
+  context: {
+    boundary_disclaimer: string;
+    data_integrity_mandate: string;
+  };
+}

@@ -1,0 +1,118 @@
+{
+  "assessment_id": "mumbai-transformation-assessment-v1",
+  "generated_at": "2026-10-30T18:00:00Z",
+  "geographic_scope": "Mumbai Metropolitan Area / South Mumbai",
+  "overall_verdict": "INSUFFICIENT EVIDENCE",
+  "verdict_badge": "INSUFFICIENT EVIDENCE",
+  "verdict_explanation": "There is INSUFFICIENT EVIDENCE to classify any South Mumbai area as experiencing gentrification or displacement. While official RBI transaction records confirm strong city-level housing price appreciation over 15 years (+370.39%), empirical data on localized ward-level prices, demographic turnover, tenant displacement, and construction permits is unavailable from official free sources. In accordance with academic integrity standards, UrbanLens does not assign automated gentrification labels.",
+  "pillars_summary": {
+    "total_pillars": 5,
+    "sufficient_macro_count": 1,
+    "partial_static_count": 1,
+    "insufficient_count": 3
+  },
+  "pillars": [
+    {
+      "pillar_id": "housing_market_dynamics",
+      "name": "Housing Market Dynamics & Price Trajectory",
+      "sufficiency_status": "SUFFICIENT_MACRO_EVIDENCE",
+      "confidence": "High",
+      "geographic_level": "city",
+      "geographic_scope": "Mumbai Metropolitan Area",
+      "observation_period": "2010-06-30 to 2025-03-31",
+      "verified_indicators_count": 3,
+      "key_findings": [
+        "15-year cumulative HPI increase: +370.39% (Base FY2010\u201311 = 100).",
+        "5-year annualized CAGR: 1.1% per annum.",
+        "Recent market regime: Plateau & Valuation Consolidation.",
+        "Mean 8-quarter rolling volatility: 3.02%."
+      ],
+      "limitations": [
+        "Official transaction assessment index at metropolitan city scale.",
+        "Ward-level residential price disaggregation is unavailable from official free sources."
+      ],
+      "supports_transformation_hypothesis": true,
+      "hypothesis_interpretation": "Official RBI transaction records verify sustained long-term capital appreciation in Mumbai. However, price growth alone is a macroeconomic phenomenon and does NOT demonstrate localized gentrification."
+    },
+    {
+      "pillar_id": "demographics_socioeconomic",
+      "name": "Demographic & Socioeconomic Composition Shifts",
+      "sufficiency_status": "INSUFFICIENT_EVIDENCE",
+      "confidence": "None",
+      "geographic_level": "ward",
+      "geographic_scope": "South Mumbai Wards",
+      "observation_period": null,
+      "verified_indicators_count": 0,
+      "key_findings": [
+        "Official Census 2021 municipal ward enumeration tables remain unreleased by the Government of India.",
+        "2011 Census tables are 15 years old and cannot establish contemporary population turnover.",
+        "No official ward-level income or wealth distribution surveys exist."
+      ],
+      "limitations": [
+        "Ethical standards forbid fabricating synthetic demographics to simulate gentrification."
+      ],
+      "supports_transformation_hypothesis": false,
+      "hypothesis_interpretation": "Without empirical demographic data on household income, education levels, and in-migration, it is scientifically impossible to confirm gentrification in South Mumbai."
+    },
+    {
+      "pillar_id": "infrastructure_civic_access",
+      "name": "Infrastructure & Civic Amenities",
+      "sufficiency_status": "PARTIAL_STATIC_EVIDENCE",
+      "confidence": "Medium",
+      "geographic_level": "neighborhood",
+      "geographic_scope": "South Mumbai Peninsula Bounding Box",
+      "observation_period": "2026-10-30 (Snapshot)",
+      "verified_indicators_count": 3,
+      "key_findings": [
+        "232 verified real civic nodes mapped in South Mumbai (hospitals, clinics, schools, transit, parking).",
+        "Centroid 500m walkability average: 14.5 amenities.",
+        "Centroid 1.0km transit catchment average: 52.8 amenities."
+      ],
+      "limitations": [
+        "Single point-in-time OpenStreetMap snapshot.",
+        "Historical infrastructure expansion velocity is NOT measurable from a single snapshot."
+      ],
+      "supports_transformation_hypothesis": false,
+      "hypothesis_interpretation": "South Mumbai possesses high civic infrastructure density as an established urban core. However, present-day amenity presence cannot be conflated with recent gentrification investment."
+    },
+    {
+      "pillar_id": "land_use_redevelopment",
+      "name": "Land-Use & Redevelopment Activity",
+      "sufficiency_status": "INSUFFICIENT_EVIDENCE",
+      "confidence": "None",
+      "geographic_level": "ward",
+      "geographic_scope": "Greater Mumbai",
+      "observation_period": null,
+      "verified_indicators_count": 0,
+      "key_findings": [
+        "MCGM building permit approvals (IOD/CC) are not published via open machine-readable REST APIs.",
+        "SRA slum rehabilitation GIS boundary layers are unavailable in public georeferenced formats."
+      ],
+      "limitations": [
+        "Physical redevelopment activity cannot be quantified without municipal permit registers."
+      ],
+      "supports_transformation_hypothesis": false,
+      "hypothesis_interpretation": "Empirical construction velocity data is unavailable."
+    },
+    {
+      "pillar_id": "affordability_displacement",
+      "name": "Housing Affordability & Displacement Pressure",
+      "sufficiency_status": "INSUFFICIENT_EVIDENCE",
+      "confidence": "None",
+      "geographic_level": "ward",
+      "geographic_scope": "South Mumbai Wards",
+      "observation_period": null,
+      "verified_indicators_count": 0,
+      "key_findings": [
+        "No official residential rental index exists in India.",
+        "Eviction court records and tenancy tenure changes are not accessible in structured formats."
+      ],
+      "limitations": [
+        "Displacement pressure cannot be claimed without longitudinal rent and tenant tenure records."
+      ],
+      "supports_transformation_hypothesis": false,
+      "hypothesis_interpretation": "Gentrification by definition requires evidence of demographic displacement and housing cost burden. UrbanLens strictly refuses to assign arbitrary displacement risk scores without empirical evidence."
+    }
+  ],
+  "academic_mandate": "Urban transformation is a multi-dimensional socioeconomic process. UrbanLens refuses to equate macroeconomic housing price appreciation with gentrification."
+}

@@ -1,0 +1,58 @@
+{
+  "generated_at": "2026-10-30T13:33:49.427751+00:00",
+  "geographic_scope": "Mumbai Metropolitan Area & South Mumbai Sub-Regions",
+  "hpi_summary": {
+    "geography": "Mumbai",
+    "geography_level": "city",
+    "start_date": "2010-06-30",
+    "end_date": "2025-03-31",
+    "start_value": 88.82,
+    "end_value": 417.8,
+    "observation_count": 60,
+    "total_cumulative_change_pct": 370.39,
+    "annualized_cagr_pct": 11.07,
+    "three_year_cagr_pct": 1.73,
+    "five_year_cagr_pct": 1.1,
+    "recent_annual_growth_pct": 0.29,
+    "recent_market_regime": "stagnation_consolidation",
+    "regime_label": "Plateau & Valuation Consolidation",
+    "mean_quarterly_volatility": 3.02
+  },
+  "indicators_summary": {
+    "total_indicators": 16,
+    "verified_real_count": 6,
+    "data_unavailable_count": 10,
+    "proxy_count": 1
+  },
+  "sources_summary": {
+    "total_sources_evaluated": 9,
+    "verified_real_sources": 3,
+    "data_unavailable_sources": 4,
+    "documented_proxy_sources": 1,
+    "requires_validation_sources": 1
+  },
+  "evidence_summary": {
+    "overall_verdict": "INSUFFICIENT EVIDENCE",
+    "verdict_badge": "INSUFFICIENT EVIDENCE",
+    "verdict_explanation": "There is INSUFFICIENT EVIDENCE to classify any South Mumbai area as experiencing gentrification or displacement. While official RBI transaction records confirm strong city-level housing price appreciation over 15 years (+370.39%), empirical data on localized ward-level prices, demographic turnover, tenant displacement, and construction permits is unavailable from official free sources. In accordance with academic integrity standards, UrbanLens does not assign automated gentrification labels.",
+    "pillars_count": 5
+  },
+  "anomalies_summary": {
+    "total_anomalies_detected": 6,
+    "surge_count": 3,
+    "decline_count": 3,
+    "iqr_bounds": {
+      "q1": 0.15,
+      "median": 1.96,
+      "q3": 4.91,
+      "iqr": 4.75,
+      "lower_bound": -6.98,
+      "upper_bound": 12.04
+    },
+    "methodologies_used": [
+      "rolling_zscore_8q",
+      "iqr_fence_1_5"
+    ],
+    "interpretative_mandate": "Detected anomalies represent unusual rate-of-change spikes in housing price index valuations. They serve as triggers for multi-domain verification, NOT automated labels of neighborhood transformation."
+  }
+}

@@ -14,6 +14,14 @@ import {
   ApiNeighborhoodCompareResponse,
   ApiTransformationSummaryResponse,
   ApiTransformationIndicatorsResponse,
+  ApiTransformationOverviewResponse,
+  ApiTransformationTrendsResponse,
+  ApiTransformationAnomaliesResponse,
+  ApiTransformationEvidenceResponse,
+  ApiTransformationQualityResponse,
+  ApiTransformationDataSourcesResponse,
+  ApiTransformationAreasResponse,
+  ApiTransformationAreaDetailResponse,
 } from './types';
 
 const API_BASE = '/api';
@@ -74,5 +82,16 @@ export const apiClient = {
   getTransformationIndicators: (params?: { category?: string; data_status?: string }) =>
     apiFetch<ApiTransformationIndicatorsResponse>(`/transformation/indicators${cleanParams(params)}`),
   getTransformationSummary: () => apiFetch<ApiTransformationSummaryResponse>('/transformation/summary'),
+  getTransformationOverview: () => apiFetch<ApiTransformationOverviewResponse>('/transformation/overview'),
+  getTransformationTrends: () => apiFetch<ApiTransformationTrendsResponse>('/transformation/trends'),
+  getTransformationAnomalies: () => apiFetch<ApiTransformationAnomaliesResponse>('/transformation/anomalies'),
+  getTransformationEvidence: () => apiFetch<ApiTransformationEvidenceResponse>('/transformation/evidence'),
+  getTransformationQuality: () => apiFetch<ApiTransformationQualityResponse>('/transformation/quality'),
+  getTransformationDataSources: () => apiFetch<ApiTransformationDataSourcesResponse>('/transformation/data-sources'),
+  getTransformationAreas: () => apiFetch<ApiTransformationAreasResponse>('/transformation/areas'),
+  getTransformationAreaDetail: (id: string) => apiFetch<ApiTransformationAreaDetailResponse>(`/transformation/areas/${encodeURIComponent(id)}`),
+  compareTransformationAreas: (ids: string[]) => apiFetch<{ requested_ids: string[]; found_count: number; areas: ApiNeighborhoodRegionDetail[]; comparison_disclaimer: string }>(
+    `/transformation/comparison?ids=${encodeURIComponent(ids.join(','))}`
+  ),
 };
 

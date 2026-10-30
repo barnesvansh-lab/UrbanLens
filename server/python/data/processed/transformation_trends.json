@@ -1,0 +1,502 @@
+{
+  "status": "ok",
+  "summary": {
+    "geography": "Mumbai",
+    "geography_level": "city",
+    "start_date": "2010-06-30",
+    "end_date": "2025-03-31",
+    "start_value": 88.82,
+    "end_value": 417.8,
+    "observation_count": 60,
+    "total_cumulative_change_pct": 370.39,
+    "annualized_cagr_pct": 11.07,
+    "three_year_cagr_pct": 1.73,
+    "five_year_cagr_pct": 1.1,
+    "recent_annual_growth_pct": 0.29,
+    "recent_market_regime": "stagnation_consolidation",
+    "regime_label": "Plateau & Valuation Consolidation",
+    "mean_quarterly_volatility": 3.02
+  },
+  "points": [
+    {
+      "date": "2010-06-30",
+      "value": 88.82,
+      "qoq_change_pct": null,
+      "yoy_change_pct": null,
+      "acceleration": null,
+      "rolling_volatility_8q": null
+    },
+    {
+      "date": "2010-09-30",
+      "value": 98.67,
+      "qoq_change_pct": 11.09,
+      "yoy_change_pct": null,
+      "acceleration": null,
+      "rolling_volatility_8q": null
+    },
+    {
+      "date": "2010-12-31",
+      "value": 104.75,
+      "qoq_change_pct": 6.16,
+      "yoy_change_pct": null,
+      "acceleration": -4.93,
+      "rolling_volatility_8q": null
+    },
+    {
+      "date": "2011-03-31",
+      "value": 107.76,
+      "qoq_change_pct": 2.88,
+      "yoy_change_pct": null,
+      "acceleration": -3.28,
+      "rolling_volatility_8q": null
+    },
+    {
+      "date": "2011-06-30",
+      "value": 118.0,
+      "qoq_change_pct": 9.5,
+      "yoy_change_pct": 32.85,
+      "acceleration": 6.62,
+      "rolling_volatility_8q": null
+    },
+    {
+      "date": "2011-09-30",
+      "value": 123.08,
+      "qoq_change_pct": 4.31,
+      "yoy_change_pct": 24.74,
+      "acceleration": -5.19,
+      "rolling_volatility_8q": null
+    },
+    {
+      "date": "2011-12-31",
+      "value": 131.94,
+      "qoq_change_pct": 7.2,
+      "yoy_change_pct": 25.97,
+      "acceleration": 2.89,
+      "rolling_volatility_8q": null
+    },
+    {
+      "date": "2012-03-31",
+      "value": 129.44,
+      "qoq_change_pct": -1.9,
+      "yoy_change_pct": 20.12,
+      "acceleration": -9.1,
+      "rolling_volatility_8q": 4.49
+    },
+    {
+      "date": "2012-06-30",
+      "value": 136.35,
+      "qoq_change_pct": 5.34,
+      "yoy_change_pct": 15.55,
+      "acceleration": 7.24,
+      "rolling_volatility_8q": 4.03
+    },
+    {
+      "date": "2012-09-30",
+      "value": 156.6,
+      "qoq_change_pct": 14.85,
+      "yoy_change_pct": 27.23,
+      "acceleration": 9.51,
+      "rolling_volatility_8q": 4.89
+    },
+    {
+      "date": "2012-12-31",
+      "value": 169.25,
+      "qoq_change_pct": 8.08,
+      "yoy_change_pct": 28.27,
+      "acceleration": -6.77,
+      "rolling_volatility_8q": 4.94
+    },
+    {
+      "date": "2013-03-31",
+      "value": 166.17,
+      "qoq_change_pct": -1.82,
+      "yoy_change_pct": 28.38,
+      "acceleration": -9.9,
+      "rolling_volatility_8q": 5.64
+    },
+    {
+      "date": "2013-06-30",
+      "value": 173.92,
+      "qoq_change_pct": 4.66,
+      "yoy_change_pct": 27.56,
+      "acceleration": 6.48,
+      "rolling_volatility_8q": 5.43
+    },
+    {
+      "date": "2013-09-30",
+      "value": 186.67,
+      "qoq_change_pct": 7.33,
+      "yoy_change_pct": 19.2,
+      "acceleration": 2.67,
+      "rolling_volatility_8q": 5.47
+    },
+    {
+      "date": "2013-12-31",
+      "value": 203.55,
+      "qoq_change_pct": 9.05,
+      "yoy_change_pct": 20.27,
+      "acceleration": 1.72,
+      "rolling_volatility_8q": 5.59
+    },
+    {
+      "date": "2014-03-31",
+      "value": 212.48,
+      "qoq_change_pct": 4.39,
+      "yoy_change_pct": 27.87,
+      "acceleration": -4.66,
+      "rolling_volatility_8q": 4.75
+    },
+    {
+      "date": "2014-06-30",
+      "value": 223.3,
+      "qoq_change_pct": 5.09,
+      "yoy_change_pct": 28.39,
+      "acceleration": 0.7,
+      "rolling_volatility_8q": 4.76
+    },
+    {
+      "date": "2014-09-30",
+      "value": 238.7,
+      "qoq_change_pct": 6.9,
+      "yoy_change_pct": 27.88,
+      "acceleration": 1.81,
+      "rolling_volatility_8q": 3.39
+    },
+    {
+      "date": "2014-12-31",
+      "value": 243.37,
+      "qoq_change_pct": 1.96,
+      "yoy_change_pct": 19.56,
+      "acceleration": -4.94,
+      "rolling_volatility_8q": 3.4
+    },
+    {
+      "date": "2015-03-31",
+      "value": 267.31,
+      "qoq_change_pct": 9.84,
+      "yoy_change_pct": 25.8,
+      "acceleration": 7.88,
+      "rolling_volatility_8q": 2.62
+    },
+    {
+      "date": "2015-06-30",
+      "value": 259.77,
+      "qoq_change_pct": -2.82,
+      "yoy_change_pct": 16.33,
+      "acceleration": -12.66,
+      "rolling_volatility_8q": 4.13
+    },
+    {
+      "date": "2015-09-30",
+      "value": 264.71,
+      "qoq_change_pct": 1.9,
+      "yoy_change_pct": 10.9,
+      "acceleration": 4.72,
+      "rolling_volatility_8q": 4.18
+    },
+    {
+      "date": "2015-12-31",
+      "value": 282.45,
+      "qoq_change_pct": 6.7,
+      "yoy_change_pct": 16.06,
+      "acceleration": 4.8,
+      "rolling_volatility_8q": 3.89
+    },
+    {
+      "date": "2016-03-31",
+      "value": 288.9,
+      "qoq_change_pct": 2.28,
+      "yoy_change_pct": 8.07,
+      "acceleration": -4.42,
+      "rolling_volatility_8q": 3.95
+    },
+    {
+      "date": "2016-06-30",
+      "value": 302.56,
+      "qoq_change_pct": 4.73,
+      "yoy_change_pct": 16.47,
+      "acceleration": 2.45,
+      "rolling_volatility_8q": 3.93
+    },
+    {
+      "date": "2016-09-30",
+      "value": 311.56,
+      "qoq_change_pct": 2.97,
+      "yoy_change_pct": 17.7,
+      "acceleration": -1.76,
+      "rolling_volatility_8q": 3.75
+    },
+    {
+      "date": "2016-12-31",
+      "value": 337.07,
+      "qoq_change_pct": 8.19,
+      "yoy_change_pct": 19.34,
+      "acceleration": 5.22,
+      "rolling_volatility_8q": 4.04
+    },
+    {
+      "date": "2017-03-31",
+      "value": 335.79,
+      "qoq_change_pct": -0.38,
+      "yoy_change_pct": 16.23,
+      "acceleration": -8.57,
+      "rolling_volatility_8q": 3.6
+    },
+    {
+      "date": "2017-06-30",
+      "value": 341.26,
+      "qoq_change_pct": 1.63,
+      "yoy_change_pct": 12.79,
+      "acceleration": 2.01,
+      "rolling_volatility_8q": 2.84
+    },
+    {
+      "date": "2017-09-30",
+      "value": 344.37,
+      "qoq_change_pct": 0.91,
+      "yoy_change_pct": 10.53,
+      "acceleration": -0.72,
+      "rolling_volatility_8q": 2.94
+    },
+    {
+      "date": "2017-12-31",
+      "value": 354.05,
+      "qoq_change_pct": 2.81,
+      "yoy_change_pct": 5.04,
+      "acceleration": 1.9,
+      "rolling_volatility_8q": 2.62
+    },
+    {
+      "date": "2018-03-31",
+      "value": 362.23,
+      "qoq_change_pct": 2.31,
+      "yoy_change_pct": 7.87,
+      "acceleration": -0.5,
+      "rolling_volatility_8q": 2.62
+    },
+    {
+      "date": "2018-06-30",
+      "value": 360.58,
+      "qoq_change_pct": -0.45,
+      "yoy_change_pct": 5.66,
+      "acceleration": -2.76,
+      "rolling_volatility_8q": 2.74
+    },
+    {
+      "date": "2018-09-30",
+      "value": 369.99,
+      "qoq_change_pct": 2.61,
+      "yoy_change_pct": 7.44,
+      "acceleration": 3.06,
+      "rolling_volatility_8q": 2.73
+    },
+    {
+      "date": "2018-12-31",
+      "value": 386.28,
+      "qoq_change_pct": 4.4,
+      "yoy_change_pct": 9.1,
+      "acceleration": 1.79,
+      "rolling_volatility_8q": 1.66
+    },
+    {
+      "date": "2019-03-31",
+      "value": 370.35,
+      "qoq_change_pct": -4.12,
+      "yoy_change_pct": 2.24,
+      "acceleration": -8.52,
+      "rolling_volatility_8q": 2.6
+    },
+    {
+      "date": "2019-06-30",
+      "value": 370.69,
+      "qoq_change_pct": 0.09,
+      "yoy_change_pct": 2.8,
+      "acceleration": 4.21,
+      "rolling_volatility_8q": 2.63
+    },
+    {
+      "date": "2019-09-30",
+      "value": 371.85,
+      "qoq_change_pct": 0.31,
+      "yoy_change_pct": 0.5,
+      "acceleration": 0.22,
+      "rolling_volatility_8q": 2.64
+    },
+    {
+      "date": "2019-12-31",
+      "value": 392.0,
+      "qoq_change_pct": 5.42,
+      "yoy_change_pct": 1.48,
+      "acceleration": 5.11,
+      "rolling_volatility_8q": 3.03
+    },
+    {
+      "date": "2020-03-31",
+      "value": 395.5,
+      "qoq_change_pct": 0.89,
+      "yoy_change_pct": 6.79,
+      "acceleration": -4.53,
+      "rolling_volatility_8q": 3.0
+    },
+    {
+      "date": "2020-06-30",
+      "value": 396.24,
+      "qoq_change_pct": 0.19,
+      "yoy_change_pct": 6.89,
+      "acceleration": -0.7,
+      "rolling_volatility_8q": 2.96
+    },
+    {
+      "date": "2020-09-30",
+      "value": 397.5,
+      "qoq_change_pct": 0.32,
+      "yoy_change_pct": 6.9,
+      "acceleration": 0.13,
+      "rolling_volatility_8q": 2.92
+    },
+    {
+      "date": "2020-12-31",
+      "value": 398.1,
+      "qoq_change_pct": 0.15,
+      "yoy_change_pct": 1.56,
+      "acceleration": -0.17,
+      "rolling_volatility_8q": 2.57
+    },
+    {
+      "date": "2021-03-31",
+      "value": 398.4,
+      "qoq_change_pct": 0.08,
+      "yoy_change_pct": 0.73,
+      "acceleration": -0.07,
+      "rolling_volatility_8q": 1.83
+    },
+    {
+      "date": "2021-06-30",
+      "value": 394.9,
+      "qoq_change_pct": -0.88,
+      "yoy_change_pct": -0.34,
+      "acceleration": -0.96,
+      "rolling_volatility_8q": 1.93
+    },
+    {
+      "date": "2021-09-30",
+      "value": 395.54,
+      "qoq_change_pct": 0.16,
+      "yoy_change_pct": -0.49,
+      "acceleration": 1.04,
+      "rolling_volatility_8q": 1.93
+    },
+    {
+      "date": "2021-12-31",
+      "value": 397.2,
+      "qoq_change_pct": 0.42,
+      "yoy_change_pct": -0.23,
+      "acceleration": 0.26,
+      "rolling_volatility_8q": 0.49
+    },
+    {
+      "date": "2022-03-31",
+      "value": 396.83,
+      "qoq_change_pct": -0.09,
+      "yoy_change_pct": -0.4,
+      "acceleration": -0.51,
+      "rolling_volatility_8q": 0.4
+    },
+    {
+      "date": "2022-06-30",
+      "value": 397.98,
+      "qoq_change_pct": 0.29,
+      "yoy_change_pct": 0.78,
+      "acceleration": 0.38,
+      "rolling_volatility_8q": 0.41
+    },
+    {
+      "date": "2022-09-30",
+      "value": 411.36,
+      "qoq_change_pct": 3.36,
+      "yoy_change_pct": 4.0,
+      "acceleration": 3.07,
+      "rolling_volatility_8q": 1.25
+    },
+    {
+      "date": "2022-12-31",
+      "value": 400.95,
+      "qoq_change_pct": -2.53,
+      "yoy_change_pct": 0.94,
+      "acceleration": -5.89,
+      "rolling_volatility_8q": 1.63
+    },
+    {
+      "date": "2023-03-31",
+      "value": 414.85,
+      "qoq_change_pct": 3.47,
+      "yoy_change_pct": 4.54,
+      "acceleration": 6.0,
+      "rolling_volatility_8q": 2.02
+    },
+    {
+      "date": "2023-06-30",
+      "value": 415.82,
+      "qoq_change_pct": 0.23,
+      "yoy_change_pct": 4.48,
+      "acceleration": -3.24,
+      "rolling_volatility_8q": 1.95
+    },
+    {
+      "date": "2023-09-30",
+      "value": 425.78,
+      "qoq_change_pct": 2.39,
+      "yoy_change_pct": 3.5,
+      "acceleration": 2.16,
+      "rolling_volatility_8q": 2.02
+    },
+    {
+      "date": "2023-12-31",
+      "value": 413.34,
+      "qoq_change_pct": -2.92,
+      "yoy_change_pct": 3.09,
+      "acceleration": -5.31,
+      "rolling_volatility_8q": 2.45
+    },
+    {
+      "date": "2024-03-31",
+      "value": 416.89,
+      "qoq_change_pct": 0.86,
+      "yoy_change_pct": 0.49,
+      "acceleration": 3.78,
+      "rolling_volatility_8q": 2.44
+    },
+    {
+      "date": "2024-06-30",
+      "value": 418.76,
+      "qoq_change_pct": 0.45,
+      "yoy_change_pct": 0.71,
+      "acceleration": -0.41,
+      "rolling_volatility_8q": 2.43
+    },
+    {
+      "date": "2024-09-30",
+      "value": 418.99,
+      "qoq_change_pct": 0.05,
+      "yoy_change_pct": -1.59,
+      "acceleration": -0.4,
+      "rolling_volatility_8q": 2.18
+    },
+    {
+      "date": "2024-12-31",
+      "value": 420.94,
+      "qoq_change_pct": 0.46,
+      "yoy_change_pct": 1.84,
+      "acceleration": 0.41,
+      "rolling_volatility_8q": 1.87
+    },
+    {
+      "date": "2025-03-31",
+      "value": 417.8,
+      "qoq_change_pct": -0.74,
+      "yoy_change_pct": 0.22,
+      "acceleration": -1.2,
+      "rolling_volatility_8q": 1.51
+    }
+  ]
+}
