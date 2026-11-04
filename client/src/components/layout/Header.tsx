@@ -23,6 +23,26 @@ const ROUTE_TITLES: Record<string, { title: string; subtitle: string }> = {
     title: 'Neighborhood Spatial Intelligence',
     subtitle: 'Geospatial mapping, infrastructure, and amenity density',
   },
+  '/neighborhoods': {
+    title: 'Neighborhood Spatial Intelligence',
+    subtitle: 'Geospatial mapping, infrastructure, and amenity density',
+  },
+  '/neighborhood/compare': {
+    title: 'Neighborhood Area Comparison',
+    subtitle: 'Comparative spatial density, amenity counts & accessibility benchmarking',
+  },
+  '/neighborhoods/compare': {
+    title: 'Neighborhood Area Comparison',
+    subtitle: 'Comparative spatial density, amenity counts & accessibility benchmarking',
+  },
+  '/transformation': {
+    title: 'Urban Transformation Intelligence',
+    subtitle: 'Multi-indicator gentrification signals, anomalies & 5-pillar evidence engine',
+  },
+  '/urban-transformation': {
+    title: 'Urban Transformation Intelligence',
+    subtitle: 'Multi-indicator gentrification signals, anomalies & 5-pillar evidence engine',
+  },
   '/affordability': {
     title: 'Affordability & Mortgage Modeling',
     subtitle: 'EMI computation, Rent vs. Buy analysis, and income ratios',
@@ -71,17 +91,20 @@ export const Header: React.FC<HeaderProps> = ({ onOpenMobile }) => {
       </div>
 
       <div className="flex items-center gap-2 sm:gap-3">
-        {/* Synthetic Data Badge */}
-        <div className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-amber-800 bg-amber-50 border border-amber-200 rounded-full">
-          <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-          <span className="hidden sm:inline">Synthetic Data</span>
-          <span className="sm:hidden">Demo</span>
+        {/* Data Architecture Badge */}
+        <div
+          className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-indigo-900 bg-indigo-50 border border-indigo-200 rounded-full shadow-2xs"
+          title="Empirical RBI HPI & OSM data integrated with documented synthetic test demarcation"
+        >
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+          <span className="hidden sm:inline">RBI HPI &amp; OSM Integrated</span>
+          <span className="sm:hidden">Hybrid Data</span>
         </div>
 
         {/* Timestamp */}
         <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-slate-500 bg-slate-100 rounded-md">
           <Clock className="w-3.5 h-3.5 text-slate-400" />
-          <span>Last Updated: Q4 2024 (Simulated)</span>
+          <span>Latest Ingestion: Q4 2025</span>
         </div>
       </div>
     </header>

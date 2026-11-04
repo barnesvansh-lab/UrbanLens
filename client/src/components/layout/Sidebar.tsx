@@ -12,6 +12,7 @@ import {
   ChevronRight,
   Building2,
   ShieldAlert,
+  ShieldCheck,
   Scale,
   Sparkles,
 } from 'lucide-react';
@@ -131,20 +132,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
           })}
         </nav>
 
-        {/* Bottom Demo Mode Badge */}
+        {/* Bottom Data Architecture Badge */}
         <div className="p-3 border-t border-slate-800 shrink-0">
           <div
             className={clsx(
-              'rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs flex items-center transition-all',
+              'rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs flex items-center transition-all',
               collapsed ? 'p-2 justify-center' : 'px-3 py-2.5 gap-2.5'
             )}
-            title="Demo Mode: Synthetic Data"
+            title="Empirical RBI HPI & OSM data integrated with documented synthetic test demarcation"
           >
-            <ShieldAlert className="w-4 h-4 shrink-0 text-amber-400" />
+            <ShieldCheck className="w-4 h-4 shrink-0 text-indigo-400" />
             {!collapsed && (
               <div className="flex flex-col min-w-0">
-                <span className="font-semibold text-amber-300 truncate">Demo Mode Active</span>
-                <span className="text-[10px] text-amber-400/80 truncate">Synthetic Analytics</span>
+                <span className="font-semibold text-indigo-200 truncate">Hybrid Data Engine</span>
+                <span className="text-[10px] text-indigo-400/80 truncate">RBI HPI &amp; OSM Integrated</span>
               </div>
             )}
           </div>

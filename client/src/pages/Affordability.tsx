@@ -2108,18 +2108,26 @@ export const Affordability: React.FC = () => {
       </div>
 
       {/* Navigation Tab Bar */}
-      <div className="flex flex-wrap gap-1.5 p-1.5 bg-white rounded-xl border border-slate-200/90 shadow-xs">
+      <div
+        role="tablist"
+        aria-label="Housing Affordability Modules"
+        className="flex overflow-x-auto sm:flex-wrap gap-1.5 p-1.5 bg-white rounded-xl border border-slate-200/90 shadow-xs"
+      >
         {TABS.map((t) => (
           <button
             key={t.id}
+            role="tab"
+            aria-selected={activeTab === t.id}
+            aria-controls={`section-${t.id}`}
+            id={`tab-${t.id}`}
             onClick={() => setActiveTab(t.id)}
-            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all ${
+            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
               activeTab === t.id
                 ? 'bg-indigo-600 text-white shadow-xs'
                 : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
             }`}
           >
-            <t.Icon className="w-3.5 h-3.5" />
+            <t.Icon className="w-3.5 h-3.5 shrink-0" />
             {t.label}
           </button>
         ))}
