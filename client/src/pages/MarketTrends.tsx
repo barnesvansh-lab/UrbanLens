@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import {
   ResponsiveContainer,
   BarChart,
@@ -9,12 +10,24 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
+  Cell,
 } from 'recharts';
-import { Filter, Calendar, BarChart3, Calculator, Database, TrendingUp, Info } from 'lucide-react';
+import {
+  Filter,
+  Calendar,
+  Database,
+  TrendingUp,
+  Info,
+  ArrowRight,
+  LineChart as LineChartIcon,
+  CheckCircle2,
+} from 'lucide-react';
 import { DemoNotice } from '../components/ui/DemoNotice';
 import { DataStatusBadge } from '../components/ui/DataStatusBadge';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
-import { PriceTrendChart } from '../components/charts/PriceTrendChart';
+import { EditorialPageHeader } from '../components/ui/EditorialPageHeader';
+import { SectionHeading } from '../components/ui/SectionHeading';
+import { MethodologyAccordion } from '../components/ui/MethodologyAccordion';
 import { priceTimeSeries } from '../data/syntheticData';
 import { useDataSeries } from '../api/hooks';
 
@@ -32,12 +45,12 @@ const REAL_CITIES = [
 ];
 
 const NEIGHBORHOOD_KEYS = [
-  { key: 'mumbaiCentral', label: 'Mumbai Central', color: '#6366f1' },
-  { key: 'bandraWest', label: 'Bandra West', color: '#ec4899' },
-  { key: 'andheriEast', label: 'Andheri East', color: '#06b6d4' },
-  { key: 'thaneWest', label: 'Thane West', color: '#10b981' },
-  { key: 'naviMumbai', label: 'Navi Mumbai', color: '#f59e0b' },
-  { key: 'avgPrice', label: 'Market Avg', color: '#64748b' },
+  { key: 'mumbaiCentral', label: 'Mumbai Central', color: '#183D35' },
+  { key: 'bandraWest', label: 'Bandra West', color: '#C56C4B' },
+  { key: 'andheriEast', label: 'Andheri East', color: '#7D6355' },
+  { key: 'thaneWest', label: 'Thane West', color: '#9EAA9C' },
+  { key: 'naviMumbai', label: 'Navi Mumbai', color: '#B48448' },
+  { key: 'avgPrice', label: 'Market Avg', color: '#252B29' },
 ];
 
 export const MarketTrends: React.FC = () => {
@@ -62,6 +75,19 @@ export const MarketTrends: React.FC = () => {
     return rbiChartData[rbiChartData.length - 1];
   }, [rbiChartData]);
 
+  const firstRbiValue = useMemo(() => {
+    if (rbiChartData.length === 0) return null;
+    return rbiChartData[0];
+  }, [rbiChartData]);
+
+  // Plain-language average annual price growth calculation
+  const annualGrowthPct = useMemo(() => {
+    if (!firstRbiValue || !latestRbiValue || rbiChartData.length < 4) return null;
+    const years = rbiChartData.length / 4;
+    const cagr = (Math.pow(latestRbiValue.hpi / firstRbiValue.hpi, 1 / years) - 1) * 100;
+    return cagr.toFixed(1);
+  }, [firstRbiValue, latestRbiValue, rbiChartData]);
+
   const [selectedLines, setSelectedLines] = useState<string[]>([
     'mumbaiCentral',
     'bandraWest',
@@ -71,7 +97,6 @@ export const MarketTrends: React.FC = () => {
   ]);
   const [timeRange, setTimeRange] = useState<'all' | '3y' | '1y'>('all');
 
-  // Filter time series based on selection
   const filteredData = useMemo(() => {
     if (timeRange === '1y') return priceTimeSeries.slice(-12);
     if (timeRange === '3y') return priceTimeSeries.slice(-36);
@@ -88,23 +113,21 @@ export const MarketTrends: React.FC = () => {
     }
   };
 
-  // Monthly Seasonality index calculations (Jan - Dec)
+  // Monthly Seasonality index calculations
   const seasonalityIndex = useMemo(() => {
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     return months.map((m, idx) => {
-      // Find all points for this month
       const matching = priceTimeSeries.filter((pt) => pt.month.startsWith(m));
       const avgVol = Math.round(
         matching.reduce((acc, curr) => acc + curr.transactions, 0) / (matching.length || 1)
       );
-      // Seasonal deviation factor
       const devPct =
         idx === 2
-          ? +1.2 // March
+          ? +1.2
           : idx === 6 || idx === 7
-          ? -2.4 // Monsoon
+          ? -2.4
           : idx === 9 || idx === 10
-          ? +3.1 // Festive
+          ? +3.1
           : 0.1;
 
       return {
@@ -123,86 +146,64 @@ export const MarketTrends: React.FC = () => {
     });
   }, []);
 
-  // Summary statistics calculation
-  const summaryStats = useMemo(() => {
-    return [
-      {
-        id: 'mumbaiCentral',
-        name: 'Mumbai Central',
-        min: 24200,
-        max: 33450,
-        avg: 29120,
-        median: 29400,
-        stdDev: 2680,
-      },
-      {
-        id: 'bandraWest',
-        name: 'Bandra West',
-        min: 25600,
-        max: 36800,
-        avg: 31800,
-        median: 32100,
-        stdDev: 3120,
-      },
-      {
-        id: 'andheriEast',
-        name: 'Andheri East',
-        min: 14500,
-        max: 20400,
-        avg: 17620,
-        median: 17800,
-        stdDev: 1690,
-      },
-      {
-        id: 'thaneWest',
-        name: 'Thane West',
-        min: 9200,
-        max: 14100,
-        avg: 11840,
-        median: 11950,
-        stdDev: 1420,
-      },
-      {
-        id: 'naviMumbai',
-        name: 'Navi Mumbai',
-        min: 7850,
-        max: 12450,
-        avg: 10250,
-        median: 10400,
-        stdDev: 1310,
-      },
-    ];
-  }, []);
-
   return (
-    <div className="space-y-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-10">
       <DemoNotice />
 
-      {/* Real Data Module: Official RBI House Price Index */}
-      <div className="bg-white rounded-xl border border-slate-200/80 p-5 shadow-xs">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 pb-3 border-b border-slate-100">
+      {/* Editorial Page Header */}
+      <EditorialPageHeader
+        title="Housing Market Dynamics"
+        subtitle="Historical residential price trajectories, official Reserve Bank of India indices, and metropolitan comparisons."
+        badge={
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] uppercase tracking-wider font-semibold text-terracotta">
+              Urban Market Intelligence
+            </span>
+            <span className="text-stone">·</span>
+            <DataStatusBadge status="real" size="sm" />
+          </div>
+        }
+      >
+        <div className="flex items-center gap-2">
+          <Link
+            to="/forecasting"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-md bg-forest text-ivory hover:bg-forest/90 text-xs font-semibold transition-colors"
+          >
+            <LineChartIcon className="w-3.5 h-3.5 text-terracotta" />
+            <span>Forward Price Projections</span>
+            <ArrowRight className="w-3.5 h-3.5 ml-0.5" />
+          </Link>
+        </div>
+      </EditorialPageHeader>
+
+      {/* ── SECTION 1: OFFICIAL RBI HOUSE PRICE INDEX ── */}
+      <section className="bg-paper rounded-lg border border-stone/70 p-6 sm:p-8">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6 pb-6 border-b border-stone/50">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <h2 className="text-base font-bold text-slate-800 flex items-center gap-2">
-                <Database className="w-5 h-5 text-indigo-600" />
-                <span>Reserve Bank of India House Price Index (RBI-HPI)</span>
-              </h2>
+              <span className="text-[10px] uppercase tracking-wider font-semibold text-forest">
+                Empirical Institutional Foundation
+              </span>
               <DataStatusBadge status="real" size="sm" />
             </div>
-            <p className="text-xs text-slate-500">
-              Verified quarterly institutional time series from RBI Database on Indian Economy (Base: 2010-11 = 100)
+            <h2 className="font-serif text-2xl font-semibold text-charcoal">
+              Reserve Bank of India House Price Index
+            </h2>
+            <p className="text-xs text-sage mt-1">
+              Quarterly residential property price trends (Base: 2010–11 = 100.0) from official banking transaction returns
             </p>
           </div>
 
+          {/* City Selector */}
           <div className="flex items-center gap-2">
-            <label htmlFor="rbi-city-select" className="text-xs font-semibold text-slate-600">
-              Metropolitan Region:
+            <label htmlFor="city-select" className="text-xs font-semibold text-charcoal">
+              City:
             </label>
             <select
-              id="rbi-city-select"
+              id="city-select"
               value={selectedCity}
               onChange={(e) => setSelectedCity(e.target.value)}
-              className="text-xs font-semibold bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
+              className="text-xs font-semibold text-charcoal bg-ivory border border-stone rounded-md px-3 py-1.5 focus:border-forest"
             >
               {REAL_CITIES.map((c) => (
                 <option key={c} value={c}>
@@ -213,31 +214,23 @@ export const MarketTrends: React.FC = () => {
           </div>
         </div>
 
-        {/* Methodological Isolation Notice */}
-        <div className="mb-4 p-3 bg-indigo-50/70 rounded-lg border border-indigo-100 flex items-start gap-2.5 text-xs text-indigo-900 leading-relaxed">
-          <Info className="w-4 h-4 text-indigo-600 shrink-0 mt-0.5" />
-          <div>
-            <span className="font-semibold block mb-0.5">City-Level Macroeconomic Index (Index Points)</span>
-            Values shown are dimensionless index points (2010-11=100) published quarterly by the Reserve Bank of India. This tracks metropolitan housing inflation and must <strong>never</strong> be conflated with the micro-market ₹/sq.ft capital valuation rates displayed in the neighborhood section below.
-          </div>
-        </div>
-
         {rbiLoading ? (
-          <div className="h-64 flex items-center justify-center">
-            <LoadingSpinner label="Loading official RBI HPI time series..." />
+          <div className="h-72 flex items-center justify-center">
+            <LoadingSpinner size="md" label="Loading official RBI records..." />
+          </div>
+        ) : rbiChartData.length === 0 ? (
+          <div className="h-64 flex flex-col items-center justify-center text-sage text-sm">
+            <span>No empirical records found for {selectedCity}.</span>
           </div>
         ) : (
-          <div>
-            <div className="h-64">
+          <div className="space-y-6">
+            <div className="h-80 w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart
-                  data={rbiChartData}
-                  margin={{ top: 10, right: 20, left: 0, bottom: 15 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+                <LineChart data={rbiChartData} margin={{ top: 10, right: 20, left: 0, bottom: 20 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#D9D5CA" strokeOpacity={0.6} vertical={false} />
                   <XAxis
                     dataKey="quarter"
-                    stroke="#94a3b8"
+                    stroke="#9EAA9C"
                     fontSize={11}
                     tickLine={false}
                     tickFormatter={(val: string) => {
@@ -246,232 +239,162 @@ export const MarketTrends: React.FC = () => {
                     }}
                   />
                   <YAxis
-                    stroke="#94a3b8"
+                    stroke="#9EAA9C"
                     fontSize={11}
                     tickLine={false}
                     axisLine={false}
                     domain={['auto', 'auto']}
-                    tickFormatter={(v) => `${Math.round(v)} pts`}
+                    tickFormatter={(v) => `${Math.round(v)}`}
                   />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: '#0f172a',
+                      backgroundColor: '#FAF8F5',
                       borderRadius: '8px',
-                      border: 'none',
-                      color: '#fff',
+                      border: '1px solid #D9D5CA',
+                      color: '#252B29',
                       fontSize: '12px',
                     }}
                     formatter={(val: any) => [
                       `${Number(val).toFixed(2)} index points`,
-                      'RBI HPI (Base 100)',
+                      `${selectedCity} RBI HPI`,
                     ]}
                     labelFormatter={(label) => `Quarter: ${label}`}
                   />
                   <Line
                     type="monotone"
                     dataKey="hpi"
-                    stroke="#4f46e5"
+                    stroke="#183D35"
                     strokeWidth={2.5}
                     dot={false}
-                    name="RBI HPI (Index Points)"
+                    activeDot={{ r: 5, fill: '#C56C4B' }}
+                    name={`${selectedCity} HPI`}
                   />
                 </LineChart>
               </ResponsiveContainer>
             </div>
 
-            {/* Quick Metrics Bar for Selected City */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4 pt-3 border-t border-slate-100 text-xs">
-              <div className="p-2.5 bg-slate-50 rounded-lg">
-                <span className="text-slate-400 block text-[10px] uppercase font-semibold">
-                  Index Base Standard
+            {/* Quick Summary Bar in Human Language */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-stone/40">
+              <div className="p-3 bg-ivory/60 rounded-md">
+                <span className="text-[10px] uppercase font-semibold text-sage block">
+                  Average Annual Price Growth
                 </span>
-                <span className="font-semibold text-slate-800">
-                  FY 2010-11 = 100.0 (Official RBI Base)
+                <span className="text-xl font-serif font-bold text-forest">
+                  {annualGrowthPct ? `+${annualGrowthPct}% / year` : '—'}
                 </span>
-              </div>
-              <div className="p-2.5 bg-slate-50 rounded-lg">
-                <span className="text-slate-400 block text-[10px] uppercase font-semibold">
-                  Latest Observation ({latestRbiValue?.quarter || 'Recent'})
-                </span>
-                <span className="font-bold text-indigo-600 text-sm">
-                  {latestRbiValue ? `${latestRbiValue.hpi.toFixed(2)} pts` : '—'}
+                <span className="text-[11px] text-sage block mt-0.5">
+                  Compound annual appreciation since 2010
                 </span>
               </div>
-              <div className="p-2.5 bg-slate-50 rounded-lg">
-                <span className="text-slate-400 block text-[10px] uppercase font-semibold">
-                  Temporal Coverage &amp; Frequency
+
+              <div className="p-3 bg-ivory/60 rounded-md">
+                <span className="text-[10px] uppercase font-semibold text-sage block">
+                  Current Index Level ({latestRbiValue?.quarter || 'Latest'})
                 </span>
-                <span className="font-semibold text-slate-800">
-                  {rbiChartData.length} Quarters (2010-06 to 2025-03)
+                <span className="text-xl font-mono font-bold text-charcoal">
+                  {latestRbiValue ? `${latestRbiValue.hpi.toFixed(1)} pts` : '—'}
+                </span>
+                <span className="text-[11px] text-sage block mt-0.5">
+                  Base 100.0 established in FY 2010-11
+                </span>
+              </div>
+
+              <div className="p-3 bg-ivory/60 rounded-md">
+                <span className="text-[10px] uppercase font-semibold text-sage block">
+                  Verified Ingestion Coverage
+                </span>
+                <span className="text-xl font-mono font-bold text-charcoal">
+                  {rbiChartData.length} Quarters
+                </span>
+                <span className="text-[11px] text-sage block mt-0.5">
+                  Continuous 2010 to 2025 coverage
                 </span>
               </div>
             </div>
           </div>
         )}
-      </div>
+      </section>
 
-      <div className="pt-2">
-        <h3 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-2">
-          Neighborhood-Level Market Intelligence (Micro-Market ₹/sq.ft Demo)
-        </h3>
-      </div>
-
-      {/* Interactive Filter Toolbar */}
-      <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-xs">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          {/* Neighborhood Selectors */}
+      {/* ── SECTION 2: MICRO-MARKET CAPITAL RATES (DEMO SPECIFICATION) ── */}
+      <section className="bg-paper rounded-lg border border-stone/70 p-6 sm:p-8 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 mb-2 text-xs font-semibold uppercase text-slate-500">
-              <Filter className="w-3.5 h-3.5" />
-              <span>Visible Markets</span>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-[10px] uppercase tracking-wider font-semibold text-sage">
+                Sub-Market Spatial Modeling
+              </span>
+              <DataStatusBadge status="synthetic_demo" size="sm" />
             </div>
-            <div className="flex flex-wrap gap-2">
-              {NEIGHBORHOOD_KEYS.map((item) => {
-                const active = selectedLines.includes(item.key);
-                return (
-                  <button
-                    key={item.key}
-                    type="button"
-                    onClick={() => toggleLine(item.key)}
-                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition border ${
-                      active
-                        ? 'bg-slate-900 text-white border-slate-900 shadow-2xs'
-                        : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
-                    }`}
-                  >
-                    <span
-                      className="w-2 h-2 rounded-full"
-                      style={{ backgroundColor: item.color }}
-                    />
-                    <span>{item.label}</span>
-                  </button>
-                );
-              })}
-            </div>
+            <h2 className="font-serif text-2xl font-semibold text-charcoal">
+              Sector Capital Rate Evolution (₹/sq.ft)
+            </h2>
+            <p className="text-xs text-sage mt-1">
+              Monthly transacted capital rates across 5 benchmark metropolitan nodes
+            </p>
           </div>
 
           {/* Time Range Selector */}
-          <div>
-            <div className="flex items-center gap-2 mb-2 text-xs font-semibold uppercase text-slate-500">
-              <Calendar className="w-3.5 h-3.5" />
-              <span>Date Window</span>
-            </div>
-            <div className="inline-flex rounded-lg border border-slate-200 bg-slate-50 p-1">
-              <button
-                type="button"
-                onClick={() => setTimeRange('all')}
-                className={`px-3 py-1 text-xs font-semibold rounded-md transition ${
-                  timeRange === 'all'
-                    ? 'bg-white text-slate-900 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                5 Years (2020-2024)
-              </button>
-              <button
-                type="button"
-                onClick={() => setTimeRange('3y')}
-                className={`px-3 py-1 text-xs font-semibold rounded-md transition ${
-                  timeRange === '3y'
-                    ? 'bg-white text-slate-900 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                Last 3 Years
-              </button>
-              <button
-                type="button"
-                onClick={() => setTimeRange('1y')}
-                className={`px-3 py-1 text-xs font-semibold rounded-md transition ${
-                  timeRange === '1y'
-                    ? 'bg-white text-slate-900 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                Last 12 Months
-              </button>
-            </div>
+          <div className="flex items-center gap-1.5 p-1 bg-ivory rounded-md border border-stone self-start sm:self-auto text-xs">
+            <button
+              type="button"
+              onClick={() => setTimeRange('1y')}
+              className={`px-2.5 py-1 rounded font-medium transition-colors ${
+                timeRange === '1y' ? 'bg-forest text-ivory font-semibold' : 'text-charcoal hover:bg-stone/40'
+              }`}
+            >
+              1 Year
+            </button>
+            <button
+              type="button"
+              onClick={() => setTimeRange('3y')}
+              className={`px-2.5 py-1 rounded font-medium transition-colors ${
+                timeRange === '3y' ? 'bg-forest text-ivory font-semibold' : 'text-charcoal hover:bg-stone/40'
+              }`}
+            >
+              3 Years
+            </button>
+            <button
+              type="button"
+              onClick={() => setTimeRange('all')}
+              className={`px-2.5 py-1 rounded font-medium transition-colors ${
+                timeRange === 'all' ? 'bg-forest text-ivory font-semibold' : 'text-charcoal hover:bg-stone/40'
+              }`}
+            >
+              5 Years
+            </button>
           </div>
         </div>
-      </div>
 
-      {/* Full-Width Filtered Price Trend Chart */}
-      <PriceTrendChart
-        data={filteredData}
-        neighborhoods={selectedLines}
-        height={380}
-        showReferenceLines={timeRange === 'all'}
-      />
-
-      {/* Seasonality Heatmap Grid */}
-      <div className="bg-white rounded-xl border border-slate-200/80 p-5 shadow-xs">
-        <div className="mb-4">
-          <h3 className="text-base font-semibold text-slate-800">
-            Intra-Year Seasonality Pattern
-          </h3>
-          <p className="text-xs text-slate-500">
-            Historical price index deviation & transaction velocity across calendar months
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-          {seasonalityIndex.map((m) => {
-            const isHot = m.deviationPct > 1.5;
-            const isCool = m.deviationPct < -1.5;
-            const isMild = !isHot && !isCool;
-
+        {/* Line toggles */}
+        <div className="flex flex-wrap items-center gap-2 pt-2">
+          <span className="text-xs font-semibold text-sage mr-2">Sectors:</span>
+          {NEIGHBORHOOD_KEYS.map((item) => {
+            const active = selectedLines.includes(item.key);
             return (
-              <div
-                key={m.month}
-                className={`p-3 rounded-lg border transition text-center ${
-                  isHot
-                    ? 'bg-amber-50 border-amber-200 text-amber-900'
-                    : isCool
-                    ? 'bg-blue-50 border-blue-200 text-blue-900'
-                    : 'bg-slate-50 border-slate-200 text-slate-800'
+              <button
+                key={item.key}
+                type="button"
+                onClick={() => toggleLine(item.key)}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition border ${
+                  active
+                    ? 'bg-paper text-charcoal border-stone font-semibold shadow-2xs'
+                    : 'bg-ivory/60 text-sage border-stone/50 hover:bg-ivory'
                 }`}
               >
-                <div className="text-xs font-bold uppercase tracking-wider">{m.month}</div>
-                <div className="text-base font-extrabold my-1">
-                  {m.deviationPct > 0 ? `+${m.deviationPct}%` : `${m.deviationPct}%`}
-                </div>
-                <div className="text-[10px] font-medium opacity-80">{m.tag}</div>
-                <div className="text-[10px] text-slate-500 mt-1">
-                  ~{m.volume.toLocaleString('en-IN')} units
-                </div>
-              </div>
+                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }} />
+                <span>{item.label}</span>
+              </button>
             );
           })}
         </div>
-      </div>
 
-      {/* Transaction Volume Bar Chart */}
-      <div className="bg-white rounded-xl border border-slate-200/80 p-5 shadow-xs">
-        <div className="flex items-center justify-between gap-2 mb-4">
-          <div>
-            <h3 className="text-base font-semibold text-slate-800">
-              Transaction Volume Trajectory
-            </h3>
-            <p className="text-xs text-slate-500">
-              Estimated synthetic sales deeds registered per month
-            </p>
-          </div>
-          <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
-            <BarChart3 className="w-4 h-4 text-slate-400" />
-            <span>Monthly Aggregate</span>
-          </div>
-        </div>
-
-        <div className="h-64">
+        <div className="h-80 w-full pt-4">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={filteredData}
-              margin={{ top: 10, right: 10, left: 0, bottom: 15 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+            <LineChart data={filteredData} margin={{ top: 10, right: 20, left: 0, bottom: 20 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#D9D5CA" strokeOpacity={0.6} vertical={false} />
               <XAxis
                 dataKey="month"
-                stroke="#94a3b8"
+                stroke="#9EAA9C"
                 fontSize={11}
                 tickLine={false}
                 tickFormatter={(val: string) => {
@@ -480,78 +403,117 @@ export const MarketTrends: React.FC = () => {
                 }}
               />
               <YAxis
-                stroke="#94a3b8"
+                stroke="#9EAA9C"
                 fontSize={11}
+                domain={['auto', 'auto']}
+                tickFormatter={(val: number) => `₹${Math.round(val / 1000)}k`}
                 tickLine={false}
                 axisLine={false}
-                tickFormatter={(v) => `${(v / 1000).toFixed(1)}k`}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: '#0f172a',
+                  backgroundColor: '#FAF8F5',
                   borderRadius: '8px',
-                  border: 'none',
-                  color: '#fff',
+                  border: '1px solid #D9D5CA',
+                  color: '#252B29',
                   fontSize: '12px',
                 }}
-                formatter={(val: any) => [`${Number(val).toLocaleString('en-IN')} deeds`, 'Transactions']}
+                formatter={(val: any, name: any) => [
+                  `₹${Number(val).toLocaleString('en-IN')}/sq.ft`,
+                  NEIGHBORHOOD_KEYS.find((k) => k.key === name)?.label || name,
+                ]}
               />
-              <Bar dataKey="transactions" fill="#6366f1" radius={[4, 4, 0, 0]} />
+              {selectedLines.map((key) => {
+                const cfg = NEIGHBORHOOD_KEYS.find((k) => k.key === key) || { label: key, color: '#9EAA9C' };
+                return (
+                  <Line
+                    key={key}
+                    type="monotone"
+                    dataKey={key}
+                    stroke={cfg.color}
+                    strokeWidth={key === 'avgPrice' ? 2.5 : 1.8}
+                    dot={false}
+                    name={key}
+                    isAnimationActive={false}
+                  />
+                );
+              })}
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </section>
+
+      {/* ── SECTION 3: TRANSACTION SEASONALITY ── */}
+      <section className="bg-paper rounded-lg border border-stone/70 p-6 sm:p-8">
+        <SectionHeading
+          title="Transaction Volume Seasonality"
+          subtitle="Cyclical patterns observed across quarterly real estate transactions"
+        />
+
+        <div className="h-64 w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={seasonalityIndex} margin={{ top: 10, right: 20, left: 0, bottom: 20 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#D9D5CA" strokeOpacity={0.6} vertical={false} />
+              <XAxis dataKey="month" stroke="#9EAA9C" fontSize={11} tickLine={false} />
+              <YAxis stroke="#9EAA9C" fontSize={11} tickLine={false} axisLine={false} />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#FAF8F5',
+                  borderRadius: '8px',
+                  border: '1px solid #D9D5CA',
+                  color: '#252B29',
+                  fontSize: '12px',
+                }}
+                formatter={(val: any, _name: any, item: any) => [
+                  `${val} transactions (${item.payload.tag})`,
+                  'Average Monthly Volume',
+                ]}
+              />
+              <Bar dataKey="volume" radius={[4, 4, 0, 0]} maxBarSize={40}>
+                {seasonalityIndex.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={entry.deviationPct > 1.5 ? '#C56C4B' : entry.deviationPct < -1.5 ? '#9EAA9C' : '#183D35'}
+                  />
+                ))}
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </div>
-      </div>
 
-      {/* Statistical Summary Table */}
-      <div className="bg-white rounded-xl border border-slate-200/80 p-5 shadow-xs overflow-hidden">
-        <div className="flex items-center gap-2 mb-4">
-          <Calculator className="w-4 h-4 text-indigo-600" />
-          <h3 className="text-base font-semibold text-slate-800">
-            5-Year Parametric Statistics Summary (2020–2024)
-          </h3>
+        <div className="flex flex-wrap items-center justify-center gap-6 mt-4 pt-3 border-t border-stone/40 text-xs text-charcoal">
+          <div className="flex items-center gap-2">
+            <span className="w-3 h-3 rounded-sm bg-forest" />
+            <span>Regular Trading Volume</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="w-3 h-3 rounded-sm bg-terracotta" />
+            <span>Festive Season Peak (+3.1% volume deviation)</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="w-3 h-3 rounded-sm bg-sage" />
+            <span>Monsoon Slump (-2.4% volume deviation)</span>
+          </div>
         </div>
+      </section>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-slate-600">
-            <thead className="bg-slate-50 text-slate-500 text-xs uppercase font-semibold border-b border-slate-100">
-              <tr>
-                <th scope="col" className="px-4 py-3">
-                  Neighborhood
-                </th>
-                <th scope="col" className="px-4 py-3">
-                  Min Price (₹/sq.ft)
-                </th>
-                <th scope="col" className="px-4 py-3">
-                  Max Price (₹/sq.ft)
-                </th>
-                <th scope="col" className="px-4 py-3">
-                  Mean Rate
-                </th>
-                <th scope="col" className="px-4 py-3">
-                  Median Rate
-                </th>
-                <th scope="col" className="px-4 py-3">
-                  Std Deviation (σ)
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {summaryStats.map((item) => (
-                <tr key={item.id} className="hover:bg-slate-50/70 transition">
-                  <td className="px-4 py-3 font-semibold text-slate-800">{item.name}</td>
-                  <td className="px-4 py-3">₹{item.min.toLocaleString('en-IN')}</td>
-                  <td className="px-4 py-3">₹{item.max.toLocaleString('en-IN')}</td>
-                  <td className="px-4 py-3 font-medium text-slate-900">
-                    ₹{item.avg.toLocaleString('en-IN')}
-                  </td>
-                  <td className="px-4 py-3">₹{item.median.toLocaleString('en-IN')}</td>
-                  <td className="px-4 py-3 text-slate-500">±₹{item.stdDev.toLocaleString('en-IN')}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {/* ── METHODOLOGY ACCORDION (LEVEL 2 & 3 DISCLOSURE) ── */}
+      <MethodologyAccordion title="Data Sources, Geographic Demarcation & Calculation Notes" level={2}>
+        <div className="space-y-4 text-xs">
+          <div>
+            <strong className="block text-forest mb-1">Official RBI Data Source</strong>
+            <p className="text-sage leading-relaxed">
+              The macro House Price Index is retrieved directly from the Reserve Bank of India Database on Indian Economy (DBIE). Base year is FY 2010–11 = 100.0, calculated based on official registration authority valuation and banking mortgage disclosures across 10 major cities.
+            </p>
+          </div>
+          <div>
+            <strong className="block text-forest mb-1">Geographic Granularity Limitation</strong>
+            <p className="text-sage leading-relaxed">
+              The RBI HPI represents city-wide index levels. While it faithfully tracks aggregate macroeconomic price movements, it does not distinguish between individual neighborhoods or postal codes within a city. Sub-market rates in Section 2 are synthetic micro-market models for illustration.
+            </p>
+          </div>
         </div>
-      </div>
+      </MethodologyAccordion>
     </div>
   );
 };

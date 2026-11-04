@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import {
   ResponsiveContainer,
   ComposedChart,
@@ -11,20 +12,23 @@ import {
   Legend,
 } from 'recharts';
 import {
-  BrainCircuit,
   Sparkles,
   Info,
-  ShieldAlert,
-  BarChart3,
-  Calendar,
-  CheckCircle2,
+  TrendingUp,
   AlertTriangle,
+  ArrowRight,
+  Database,
+  CheckCircle2,
+  BrainCircuit,
 } from 'lucide-react';
 import { DemoNotice } from '../components/ui/DemoNotice';
 import { DataStatusBadge } from '../components/ui/DataStatusBadge';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 import { ApiErrorState } from '../components/ui/ApiErrorState';
 import { EmptyState } from '../components/ui/EmptyState';
+import { EditorialPageHeader } from '../components/ui/EditorialPageHeader';
+import { SectionHeading } from '../components/ui/SectionHeading';
+import { MethodologyAccordion } from '../components/ui/MethodologyAccordion';
 import { neighborhoods } from '../data/syntheticData';
 import { useForecast } from '../api/hooks';
 
@@ -77,7 +81,6 @@ export const Forecasting: React.FC = () => {
     mode,
   });
 
-  // Chart data transformation: observations + bridge + forecast
   const chartData = useMemo(() => {
     if (!forecast || !forecast.observations || forecast.observations.length === 0) {
       return [];
@@ -117,7 +120,6 @@ export const Forecasting: React.FC = () => {
     return [...obs, bridge, ...remaining];
   }, [forecast]);
 
-  // Derived KPI metrics
   const latestHistoricalPrice = useMemo(() => {
     if (!forecast?.observations || forecast.observations.length === 0) return 0;
     return forecast.observations[forecast.observations.length - 1].point_forecast;
@@ -156,21 +158,20 @@ export const Forecasting: React.FC = () => {
   }, [forecast]);
 
   return (
-    <div className="space-y-6">
-      {/* Heavy Warning Notice */}
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-10">
       <DemoNotice
-        customMessage="⚠️ CRITICAL DISCLAIMER: Price projections shown are synthetic simulations produced by a statistical forecasting engine. Under no circumstances should this be utilized for actual capital allocation, financial underwriting, or commercial appraisal."
-        dismissible={false}
+        customMessage="Price projections are statistical simulations generated for analytical study. They do not constitute official financial appraisals or investment recommendations."
       />
 
-      {/* Header & Controls */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white p-5 rounded-xl border border-slate-200/80 shadow-xs">
-        <div>
-          <div className="flex items-center gap-2.5 mb-1">
-            <h2 className="text-base font-bold text-slate-800 flex items-center gap-2">
-              <BrainCircuit className="w-5 h-5 text-indigo-600" />
-              <span>Forward Price Projections & Model Evaluation</span>
-            </h2>
+      <EditorialPageHeader
+        title="Price Forecasting &amp; Projections"
+        subtitle="Forward econometric modeling, baseline evaluation, and statistical uncertainty intervals."
+        badge={
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] uppercase tracking-wider font-semibold text-terracotta">
+              Forward Intelligence
+            </span>
+            <span className="text-stone">·</span>
             <DataStatusBadge
               status={
                 forecast?.data_status ||
@@ -179,526 +180,334 @@ export const Forecasting: React.FC = () => {
               size="sm"
             />
           </div>
-          <p className="text-xs text-slate-500">
-            Automated baseline comparison, out-of-sample validation, and 95% confidence intervals
-          </p>
+        }
+      >
+        <div className="flex items-center gap-2">
+          <Link
+            to="/market-trends"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-stone bg-paper text-charcoal hover:bg-ivory text-xs font-semibold transition-colors"
+          >
+            <span>&larr; View Historical Trends</span>
+          </Link>
         </div>
+      </EditorialPageHeader>
 
-        <div className="flex flex-wrap items-center gap-3">
-          {/* Mode Switcher */}
-          <div className="flex items-center rounded-lg bg-slate-100 p-1 border border-slate-200">
+      {/* Control Bar */}
+      <section className="bg-paper rounded-lg border border-stone/70 p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-semibold text-charcoal">Mode:</span>
+          <div className="inline-flex p-1 bg-ivory rounded-md border border-stone text-xs">
             <button
               type="button"
               onClick={() => setMode('demo')}
-              className={`px-2.5 py-1 text-xs font-semibold rounded-md transition ${
-                mode === 'demo'
-                  ? 'bg-white text-indigo-700 shadow-2xs'
-                  : 'text-slate-600 hover:text-slate-900'
+              className={`px-3 py-1 rounded font-medium transition-colors ${
+                mode === 'demo' ? 'bg-forest text-ivory font-semibold' : 'text-charcoal hover:bg-stone/40'
               }`}
             >
-              Demo Mode
+              Demo Sector Mode
             </button>
             <button
               type="button"
               onClick={() => setMode('real')}
-              className={`px-2.5 py-1 text-xs font-semibold rounded-md transition ${
-                mode === 'real'
-                  ? 'bg-white text-indigo-700 shadow-2xs'
-                  : 'text-slate-600 hover:text-slate-900'
+              className={`px-3 py-1 rounded font-medium transition-colors ${
+                mode === 'real' ? 'bg-forest text-ivory font-semibold' : 'text-charcoal hover:bg-stone/40'
               }`}
             >
-              Real Data Mode
+              Empirical RBI Mode
             </button>
           </div>
-
-          {/* Geography Selector (City for Real Mode, Sector for Demo Mode) */}
-          <div className="flex items-center gap-2">
-            <label
-              htmlFor="geography-select"
-              className="text-xs font-semibold text-slate-600 whitespace-nowrap"
-            >
-              {isRealMode ? 'City (HPI):' : 'Sector:'}
-            </label>
-            {isRealMode ? (
-              <select
-                id="geography-select"
-                value={selectedRealCity}
-                onChange={(e) => setSelectedRealCity(e.target.value)}
-                className="text-xs font-semibold bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
-              >
-                {REAL_CITIES.map((c) => (
-                  <option key={c} value={c}>
-                    {c} (RBI HPI)
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <select
-                id="geography-select"
-                value={selectedNeighborhoodId}
-                onChange={(e) => setSelectedNeighborhoodId(e.target.value)}
-                className="text-xs font-semibold bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
-              >
-                {neighborhoods.map((n) => (
-                  <option key={n.id} value={n.id}>
-                    {n.name} (₹{n.avgPrice.toLocaleString('en-IN')})
-                  </option>
-                ))}
-              </select>
-            )}
-          </div>
         </div>
-      </div>
+
+        <div className="flex items-center gap-2">
+          <label htmlFor="geography-select" className="text-xs font-semibold text-charcoal">
+            {isRealMode ? 'City (RBI HPI):' : 'Sector:'}
+          </label>
+          {isRealMode ? (
+            <select
+              id="geography-select"
+              value={selectedRealCity}
+              onChange={(e) => setSelectedRealCity(e.target.value)}
+              className="text-xs font-semibold text-charcoal bg-ivory border border-stone rounded-md px-3 py-1.5 focus:border-forest"
+            >
+              {REAL_CITIES.map((c) => (
+                <option key={c} value={c}>
+                  {c} (RBI HPI)
+                </option>
+              ))}
+            </select>
+          ) : (
+            <select
+              id="geography-select"
+              value={selectedNeighborhoodId}
+              onChange={(e) => setSelectedNeighborhoodId(e.target.value)}
+              className="text-xs font-semibold text-charcoal bg-ivory border border-stone rounded-md px-3 py-1.5 focus:border-forest"
+            >
+              {neighborhoods.map((n) => (
+                <option key={n.id} value={n.id}>
+                  {n.name} (₹{n.avgPrice.toLocaleString('en-IN')}/sq.ft)
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
+      </section>
 
       {/* Loading State */}
       {loading && (
-        <div className="bg-white rounded-xl border border-slate-200/80 p-12">
-          <LoadingSpinner
-            size="lg"
-            label="Executing forecasting engine and out-of-sample validation..."
-          />
+        <div className="bg-paper rounded-lg border border-stone/70 p-12">
+          <LoadingSpinner size="lg" label="Computing statistical forecast and validation metrics..." />
         </div>
       )}
 
       {/* Error State */}
       {!loading && error && (
         <ApiErrorState
-          error={error}
           onRetry={refetch}
           title="Forecasting Pipeline Communication Error"
         />
       )}
 
-      {/* Unavailable / Insufficient Data State */}
+      {/* Unavailable State */}
       {!loading && !error && forecast && forecast.status !== 'ok' && (
-        <EmptyState
-          icon={AlertTriangle}
-          title={
-            mode === 'real'
-              ? 'Real-Market Forecasting Unavailable'
-              : 'Data Insufficient for Forecasting'
-          }
-          description={
-            forecast.reason ||
-            'Real-world RBI/NHB quarterly series have not yet been ingested into the verified database. Switch to Demo Mode to explore the algorithmic pipeline.'
-          }
-          action={
-            mode === 'real'
-              ? {
-                  label: 'Switch to Demo Mode',
-                  onClick: () => setMode('demo'),
-                }
-              : undefined
-          }
-        />
+        <div className="bg-paper rounded-lg border border-stone/70 p-8">
+          <EmptyState
+            icon={<AlertTriangle className="w-8 h-8 text-terracotta" />}
+            title={
+              mode === 'real'
+                ? 'Empirical Forecast Unavailable for Selection'
+                : 'Insufficient Observations for Forecasting'
+            }
+            message={
+              forecast.reason ||
+              'Real RBI series require a selected valid metropolitan center. Switch to Demo Mode to inspect synthetic forecasting algorithms.'
+            }
+            action={
+              mode === 'real' ? (
+                <button
+                  type="button"
+                  onClick={() => setMode('demo')}
+                  className="px-4 py-2 bg-forest text-ivory rounded-md text-xs font-semibold hover:bg-forest/90"
+                >
+                  Switch to Demo Mode
+                </button>
+              ) : undefined
+            }
+          />
+        </div>
       )}
 
       {/* Main Content when status is ok */}
       {!loading && !error && forecast && forecast.status === 'ok' && (
         <>
-          {/* Real Mode Informational Disclaimer */}
-          {isRealMode && (
-            <div className="p-3.5 bg-indigo-50/80 rounded-xl border border-indigo-200 text-xs text-indigo-900 flex items-start gap-3">
-              <Info className="w-4 h-4 text-indigo-600 shrink-0 mt-0.5" />
-              <div>
-                <span className="font-bold block mb-0.5">
-                  Official RBI House Price Index (Base: 2010-11 = 100)
-                </span>
-                Displaying genuine quarterly index points from the Reserve Bank of India DBIE. Values represent city-level macroeconomic property price index changes, NOT micro-market ₹/sq.ft property valuation rates.
-              </div>
-            </div>
-          )}
-
-          {/* Summary KPI Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-xs">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                Latest Baseline ({forecast.observations?.[forecast.observations.length - 1]?.date || 'Recent'})
+          {/* Summary Metric Strip */}
+          <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="bg-paper rounded-lg border border-stone/70 p-4">
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-sage block">
+                Latest Baseline Level
               </span>
-              <div className="text-2xl font-bold text-slate-900 mt-1">
+              <div className="text-2xl font-serif font-bold text-charcoal mt-1">
                 {isRealMode
                   ? `${latestHistoricalPrice.toFixed(1)} pts`
                   : `₹${latestHistoricalPrice.toLocaleString('en-IN')}`}
               </div>
-              <span className="text-xs text-slate-400">
-                {isRealMode ? 'HPI Index Points (Base 100)' : 'Transacted average rate'}
+              <span className="text-xs text-sage">
+                {isRealMode ? 'RBI HPI (Base 100)' : 'Transacted average rate'}
               </span>
             </div>
 
-            <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-xs">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                Projected in 6 {isRealMode ? 'Quarters' : 'Months'}
+            <div className="bg-paper rounded-lg border border-stone/70 p-4">
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-sage block">
+                Projected 6 {isRealMode ? 'Quarters' : 'Months'}
               </span>
-              <div className="text-2xl font-bold text-indigo-600 mt-1">
+              <div className="text-2xl font-serif font-bold text-forest mt-1">
                 {isRealMode
                   ? `${predicted6m.toFixed(1)} pts`
                   : `₹${predicted6m.toLocaleString('en-IN')}`}
               </div>
-              <span className="text-xs text-emerald-600 font-medium">
+              <span className="text-xs text-forest font-medium">
                 +{growth6m}% vs. baseline
               </span>
             </div>
 
-            <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-xs">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                Projected in 12 {isRealMode ? 'Quarters' : 'Months'}
+            <div className="bg-paper rounded-lg border border-stone/70 p-4">
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-sage block">
+                Projected 12 {isRealMode ? 'Quarters' : 'Months'}
               </span>
-              <div className="text-2xl font-bold text-indigo-600 mt-1">
+              <div className="text-2xl font-serif font-bold text-terracotta mt-1">
                 {isRealMode
                   ? `${predicted12m.toFixed(1)} pts`
                   : `₹${predicted12m.toLocaleString('en-IN')}`}
               </div>
-              <span className="text-xs text-emerald-600 font-medium">
+              <span className="text-xs text-terracotta font-medium">
                 +{projectedGrowth}% Annualized
               </span>
             </div>
 
-            <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-xs">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                Confidence Interval Band
+            <div className="bg-paper rounded-lg border border-stone/70 p-4">
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-sage block">
+                Uncertainty Range
               </span>
-              <div className="text-2xl font-bold text-slate-900 mt-1">
+              <div className="text-2xl font-serif font-bold text-charcoal mt-1">
                 95% Level
               </div>
-              <span className="text-xs text-slate-500">
+              <span className="text-xs text-sage">
                 {ciWidthPct !== '0.0'
                   ? `Half-width ±${ciWidthPct}%`
-                  : 'Gaussian residual std estimation'}
+                  : 'Empirical variance estimate'}
               </span>
             </div>
-          </div>
+          </section>
 
-          {/* Combined Historical + Forecast Chart */}
-          <div className="bg-white rounded-xl border border-slate-200/80 p-5 shadow-xs">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+          {/* Combined Chart */}
+          <section className="bg-paper rounded-lg border border-stone/70 p-6 sm:p-8 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-stone/40 pb-4">
               <div>
-                <h3 className="text-base font-semibold text-slate-800">
-                  Trajectory &amp; Forecast Horizon ({isRealMode ? selectedRealCity : selectedNeighborhood.name})
+                <span className="text-[10px] uppercase tracking-wider font-semibold text-sage block mb-0.5">
+                  Forward Trajectory
+                </span>
+                <h3 className="font-serif text-xl font-semibold text-charcoal">
+                  Historical Observations vs. Projected Trajectory ({isRealMode ? selectedRealCity : selectedNeighborhood.name})
                 </h3>
-                <p className="text-xs text-slate-500">
-                  {isRealMode
-                    ? 'Official quarterly RBI House Price Index (Base 2010-11=100) — city level index points'
-                    : 'Solid line: Historical monthly rates | Dashed line: Point forecast estimates | Shaded: 95% Confidence range'}
+                <p className="text-xs text-sage mt-0.5">
+                  Solid green line: Historical records | Dashed terracotta line: Projected path | Shaded: 95% Confidence range
                 </p>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-md bg-indigo-50 text-indigo-800 border border-indigo-200">
-                  <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
-                  <span>
-                    Model: {forecast.model_name.replace(/_/g, ' ').toUpperCase()} (v{forecast.model_version})
-                  </span>
-                </span>
-              </div>
+
+              <span className="text-xs font-mono font-medium text-forest bg-forest/5 border border-forest/15 px-2.5 py-1 rounded-md self-start sm:self-auto">
+                Model: {forecast.model_name.replace(/_/g, ' ').toUpperCase()} (v{forecast.model_version})
+              </span>
             </div>
 
-            <div className="h-96">
+            <div className="h-96 w-full pt-2">
               <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart
-                  data={chartData}
-                  margin={{ top: 15, right: 20, left: 0, bottom: 20 }}
-                >
+                <ComposedChart data={chartData} margin={{ top: 15, right: 20, left: 0, bottom: 20 }}>
                   <defs>
                     <linearGradient id="ciGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#6366f1" stopOpacity={0.25} />
-                      <stop offset="100%" stopColor="#6366f1" stopOpacity={0.05} />
+                      <stop offset="0%" stopColor="#C56C4B" stopOpacity={0.25} />
+                      <stop offset="100%" stopColor="#C56C4B" stopOpacity={0.05} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
-                  <XAxis
-                    dataKey="month"
-                    stroke="#94a3b8"
-                    fontSize={11}
-                    tickLine={false}
-                    tickFormatter={(val: string) => {
-                      if (val.startsWith('Jan') || val.startsWith('Jul')) return val;
-                      return '';
-                    }}
-                  />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#D9D5CA" strokeOpacity={0.6} vertical={false} />
+                  <XAxis dataKey="month" stroke="#9EAA9C" fontSize={11} tickLine={false} />
                   <YAxis
-                    stroke="#94a3b8"
+                    stroke="#9EAA9C"
                     fontSize={11}
+                    domain={['auto', 'auto']}
                     tickLine={false}
                     axisLine={false}
-                    domain={['auto', 'auto']}
-                    tickFormatter={(val: number) =>
-                      isRealMode ? `${Math.round(val)} pts` : `₹${Math.round(val / 1000)}k`
-                    }
+                    tickFormatter={(v) => isRealMode ? `${Math.round(v)}` : `₹${Math.round(v / 1000)}k`}
                   />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: '#0f172a',
+                      backgroundColor: '#FAF8F5',
                       borderRadius: '8px',
-                      border: 'none',
-                      color: '#fff',
+                      border: '1px solid #D9D5CA',
+                      color: '#252B29',
                       fontSize: '12px',
                     }}
                     formatter={(val: any, name: any) => {
-                      if (val === null || val === undefined) return [null, null];
-                      const labels: Record<string, string> = {
-                        historical: isRealMode ? 'Historical HPI' : 'Historical Rate',
-                        predicted: isRealMode ? 'Forecasted HPI' : 'Forecasted Rate',
-                        lowerBound: 'Lower 95% CI',
-                        upperBound: 'Upper 95% CI',
-                      };
-                      const valStr = isRealMode
-                        ? `${Number(val).toFixed(1)} index pts`
+                      if (val == null) return ['—', name];
+                      const formatted = isRealMode
+                        ? `${Number(val).toFixed(2)} pts`
                         : `₹${Number(val).toLocaleString('en-IN')}/sq.ft`;
-                      return [valStr, labels[name] || name];
+                      return [formatted, name];
                     }}
                   />
-                  <Legend wrapperStyle={{ paddingTop: '10px', fontSize: '12px' }} />
+                  <Legend wrapperStyle={{ paddingTop: '12px', fontSize: '12px' }} />
 
-                  {/* Shaded Confidence Band */}
+                  {/* 95% Confidence Interval Area */}
                   <Area
                     type="monotone"
                     dataKey="upperBound"
-                    stroke="transparent"
+                    stroke="none"
                     fill="url(#ciGradient)"
-                    name="Confidence Band"
+                    name="95% Confidence Range"
                   />
                   <Area
                     type="monotone"
                     dataKey="lowerBound"
-                    stroke="transparent"
-                    fill="#ffffff"
-                    name="CI Lower Base"
+                    stroke="none"
+                    fill="#FAF8F5"
+                    name="Lower Bound Bound"
+                    legendType="none"
                   />
 
-                  {/* Historical Line */}
+                  {/* Historical observations line */}
                   <Line
                     type="monotone"
                     dataKey="historical"
-                    stroke="#0f172a"
+                    name="Historical Observations"
+                    stroke="#183D35"
                     strokeWidth={2.5}
                     dot={false}
-                    name={isRealMode ? 'Historical HPI' : 'Historical Rate'}
+                    activeDot={{ r: 5, fill: '#183D35' }}
                   />
 
-                  {/* Forecast Line */}
+                  {/* Projected forecast line */}
                   <Line
                     type="monotone"
                     dataKey="predicted"
-                    stroke="#6366f1"
+                    name="Point Projection"
+                    stroke="#C56C4B"
                     strokeWidth={2.5}
                     strokeDasharray="5 5"
-                    dot={{ r: 4, fill: '#6366f1' }}
-                    name="Point Forecast"
+                    dot={{ r: 3, fill: '#C56C4B' }}
+                    activeDot={{ r: 6, fill: '#C56C4B' }}
                   />
                 </ComposedChart>
               </ResponsiveContainer>
             </div>
-          </div>
+          </section>
 
-          {/* Model Evaluation & Performance Table */}
-          {forecast.evaluation && (
-            <div className="bg-white rounded-xl border border-slate-200/80 p-5 shadow-xs">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <BarChart3 className="w-5 h-5 text-indigo-600" />
-                  <h3 className="text-base font-semibold text-slate-800">
-                    Model Evaluation & Out-of-Sample Benchmark
-                  </h3>
+          {/* Model Evaluation & Validation Details (Level 2 & 3 Accordions) */}
+          <MethodologyAccordion title="Model Diagnostics & Out-of-Sample Evaluation Metrics" level={3}>
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="p-3 bg-paper rounded border border-stone/50">
+                  <span className="text-[10px] uppercase font-semibold text-sage block">Model Architecture</span>
+                  <span className="font-mono text-sm font-semibold text-charcoal">{forecast.model_name}</span>
                 </div>
-                <div className="text-xs text-slate-500 flex items-center gap-1.5">
-                  <Calendar className="w-3.5 h-3.5 text-slate-400" />
-                  <span>
-                    Split: 80% Train ({forecast.n_training} obs) / 20% Val ({forecast.n_validation} obs)
+                <div className="p-3 bg-paper rounded border border-stone/50">
+                  <span className="text-[10px] uppercase font-semibold text-sage block">Training Window</span>
+                  <span className="font-mono text-sm font-semibold text-charcoal">
+                    {forecast.training_period?.start || '2010'} to {forecast.training_period?.end || '2024'}
                   </span>
                 </div>
-              </div>
-
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs border border-slate-200 rounded-lg">
-                  <thead className="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
-                    <tr>
-                      <th className="py-2.5 px-4">Evaluation Metric</th>
-                      <th className="py-2.5 px-4">
-                        Selected Model ({forecast.model_name})
-                      </th>
-                      <th className="py-2.5 px-4">
-                        Baseline (naive_last_value)
-                      </th>
-                      <th className="py-2.5 px-4">Performance vs. Baseline</th>
-                      <th className="py-2.5 px-4">Interpretation</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-200 text-slate-700">
-                    <tr>
-                      <td className="py-2.5 px-4 font-semibold text-slate-900">
-                        Mean Absolute Error (MAE)
-                      </td>
-                      <td className="py-2.5 px-4 font-mono font-medium text-indigo-600">
-                        {isRealMode
-                          ? `${forecast.evaluation.model.MAE} pts`
-                          : `₹${forecast.evaluation.model.MAE.toLocaleString('en-IN')}`}
-                      </td>
-                      <td className="py-2.5 px-4 font-mono text-slate-500">
-                        {isRealMode
-                          ? `${forecast.evaluation.baseline_naive_last.MAE} pts`
-                          : `₹${forecast.evaluation.baseline_naive_last.MAE.toLocaleString('en-IN')}`}
-                      </td>
-                      <td className="py-2.5 px-4">
-                        {forecast.evaluation.vs_baseline.MAE_reduction_pct > 0 ? (
-                          <span className="inline-flex items-center gap-1 font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
-                            <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                            +{forecast.evaluation.vs_baseline.MAE_reduction_pct}% reduction
-                          </span>
-                        ) : (
-                          <span className="text-slate-500">
-                            {forecast.evaluation.vs_baseline.MAE_reduction_pct}%
-                          </span>
-                        )}
-                      </td>
-                      <td className="py-2.5 px-4 text-slate-500">
-                        {forecast.evaluation.vs_baseline.MAE_reduction_pct > 0
-                          ? 'Beats naive last-value persistence on hold-out data'
-                          : 'Parity with last-observation persistence'}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="py-2.5 px-4 font-semibold text-slate-900">
-                        Root Mean Squared Error (RMSE)
-                      </td>
-                      <td className="py-2.5 px-4 font-mono font-medium text-indigo-600">
-                        {isRealMode
-                          ? `${forecast.evaluation.model.RMSE} pts`
-                          : `₹${forecast.evaluation.model.RMSE.toLocaleString('en-IN')}`}
-                      </td>
-                      <td className="py-2.5 px-4 font-mono text-slate-500">
-                        {isRealMode
-                          ? `${forecast.evaluation.baseline_naive_last.RMSE} pts`
-                          : `₹${forecast.evaluation.baseline_naive_last.RMSE.toLocaleString('en-IN')}`}
-                      </td>
-                      <td className="py-2.5 px-4">
-                        {forecast.evaluation.vs_baseline.RMSE_reduction_pct > 0 ? (
-                          <span className="inline-flex items-center gap-1 font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
-                            <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                            +{forecast.evaluation.vs_baseline.RMSE_reduction_pct}% reduction
-                          </span>
-                        ) : (
-                          <span className="text-slate-500">
-                            {forecast.evaluation.vs_baseline.RMSE_reduction_pct}%
-                          </span>
-                        )}
-                      </td>
-                      <td className="py-2.5 px-4 text-slate-500">
-                        Penalizes larger outliers more heavily in validation window
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              {/* Training and Validation Periods Metadata */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4 text-xs text-slate-600">
-                <div className="p-3 bg-slate-50 rounded-lg border border-slate-200">
-                  <span className="font-semibold text-slate-800 block mb-1">
-                    Training Horizon:
-                  </span>
-                  <span>
-                    {forecast.training_period?.start} to {forecast.training_period?.end} ({forecast.n_training} monthly points)
-                  </span>
-                </div>
-                <div className="p-3 bg-slate-50 rounded-lg border border-slate-200">
-                  <span className="font-semibold text-slate-800 block mb-1">
-                    Hold-out Validation Horizon:
-                  </span>
-                  <span>
-                    {forecast.validation_period?.start} to {forecast.validation_period?.end} ({forecast.n_validation} monthly points)
+                <div className="p-3 bg-paper rounded border border-stone/50">
+                  <span className="text-[10px] uppercase font-semibold text-sage block">Validation Window</span>
+                  <span className="font-mono text-sm font-semibold text-charcoal">
+                    {forecast.validation_period?.start || '2024'} to {forecast.validation_period?.end || '2025'}
                   </span>
                 </div>
               </div>
-            </div>
-          )}
 
-          {/* Warnings & Methodological Limitations Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Model Architecture & Specification */}
-            <div className="bg-white rounded-xl border border-slate-200/80 p-5 shadow-xs">
-              <h3 className="text-base font-semibold text-slate-800 mb-2 flex items-center gap-2">
-                <Info className="w-4 h-4 text-slate-500" />
-                <span>Forecasting Pipeline & Methodological Limitations</span>
-              </h3>
-              <p className="text-xs text-slate-500 mb-4">
-                System assumptions and documented boundary constraints
-              </p>
-
-              <div className="space-y-3 text-xs text-slate-600 leading-relaxed">
-                <div className="p-3 bg-slate-50 rounded-lg border border-slate-200">
-                  <span className="font-semibold text-slate-900 block mb-1">
-                    Model Specification:
-                  </span>
-                  <span>
-                    Active model: <strong className="font-mono text-indigo-700">{forecast.model_name}</strong> (v{forecast.model_version}).
-                    Forecast horizon: {forecast.horizon} periods forward.
-                  </span>
-                </div>
-
-                <div className="p-3 bg-slate-50 rounded-lg border border-slate-200">
-                  <span className="font-semibold text-slate-900 block mb-1">
-                    API Documented Limitations:
-                  </span>
-                  <ul className="list-disc list-inside space-y-1">
-                    {forecast.limitations.map((lim, idx) => (
-                      <li key={idx}>{lim}</li>
-                    ))}
-                  </ul>
-                </div>
-
-                {forecast.generated_at && (
-                  <div className="text-[11px] text-slate-400">
-                    Generated at: {forecast.generated_at}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Active Warnings from API */}
-            <div className="bg-white rounded-xl border border-slate-200/80 p-5 shadow-xs">
-              <h3 className="text-base font-semibold text-slate-800 mb-2 flex items-center gap-2">
-                <ShieldAlert className="w-4 h-4 text-amber-500" />
-                <span>Active Pipeline Warnings & Data Integrity Flags</span>
-              </h3>
-              <p className="text-xs text-slate-500 mb-4">
-                Real-time governance diagnostics emitted by forecasting engine
-              </p>
-
-              <div className="space-y-3">
-                {forecast.warnings.map((warn, idx) => (
-                  <div
-                    key={idx}
-                    className="p-3 rounded-lg border border-amber-200 bg-amber-50/70 text-amber-900"
-                  >
-                    <div className="flex items-center gap-2 text-xs font-semibold mb-1">
-                      <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
-                      <span>Notice #{idx + 1}</span>
+              {forecast.evaluation && (
+                <div className="pt-2 border-t border-stone/40">
+                  <strong className="block text-forest text-xs mb-2">Out-of-Sample Error Comparison</strong>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
+                    <div>
+                      <span className="text-sage block">Model MAE:</span>
+                      <span className="text-charcoal font-semibold">{forecast.evaluation.model?.MAE ?? '—'}</span>
                     </div>
-                    <p className="text-xs text-amber-800">{warn}</p>
-                  </div>
-                ))}
-
-                <div className="p-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-700">
-                  <span className="text-xs font-semibold block mb-1">
-                    Data Source Attribution:
-                  </span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {forecast.source_names.map((s, idx) => (
-                      <span
-                        key={idx}
-                        className="px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 text-[10px] font-mono"
-                      >
-                        {s}
-                      </span>
-                    ))}
+                    <div>
+                      <span className="text-sage block">Baseline MAE:</span>
+                      <span className="text-charcoal font-semibold">{forecast.evaluation.baseline_naive_last?.MAE ?? '—'}</span>
+                    </div>
+                    <div>
+                      <span className="text-sage block">Model RMSE:</span>
+                      <span className="text-charcoal font-semibold">{forecast.evaluation.model?.RMSE ?? '—'}</span>
+                    </div>
+                    <div>
+                      <span className="text-sage block">Baseline RMSE:</span>
+                      <span className="text-charcoal font-semibold">{forecast.evaluation.baseline_naive_last?.RMSE ?? '—'}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
-          </div>
+          </MethodologyAccordion>
         </>
       )}
     </div>
   );
 };
-
-export default Forecasting;

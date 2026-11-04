@@ -55,6 +55,8 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
+import { EditorialPageHeader } from '../components/ui/EditorialPageHeader';
+import { DataStatusBadge } from '../components/ui/DataStatusBadge';
 
 // ── Indian Currency & Percentage Formatters ──────────────────────────────────
 function inr(n: number, compact = false): string {
@@ -272,17 +274,17 @@ interface SliderProps {
 }
 
 const Slider: React.FC<SliderProps> = ({ label, value, min, max, step, format, onChange, tooltip }) => (
-  <div className="space-y-1">
+  <div className="space-y-1.5">
     <div className="flex justify-between items-center text-xs">
-      <span className="font-medium text-slate-600 flex items-center gap-1">
+      <span className="font-medium text-charcoal flex items-center gap-1">
         {label}
         {tooltip && (
-          <span title={tooltip} className="text-slate-400 cursor-help">
-            <Info className="w-3 h-3" />
+          <span title={tooltip} className="text-sage cursor-help">
+            <Info className="w-3.5 h-3.5" />
           </span>
         )}
       </span>
-      <span className="font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">
+      <span className="font-mono font-bold text-forest bg-forest/5 px-2 py-0.5 rounded border border-forest/15">
         {format(value)}
       </span>
     </div>
@@ -293,9 +295,9 @@ const Slider: React.FC<SliderProps> = ({ label, value, min, max, step, format, o
       step={step}
       value={value}
       onChange={(e) => onChange(Number(e.target.value))}
-      className="w-full h-1.5 bg-slate-200 rounded-full appearance-none cursor-pointer accent-indigo-600"
+      className="w-full h-1.5 bg-stone/60 rounded-full appearance-none cursor-pointer accent-forest"
     />
-    <div className="flex justify-between text-[10px] text-slate-400">
+    <div className="flex justify-between text-[10px] text-sage font-mono">
       <span>{format(min)}</span>
       <span>{format(max)}</span>
     </div>
@@ -304,8 +306,8 @@ const Slider: React.FC<SliderProps> = ({ label, value, min, max, step, format, o
 
 // ── Disclaimers & Alert Components ──────────────────────────────────────────
 const DisclaimerBanner: React.FC<{ text?: string }> = ({ text }) => (
-  <div className="flex items-start gap-2 p-3 rounded-xl bg-amber-50/80 border border-amber-200/90 text-xs text-amber-800">
-    <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-amber-600" />
+  <div className="flex items-start gap-2.5 p-3.5 rounded-lg bg-ivory/80 border border-stone/70 text-xs text-charcoal/85">
+    <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-terracotta" />
     <span className="leading-relaxed">
       {text ||
         'UrbanLens provides educational financial calculations and scenario analysis. Results are estimates based on user-provided inputs and illustrative assumptions. They do not constitute official loan pre-approvals, legal fee quotations, or personalized investment advice.'}
@@ -314,7 +316,7 @@ const DisclaimerBanner: React.FC<{ text?: string }> = ({ text }) => (
 );
 
 const ErrorAlert: React.FC<{ msg: string; onRetry?: () => void }> = ({ msg, onRetry }) => (
-  <div className="flex items-center justify-between p-4 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-700">
+  <div className="flex items-center justify-between p-4 rounded-lg bg-terracotta/10 border border-terracotta/20 text-xs text-terracotta font-medium">
     <div className="flex items-center gap-2">
       <AlertCircle className="w-4 h-4 flex-shrink-0" />
       <span>{msg}</span>
@@ -322,7 +324,7 @@ const ErrorAlert: React.FC<{ msg: string; onRetry?: () => void }> = ({ msg, onRe
     {onRetry && (
       <button
         onClick={onRetry}
-        className="px-2.5 py-1 bg-rose-100 hover:bg-rose-200 rounded text-rose-800 font-semibold transition"
+        className="px-2.5 py-1 bg-terracotta text-ivory rounded font-semibold transition hover:bg-terracotta/90"
       >
         Retry
       </button>
@@ -359,7 +361,7 @@ const TABS: TabDef[] = [
   { id: 'methodology', label: 'Methodology & Data', Icon: BookOpen },
 ];
 
-const PALETTE = ['#6366f1', '#06b6d4', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6'];
+const PALETTE = ['#183D35', '#C56C4B', '#7D6355', '#9EAA9C', '#B48448', '#252B29'];
 
 // ═════════════════════════════════════════════════════════════════════════════
 // MAIN COMPONENT
@@ -2087,31 +2089,137 @@ export const Affordability: React.FC = () => {
   // MAIN DASHBOARD LAYOUT
   // ═════════════════════════════════════════════════════════════════════════════
   return (
-    <div className="space-y-6 pb-12">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
-            Housing Affordability Intelligence Engine
-          </h1>
-          <p className="text-xs text-slate-500 mt-1">
-            Empirical financial intelligence, reducing-balance mortgage analytics, and scenario modeling calibrated against official Reserve Bank of India datasets.
-          </p>
-        </div>
-
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-8 pb-16">
+      {/* Editorial Page Header */}
+      <EditorialPageHeader
+        title="Housing Affordability Intelligence"
+        subtitle="Deterministic reducing-balance mortgage modeling, true monthly ownership expense accounting, and 10-year rent vs. buy wealth comparisons."
+        badge={
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] uppercase tracking-wider font-semibold text-terracotta">
+              Decision Support
+            </span>
+            <span className="text-stone">·</span>
+            <DataStatusBadge status="real" size="sm" />
+          </div>
+        }
+      >
         <div className="flex items-center gap-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-semibold text-emerald-800">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            Backend API Online
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-forest/10 border border-forest/20 text-xs font-semibold text-forest">
+            <span className="w-2 h-2 rounded-full bg-forest animate-pulse" />
+            Deterministic Financial API
           </div>
         </div>
-      </div>
+      </EditorialPageHeader>
+
+      {/* ── GUIDED 3-STEP FINANCIAL WORKFLOW ── */}
+      <section className="bg-paper rounded-lg border border-stone/70 p-5 sm:p-6 space-y-4">
+        <div className="flex items-center justify-between border-b border-stone/40 pb-3">
+          <div>
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-terracotta block">
+              Guided Decision Workflow
+            </span>
+            <h3 className="font-serif text-lg font-semibold text-charcoal">
+              3-Step Housing Affordability Planner
+            </h3>
+          </div>
+          <span className="text-xs text-sage hidden sm:block">Step-by-step financial evaluation</span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+          {/* Step 1: Property */}
+          <div className="p-4 rounded-md bg-ivory/60 border border-stone/50 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] uppercase font-bold text-forest">Step 1: Property</span>
+              <button
+                type="button"
+                onClick={() => setActiveTab('emi')}
+                className="text-[10px] font-semibold text-terracotta hover:underline"
+              >
+                Configure &rarr;
+              </button>
+            </div>
+            <div className="space-y-1">
+              <div className="flex justify-between">
+                <span className="text-sage">Price:</span>
+                <span className="font-mono font-semibold text-charcoal">{inr(propertyPrice, true)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sage">Down Payment:</span>
+                <span className="font-mono text-charcoal">{downPaymentPct}% ({inr((propertyPrice * downPaymentPct) / 100, true)})</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sage">Interest &amp; Tenure:</span>
+                <span className="font-mono text-charcoal">{interestRate}% for {tenureYears} yrs</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Step 2: Household */}
+          <div className="p-4 rounded-md bg-ivory/60 border border-stone/50 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] uppercase font-bold text-forest">Step 2: Household</span>
+              <button
+                type="button"
+                onClick={() => setActiveTab('household')}
+                className="text-[10px] font-semibold text-terracotta hover:underline"
+              >
+                Configure &rarr;
+              </button>
+            </div>
+            <div className="space-y-1">
+              <div className="flex justify-between">
+                <span className="text-sage">Monthly Income:</span>
+                <span className="font-mono font-semibold text-charcoal">{inr(monthlyIncome, true)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sage">Existing Debt EMIs:</span>
+                <span className="font-mono text-charcoal">{inr(existingEmis, true)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sage">Available Savings:</span>
+                <span className="font-mono text-charcoal">{inr(liquidSavings, true)}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Step 3: Affordability Verdict */}
+          <div className="p-4 rounded-md bg-forest/5 border border-forest/20 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] uppercase font-bold text-forest">Step 3: Evaluation</span>
+              <button
+                type="button"
+                onClick={() => setActiveTab('overview')}
+                className="text-[10px] font-semibold text-forest hover:underline"
+              >
+                View Full Audit &rarr;
+              </button>
+            </div>
+            <div className="space-y-1">
+              <div className="flex justify-between">
+                <span className="text-sage">Estimated Monthly EMI:</span>
+                <span className="font-mono font-bold text-forest">{emiData ? inr(emiData.monthly_emi) : '—'}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sage">Upfront Cash Needed:</span>
+                <span className="font-mono font-bold text-charcoal">{upfrontData ? inr(upfrontData.total_upfront_cash_required, true) : '—'}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sage">FOIR Obligation Ratio:</span>
+                <span className={`font-mono font-bold ${householdData?.is_affordable ? 'text-forest' : 'text-terracotta'}`}>
+                  {householdData ? `${householdData.current_foir_pct}% (${householdData.is_affordable ? 'Affordable' : 'Stretched'})` : '—'}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Navigation Tab Bar */}
       <div
         role="tablist"
         aria-label="Housing Affordability Modules"
-        className="flex overflow-x-auto sm:flex-wrap gap-1.5 p-1.5 bg-white rounded-xl border border-slate-200/90 shadow-xs"
+        className="flex overflow-x-auto sm:flex-wrap gap-1.5 p-1.5 bg-paper rounded-lg border border-stone/70 shadow-xs"
       >
         {TABS.map((t) => (
           <button
@@ -2121,10 +2229,10 @@ export const Affordability: React.FC = () => {
             aria-controls={`section-${t.id}`}
             id={`tab-${t.id}`}
             onClick={() => setActiveTab(t.id)}
-            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
+            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-md text-xs font-semibold whitespace-nowrap transition-all border ${
               activeTab === t.id
-                ? 'bg-indigo-600 text-white shadow-xs'
-                : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                ? 'bg-forest text-ivory border-forest shadow-xs'
+                : 'bg-ivory text-charcoal border-stone/60 hover:bg-stone/40'
             }`}
           >
             <t.Icon className="w-3.5 h-3.5 shrink-0" />

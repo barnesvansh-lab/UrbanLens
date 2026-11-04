@@ -13,8 +13,8 @@ import {
   MapPin,
   GraduationCap,
   HeartPulse,
-  Car,
   Train,
+  Car,
   Layers,
   AlertTriangle,
   Info,
@@ -22,6 +22,7 @@ import {
   Sparkles,
   ArrowRight,
   Filter,
+  Compass,
 } from 'lucide-react';
 import {
   useNeighborhoods,
@@ -33,6 +34,8 @@ import { ApiNeighborhoodRegionSummary, ApiGeoJsonFeature } from '../api/types';
 import { DataStatusBadge } from '../components/ui/DataStatusBadge';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 import { ApiErrorState } from '../components/ui/ApiErrorState';
+import { EditorialPageHeader } from '../components/ui/EditorialPageHeader';
+import { MethodologyAccordion } from '../components/ui/MethodologyAccordion';
 
 // Fix default leaflet icons
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -51,29 +54,29 @@ const MapRecenter: React.FC<{ center: [number, number]; zoom: number }> = ({ cen
   return null;
 };
 
-// Helper: category icon and color
+// Category styling
 function getCategoryMeta(type: string): { label: string; color: string; badgeBg: string; textCol: string } {
   const t = type.toLowerCase();
   if (t === 'school' || t === 'driving_school') {
-    return { label: 'Education', color: '#4f46e5', badgeBg: 'bg-indigo-50 border-indigo-200', textCol: 'text-indigo-700' };
+    return { label: 'Education', color: '#183D35', badgeBg: 'bg-forest/10 border-forest/20', textCol: 'text-forest' };
   }
   if (t === 'hospital' || t === 'clinic') {
-    return { label: 'Healthcare', color: '#e11d48', badgeBg: 'bg-rose-50 border-rose-200', textCol: 'text-rose-700' };
+    return { label: 'Healthcare', color: '#C56C4B', badgeBg: 'bg-terracotta/10 border-terracotta/20', textCol: 'text-terracotta' };
   }
   if (t === 'stop_position') {
-    return { label: 'Transit Stop', color: '#0284c7', badgeBg: 'bg-sky-50 border-sky-200', textCol: 'text-sky-700' };
+    return { label: 'Transit Stop', color: '#7D6355', badgeBg: 'bg-stone/60 border-stone', textCol: 'text-charcoal' };
   }
   if (t.includes('parking')) {
-    return { label: 'Parking & Access', color: '#d97706', badgeBg: 'bg-amber-50 border-amber-200', textCol: 'text-amber-700' };
+    return { label: 'Parking & Access', color: '#9EAA9C', badgeBg: 'bg-sage/15 border-sage/30', textCol: 'text-forest' };
   }
-  return { label: type, color: '#64748b', badgeBg: 'bg-slate-50 border-slate-200', textCol: 'text-slate-700' };
+  return { label: type, color: '#252B29', badgeBg: 'bg-stone/50 border-stone', textCol: 'text-charcoal' };
 }
 
 const REGION_COLORS: Record<string, { fill: string; stroke: string }> = {
-  'south-mumbai-colaba': { fill: '#3b82f6', stroke: '#1d4ed8' },
-  'south-mumbai-fort': { fill: '#8b5cf6', stroke: '#6d28d9' },
-  'south-mumbai-malabar-hill': { fill: '#10b981', stroke: '#047857' },
-  'south-mumbai-grant-road': { fill: '#f59e0b', stroke: '#b45309' },
+  'south-mumbai-colaba': { fill: '#183D35', stroke: '#183D35' },
+  'south-mumbai-fort': { fill: '#C56C4B', stroke: '#C56C4B' },
+  'south-mumbai-malabar-hill': { fill: '#7D6355', stroke: '#7D6355' },
+  'south-mumbai-grant-road': { fill: '#9EAA9C', stroke: '#9EAA9C' },
 };
 
 export const NeighborhoodIntelligence: React.FC = () => {
@@ -83,7 +86,6 @@ export const NeighborhoodIntelligence: React.FC = () => {
   const [selectedId, setSelectedId] = useState<string>(focusParam);
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
 
-  // Sync url param
   useEffect(() => {
     if (focusParam && focusParam !== selectedId) {
       setSelectedId(focusParam);
@@ -95,7 +97,6 @@ export const NeighborhoodIntelligence: React.FC = () => {
     setSearchParams({ focus: id });
   };
 
-  // Queries
   const { data: neighborhoodsData, loading: loadingRegions, error: errorRegions, refetch: refetchRegions } = useNeighborhoods();
   const { boundaries } = useNeighborhoodBoundaries();
   const { data: analyticsData, loading: loadingAnalytics } = useNeighborhoodAnalytics(selectedId);
@@ -104,7 +105,6 @@ export const NeighborhoodIntelligence: React.FC = () => {
   const regions = neighborhoodsData?.regions || [];
   const activeRegion = analyticsData?.region;
 
-  // Filter amenities by category and region
   const filteredAmenities = useMemo(() => {
     if (!amenities) return [];
     return amenities.filter((a) => {
@@ -117,83 +117,67 @@ export const NeighborhoodIntelligence: React.FC = () => {
     });
   }, [amenities, categoryFilter]);
 
-  // Center coordinate
   const mapCenter: [number, number] = activeRegion
     ? [activeRegion.centroid.lat, activeRegion.centroid.lon]
     : [18.945, 72.825];
 
   if (loadingRegions && !neighborhoodsData) {
     return (
-      <div className="py-20 flex justify-center">
-        <LoadingSpinner label="Loading spatial neighborhood intelligence..." />
+      <div className="py-24 flex justify-center">
+        <LoadingSpinner label="Loading cartographic atlas and spatial boundaries..." />
       </div>
     );
   }
 
   if (errorRegions) {
     return (
-      <ApiErrorState
-        error={errorRegions}
-        onRetry={refetchRegions}
-        title="Unable to load Neighborhood Intelligence"
-      />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <ApiErrorState
+          onRetry={refetchRegions}
+          title="Unable to load Neighbourhood Atlas"
+        />
+      </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* Top Header & Context */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-8">
+      {/* Editorial Page Header */}
+      <EditorialPageHeader
+        title="Neighbourhood Cartographic Atlas"
+        subtitle="Empirical OpenStreetMap civic infrastructure, spatial accessibility indicators, and amenity density across South Mumbai."
+        badge={
           <div className="flex items-center gap-2">
-            <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-              <Layers className="w-5 h-5 text-indigo-600" />
-              <span>Spatial Neighborhood Intelligence</span>
-            </h2>
+            <span className="text-[10px] uppercase tracking-wider font-semibold text-terracotta">
+              Spatial Intelligence
+            </span>
+            <span className="text-stone">·</span>
             <DataStatusBadge status="real" size="sm" />
           </div>
-          <p className="text-xs text-slate-500 mt-1">
-            Real OpenStreetMap civic infrastructure profiling, density analytics, and accessibility indicators across South Mumbai
-          </p>
-        </div>
-
+        }
+      >
         <div className="flex items-center gap-2">
           <Link
             to="/neighborhood/compare"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-2xs transition"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-md bg-paper border border-stone text-charcoal hover:bg-ivory text-xs font-semibold transition-colors"
           >
-            <Scale className="w-3.5 h-3.5 text-indigo-600" />
-            <span>Compare Areas</span>
+            <Scale className="w-3.5 h-3.5 text-forest" />
+            <span>Compare Areas Side-by-Side</span>
           </Link>
           <Link
             to="/transformation"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-50 border border-indigo-200 text-indigo-700 hover:bg-indigo-100 shadow-2xs transition"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-md bg-forest text-ivory hover:bg-forest/90 text-xs font-semibold transition-colors"
           >
-            <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
-            <span>Urban Transformation</span>
+            <Sparkles className="w-3.5 h-3.5 text-terracotta" />
+            <span>Urban Transformation &rarr;</span>
           </Link>
         </div>
-      </div>
+      </EditorialPageHeader>
 
-      {/* Methodology & Data Integrity Disclaimer Box */}
-      <div className="bg-amber-50/70 border border-amber-200/80 rounded-xl p-4 text-xs text-amber-900">
-        <div className="flex items-start gap-2.5">
-          <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-          <div className="space-y-1 leading-relaxed">
-            <span className="font-semibold text-amber-950">Geographic & Temporal Data Disclosure:</span>
-            <p>
-              The regions shown are <strong>approximate bounding boxes</strong> established from landmark references for research purposes,
-              <strong> not official MCGM administrative ward boundaries</strong>. OpenStreetMap amenities are from a <strong>single point-in-time snapshot</strong> ({neighborhoodsData?.osm_snapshot_date || '2026-10-30'})
-              and do not reflect historical infrastructure expansion. <strong>City-level RBI House Price Index (HPI) data cannot be disaggregated to these sub-regions.</strong>
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Region Selection Pills */}
+      {/* Area Selector Tabs */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1">
-        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider shrink-0 mr-1">
-          Select Area:
+        <span className="text-xs font-semibold uppercase tracking-wider text-sage shrink-0 mr-1">
+          Explore Sector:
         </span>
         {regions.map((r: ApiNeighborhoodRegionSummary) => {
           const isSelected = selectedId === r.id;
@@ -202,18 +186,22 @@ export const NeighborhoodIntelligence: React.FC = () => {
               key={r.id}
               type="button"
               onClick={() => handleSelectRegion(r.id)}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition border flex items-center gap-2 ${
+              className={`px-4 py-2 rounded-md text-xs font-semibold whitespace-nowrap transition-all border flex items-center gap-2.5 ${
                 isSelected
-                  ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs'
-                  : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                  ? 'bg-forest text-ivory border-forest shadow-xs'
+                  : 'bg-paper text-charcoal border-stone/70 hover:bg-ivory'
               }`}
             >
               <span
-                className="w-2 h-2 rounded-full shrink-0"
-                style={{ backgroundColor: REGION_COLORS[r.id]?.stroke || '#64748b' }}
+                className="w-2.5 h-2.5 rounded-full shrink-0"
+                style={{ backgroundColor: REGION_COLORS[r.id]?.stroke || '#9EAA9C' }}
               />
               <span>{r.name}</span>
-              <span className={`text-[10px] px-1.5 py-0.2 rounded ${isSelected ? 'bg-indigo-700 text-indigo-100' : 'bg-slate-100 text-slate-500'}`}>
+              <span
+                className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
+                  isSelected ? 'bg-forest-light text-ivory' : 'bg-ivory text-sage'
+                }`}
+              >
                 {r.total_amenities}
               </span>
             </button>
@@ -221,45 +209,190 @@ export const NeighborhoodIntelligence: React.FC = () => {
         })}
       </div>
 
-      {/* Main 2-Column Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left Column: Selected Area Deep Dive & Analytics (5 Cols) */}
-        <div className="lg:col-span-5 space-y-5">
+      {/* ── CARTOGRAPHIC MAP & INTELLIGENCE SPLIT ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Left (7 Cols): Centerpiece Interactive Map */}
+        <div className="lg:col-span-7 space-y-4">
+          <div className="bg-paper rounded-lg border border-stone/70 p-4 shadow-xs">
+            {/* Map Filter Controls */}
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-3 pb-3 border-b border-stone/40">
+              <div className="flex items-center gap-1.5 text-xs text-sage font-medium">
+                <Compass className="w-4 h-4 text-forest" />
+                <span>OpenStreetMap Spatial Layers</span>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-1 text-xs">
+                <button
+                  type="button"
+                  onClick={() => setCategoryFilter('all')}
+                  className={`px-2.5 py-1 rounded text-xs font-medium transition ${
+                    categoryFilter === 'all'
+                      ? 'bg-forest text-ivory font-semibold'
+                      : 'bg-ivory text-charcoal hover:bg-stone/40'
+                  }`}
+                >
+                  All ({amenities?.length || 0})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCategoryFilter('education')}
+                  className={`px-2.5 py-1 rounded text-xs font-medium transition ${
+                    categoryFilter === 'education'
+                      ? 'bg-forest text-ivory font-semibold'
+                      : 'bg-ivory text-charcoal hover:bg-stone/40'
+                  }`}
+                >
+                  Education
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCategoryFilter('healthcare')}
+                  className={`px-2.5 py-1 rounded text-xs font-medium transition ${
+                    categoryFilter === 'healthcare'
+                      ? 'bg-forest text-ivory font-semibold'
+                      : 'bg-ivory text-charcoal hover:bg-stone/40'
+                  }`}
+                >
+                  Healthcare
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCategoryFilter('transit')}
+                  className={`px-2.5 py-1 rounded text-xs font-medium transition ${
+                    categoryFilter === 'transit'
+                      ? 'bg-forest text-ivory font-semibold'
+                      : 'bg-ivory text-charcoal hover:bg-stone/40'
+                  }`}
+                >
+                  Transit
+                </button>
+              </div>
+            </div>
+
+            {/* Map Container */}
+            <div className="h-[480px] w-full rounded overflow-hidden border border-stone/50 relative">
+              <MapContainer
+                center={mapCenter}
+                zoom={14}
+                style={{ height: '100%', width: '100%' }}
+                scrollWheelZoom={false}
+              >
+                <MapRecenter center={mapCenter} zoom={14} />
+
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+
+                {/* GeoJSON Boundary Polygons */}
+                {boundaries?.features.map((feat: ApiGeoJsonFeature) => {
+                  const regId = feat.properties.id;
+                  const isCur = regId === selectedId;
+                  const col = REGION_COLORS[regId] || { fill: '#183D35', stroke: '#183D35' };
+
+                  const coords = feat.geometry.coordinates[0].map((coord: number[]) => [
+                    coord[1],
+                    coord[0],
+                  ] as [number, number]);
+
+                  return (
+                    <Polygon
+                      key={regId}
+                      positions={coords}
+                      pathOptions={{
+                        color: col.stroke,
+                        fillColor: col.fill,
+                        fillOpacity: isCur ? 0.25 : 0.08,
+                        weight: isCur ? 2.5 : 1.2,
+                        dashArray: isCur ? undefined : '4 4',
+                      }}
+                      eventHandlers={{
+                        click: () => handleSelectRegion(regId),
+                      }}
+                    >
+                      <Popup>
+                        <div className="font-serif font-bold text-sm text-forest mb-0.5">
+                          {feat.properties.name}
+                        </div>
+                        <div className="text-xs text-charcoal">
+                          Mapped Amenities: <strong>{feat.properties.total_amenities}</strong>
+                        </div>
+                        <div className="text-[11px] text-sage mt-1">
+                          Click to select this neighbourhood dossier.
+                        </div>
+                      </Popup>
+                    </Polygon>
+                  );
+                })}
+
+                {/* Mapped Amenity Markers */}
+                {filteredAmenities.map((a, idx) => {
+                  const meta = getCategoryMeta(a.amenity_type);
+                  return (
+                    <Marker key={`${a.name}-${idx}`} position={[a.lat, a.lon]}>
+                      <Popup>
+                        <div className="space-y-1">
+                          <span className={`inline-block px-1.5 py-0.5 text-[10px] font-semibold rounded uppercase ${meta.badgeBg} ${meta.textCol}`}>
+                            {meta.label}
+                          </span>
+                          <div className="font-serif font-semibold text-xs text-charcoal">
+                            {a.name || 'Unnamed Facility'}
+                          </div>
+                          <div className="text-[10px] text-sage">
+                            OSM Type: {a.amenity_type}
+                          </div>
+                        </div>
+                      </Popup>
+                    </Marker>
+                  );
+                })}
+              </MapContainer>
+            </div>
+
+            <div className="flex items-center justify-between text-[11px] text-sage pt-2">
+              <span>Displaying {filteredAmenities.length} mapped amenity coordinates</span>
+              <span>Source: OpenStreetMap Point-in-time snapshot</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Right (5 Cols): Selected Area Architectural Dossier */}
+        <div className="lg:col-span-5 space-y-6">
           {loadingAnalytics || !activeRegion ? (
-            <div className="bg-white rounded-xl border border-slate-200 p-8 flex justify-center">
-              <LoadingSpinner label="Computing spatial density metrics..." />
+            <div className="bg-paper rounded-lg border border-stone/70 p-8 flex justify-center">
+              <LoadingSpinner label="Calculating accessibility metrics..." />
             </div>
           ) : (
             <>
-              {/* Profile Card */}
-              <div className="bg-white rounded-xl border border-slate-200/80 p-5 shadow-xs space-y-4">
-                <div className="flex items-start justify-between gap-2">
+              {/* Dossier Header Card */}
+              <div className="bg-paper rounded-lg border border-stone/70 p-6 space-y-4">
+                <div className="flex items-start justify-between gap-2 border-b border-stone/40 pb-3">
                   <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-600">
-                      Geographic Profile &bull; South Mumbai
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-forest block">
+                      Neighbourhood Dossier
                     </span>
-                    <h3 className="text-lg font-bold text-slate-900 mt-0.5">
+                    <h3 className="font-serif text-2xl font-semibold text-charcoal mt-0.5">
                       {activeRegion.name}
                     </h3>
                   </div>
                   <DataStatusBadge status={activeRegion.data_status} size="sm" />
                 </div>
 
-                <p className="text-xs text-slate-600 leading-relaxed">
+                <p className="text-xs text-charcoal/80 leading-relaxed">
                   {activeRegion.description}
                 </p>
 
                 {/* Landmarks */}
                 {activeRegion.known_landmarks && activeRegion.known_landmarks.length > 0 && (
-                  <div className="pt-2 border-t border-slate-100">
-                    <span className="text-[11px] font-semibold text-slate-400 block mb-1.5">
-                      Prominent Reference Landmarks:
+                  <div className="pt-2">
+                    <span className="text-[10px] uppercase tracking-wider font-semibold text-sage block mb-2">
+                      Key Reference Landmarks:
                     </span>
                     <div className="flex flex-wrap gap-1.5">
                       {activeRegion.known_landmarks.map((lm: string) => (
                         <span
                           key={lm}
-                          className="px-2 py-0.5 rounded text-[11px] bg-slate-100 text-slate-700 font-medium"
+                          className="px-2.5 py-1 rounded text-xs bg-ivory border border-stone/60 text-charcoal font-medium"
                         >
                           {lm}
                         </span>
@@ -269,61 +402,51 @@ export const NeighborhoodIntelligence: React.FC = () => {
                 )}
               </div>
 
-              {/* Spatial Metric Highlights */}
+              {/* Spatial Metric Highlights in Plain Language */}
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-xs">
-                  <div className="text-[11px] font-medium text-slate-500">Total Amenities</div>
-                  <div className="text-2xl font-bold text-slate-900 mt-1">
+                <div className="bg-paper rounded-lg border border-stone/70 p-4">
+                  <span className="text-[10px] uppercase font-semibold text-sage block">Total Amenities</span>
+                  <div className="text-2xl font-mono font-bold text-charcoal mt-1">
                     {activeRegion.total_amenities}
                   </div>
-                  <div className="text-[10px] text-slate-400 mt-0.5">
-                    Real OSM Features Mapped
-                  </div>
+                  <span className="text-[10px] text-sage">Mapped civic facilities</span>
                 </div>
 
-                <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-xs">
-                  <div className="text-[11px] font-medium text-slate-500">Amenity Density</div>
-                  <div className="text-2xl font-bold text-indigo-600 mt-1">
+                <div className="bg-paper rounded-lg border border-stone/70 p-4">
+                  <span className="text-[10px] uppercase font-semibold text-sage block">Amenity Density</span>
+                  <div className="text-2xl font-mono font-bold text-forest mt-1">
                     {activeRegion.amenity_density_per_km2}
                   </div>
-                  <div className="text-[10px] text-slate-400 mt-0.5">
-                    Amenities per km² ({activeRegion.area_km2} km² area)
-                  </div>
+                  <span className="text-[10px] text-sage">Per km² ({activeRegion.area_km2} km² area)</span>
                 </div>
 
-                <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-xs">
-                  <div className="text-[11px] font-medium text-slate-500">Within 500m Walk</div>
-                  <div className="text-xl font-bold text-emerald-600 mt-1">
+                <div className="bg-paper rounded-lg border border-stone/70 p-4">
+                  <span className="text-[10px] uppercase font-semibold text-sage block">Within 500m Walk</span>
+                  <div className="text-2xl font-mono font-bold text-forest mt-1">
                     {activeRegion.within_500m_count}
                   </div>
-                  <div className="text-[10px] text-slate-400 mt-0.5">
-                    Centroid Walkshed Radius
-                  </div>
+                  <span className="text-[10px] text-sage">5-minute walk from centroid</span>
                 </div>
 
-                <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-xs">
-                  <div className="text-[11px] font-medium text-slate-500">Within 1.0 km Transit</div>
-                  <div className="text-xl font-bold text-sky-600 mt-1">
+                <div className="bg-paper rounded-lg border border-stone/70 p-4">
+                  <span className="text-[10px] uppercase font-semibold text-sage block">Within 1.0 km Catchment</span>
+                  <div className="text-2xl font-mono font-bold text-terracotta mt-1">
                     {activeRegion.within_1km_count}
                   </div>
-                  <div className="text-[10px] text-slate-400 mt-0.5">
-                    Centroid Catchment Radius
-                  </div>
+                  <span className="text-[10px] text-sage">Transit accessibility buffer</span>
                 </div>
               </div>
 
-              {/* Amenity Category Breakdown */}
-              <div className="bg-white rounded-xl border border-slate-200/80 p-5 shadow-xs space-y-3">
-                <div className="flex items-center justify-between">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700">
+              {/* Amenity Breakdown */}
+              <div className="bg-paper rounded-lg border border-stone/70 p-6 space-y-3">
+                <div className="flex items-center justify-between border-b border-stone/40 pb-2">
+                  <span className="font-serif text-sm font-semibold text-charcoal">
                     Amenity Distribution
-                  </h4>
-                  <span className="text-[11px] text-slate-400">
-                    Source: OpenStreetMap
                   </span>
+                  <span className="text-[11px] text-sage">OpenStreetMap Data</span>
                 </div>
 
-                <div className="space-y-2.5">
+                <div className="space-y-3 pt-1">
                   {Object.entries(activeRegion.amenity_categories).map(([cat, count]: [string, number]) => {
                     const meta = getCategoryMeta(cat);
                     const pct = activeRegion.total_amenities > 0
@@ -333,16 +456,16 @@ export const NeighborhoodIntelligence: React.FC = () => {
                     return (
                       <div key={cat} className="space-y-1">
                         <div className="flex items-center justify-between text-xs">
-                          <span className="font-medium text-slate-700 capitalize">
+                          <span className="font-medium text-charcoal capitalize">
                             {cat.replace(/_/g, ' ')}
                           </span>
-                          <span className="font-semibold text-slate-900">
-                            {count} <span className="text-slate-400 font-normal">({pct}%)</span>
+                          <span className="font-mono font-semibold text-charcoal">
+                            {count} <span className="text-sage font-normal text-[11px]">({pct}%)</span>
                           </span>
                         </div>
-                        <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                        <div className="w-full bg-stone/40 rounded-full h-1.5 overflow-hidden">
                           <div
-                            className="h-1.5 rounded-full transition-all duration-500"
+                            className="h-1.5 rounded-full"
                             style={{ width: `${pct}%`, backgroundColor: meta.color }}
                           />
                         </div>
@@ -351,181 +474,22 @@ export const NeighborhoodIntelligence: React.FC = () => {
                   })}
                 </div>
               </div>
-
-              {/* Nearest Facility Distance (Haversine km) */}
-              <div className="bg-white rounded-xl border border-slate-200/80 p-5 shadow-xs space-y-3">
-                <div className="flex items-center justify-between">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700">
-                    Nearest Facility Distance (from Centroid)
-                  </h4>
-                  <span className="text-[10px] text-slate-400 font-mono">
-                    Haversine (km)
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2 text-xs">
-                  {Object.entries(activeRegion.nearest_facility_km).map(([cat, dist]: [string, number]) => {
-                    const meta = getCategoryMeta(cat);
-                    return (
-                      <div
-                        key={cat}
-                        className={`p-2.5 rounded-lg border ${meta.badgeBg} flex items-center justify-between`}
-                      >
-                        <span className={`font-semibold capitalize text-[11px] ${meta.textCol}`}>
-                          {cat.replace(/_/g, ' ')}
-                        </span>
-                        <span className="font-mono font-bold text-slate-800 text-xs">
-                          {dist} km
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-
-                <p className="text-[10px] text-slate-400 pt-1 leading-normal">
-                  Calculated using great-circle Haversine formula from geographic centroid ({activeRegion.centroid.lat.toFixed(4)}, {activeRegion.centroid.lon.toFixed(4)}).
-                </p>
-              </div>
             </>
           )}
         </div>
-
-        {/* Right Column: Leaflet Geospatial Map (7 Cols) */}
-        <div className="lg:col-span-7 bg-white rounded-xl border border-slate-200/80 shadow-xs overflow-hidden flex flex-col min-h-[580px]">
-          {/* Map Controls & Category Filter Bar */}
-          <div className="p-3 border-b border-slate-100 bg-slate-50/80 flex flex-wrap items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <Filter className="w-3.5 h-3.5 text-indigo-600" />
-              <span className="text-xs font-bold text-slate-700">Filter Amenities:</span>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-1.5">
-              {[
-                { id: 'all', label: 'All Categories' },
-                { id: 'education', label: 'Schools' },
-                { id: 'healthcare', label: 'Clinics & Hospitals' },
-                { id: 'transit', label: 'Transit Stops' },
-                { id: 'parking', label: 'Parking' },
-              ].map((f) => (
-                <button
-                  key={f.id}
-                  type="button"
-                  onClick={() => setCategoryFilter(f.id)}
-                  className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition border ${
-                    categoryFilter === f.id
-                      ? 'bg-slate-900 text-white border-slate-900'
-                      : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100'
-                  }`}
-                >
-                  {f.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Leaflet Map Canvas */}
-          <div className="flex-1 relative z-10 w-full min-h-[520px]">
-            {loadingAmenities && (
-              <div className="absolute top-3 right-3 z-500 bg-white/90 backdrop-blur-xs px-3 py-1.5 rounded-lg shadow-sm border border-slate-200 text-xs font-medium text-slate-700 flex items-center gap-2">
-                <LoadingSpinner size="sm" />
-                <span>Loading OSM nodes...</span>
-              </div>
-            )}
-
-            <MapContainer
-              center={mapCenter}
-              zoom={13}
-              scrollWheelZoom={false}
-              className="w-full h-full min-h-[520px]"
-            >
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-
-              <MapRecenter center={mapCenter} zoom={13} />
-
-              {/* Render approximate bounding box polygons */}
-              {boundaries?.features.map((feature: ApiGeoJsonFeature) => {
-                const fid = feature.properties.id;
-                const isSelected = fid === selectedId;
-                const color = REGION_COLORS[fid] || { fill: '#6366f1', stroke: '#4f46e5' };
-                // coordinates are [ [ [lon, lat], [lon, lat], ... ] ]
-                // Leaflet Polygon expects [lat, lon]
-                const positions: [number, number][] = feature.geometry.coordinates[0].map(
-                  (pt: number[]) => [pt[1], pt[0]] as [number, number]
-                );
-
-                return (
-                  <Polygon
-                    key={fid}
-                    positions={positions}
-                    pathOptions={{
-                      color: isSelected ? '#1e1b4b' : color.stroke,
-                      weight: isSelected ? 3 : 1.5,
-                      fillColor: color.fill,
-                      fillOpacity: isSelected ? 0.25 : 0.12,
-                      dashArray: isSelected ? undefined : '4, 4',
-                    }}
-                    eventHandlers={{
-                      click: () => handleSelectRegion(fid),
-                    }}
-                  >
-                    <Popup>
-                      <div className="p-1 space-y-1">
-                        <div className="font-bold text-xs text-slate-900">{feature.properties.name}</div>
-                        <div className="text-[11px] text-slate-500">{feature.properties.description}</div>
-                        <div className="text-[10px] text-indigo-600 font-semibold pt-1 border-t border-slate-100">
-                          {feature.properties.total_amenities} amenities &bull; {feature.properties.amenity_density_per_km2}/km²
-                        </div>
-                      </div>
-                    </Popup>
-                  </Polygon>
-                );
-              })}
-
-              {/* Render amenity points */}
-              {filteredAmenities.map((am, idx) => {
-                const meta = getCategoryMeta(am.amenity_type);
-                return (
-                  <Marker
-                    key={`${am.lat}-${am.lon}-${idx}`}
-                    position={[am.lat, am.lon]}
-                  >
-                    <Popup>
-                      <div className="p-1.5 space-y-1 min-w-[160px]">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className={`text-[10px] font-bold uppercase px-1.5 py-0.5 rounded ${meta.badgeBg} ${meta.textCol}`}>
-                            {am.amenity_type.replace(/_/g, ' ')}
-                          </span>
-                          <span className="text-[9px] text-emerald-600 font-semibold">VERIFIED OSM</span>
-                        </div>
-                        <div className="font-bold text-xs text-slate-900">
-                          {am.name || `${meta.label} Facility`}
-                        </div>
-                        <div className="text-[10px] text-slate-400 font-mono">
-                          {am.lat.toFixed(5)}, {am.lon.toFixed(5)}
-                        </div>
-                      </div>
-                    </Popup>
-                  </Marker>
-                );
-              })}
-            </MapContainer>
-          </div>
-
-          {/* Map Footer Bar */}
-          <div className="px-4 py-2.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
-            <div>
-              Showing <strong className="text-slate-800">{filteredAmenities.length}</strong> of {amenities.length} real OSM amenities
-            </div>
-            <div className="flex items-center gap-1 text-[10px] text-slate-400">
-              <Info className="w-3 h-3 text-slate-400" />
-              <span>Bounding boxes are approximate research extents, not administrative wards.</span>
-            </div>
-          </div>
-        </div>
       </div>
+
+      {/* ── METHODOLOGY & DEMARCATION ACCORDION ── */}
+      <MethodologyAccordion title="Geographic Boundaries & Cartographic Demarcation Notes" level={2}>
+        <div className="space-y-3 text-xs leading-relaxed text-charcoal/80">
+          <p>
+            <strong>Bounding Polygon Demarcation:</strong> The polygonal areas outlined on this map are research study bounding boxes based on landmark references in South Mumbai (Colaba, Fort, Malabar Hill, Grant Road). They do <strong>not</strong> represent official Municipal Corporation of Greater Mumbai (MCGM) administrative ward boundaries.
+          </p>
+          <p>
+            <strong>Amenity Data Sourcing:</strong> Amenity nodes and highway networks are derived from a point-in-time OpenStreetMap export ({neighborhoodsData?.osm_snapshot_date || '2026'}). Distances to nearest facilities are computed using standard spherical surface geometry between mapped coordinates.
+          </p>
+        </div>
+      </MethodologyAccordion>
     </div>
   );
 };

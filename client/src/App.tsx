@@ -1,8 +1,6 @@
-import React, { useState, Suspense, lazy } from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import clsx from 'clsx';
-import { Sidebar } from './components/layout/Sidebar';
-import { Header } from './components/layout/Header';
+import { Navigation } from './components/layout/Navigation';
 import { LoadingSpinner } from './components/ui/LoadingSpinner';
 
 const Overview = lazy(() => import('./pages/Overview').then(m => ({ default: m.Overview })));
@@ -16,58 +14,48 @@ const DataSources = lazy(() => import('./pages/DataSources').then(m => ({ defaul
 const Methodology = lazy(() => import('./pages/Methodology').then(m => ({ default: m.Methodology })));
 
 export const App: React.FC = () => {
-  const [collapsed, setCollapsed] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-900 antialiased selection:bg-indigo-500 selection:text-white">
-        {/* Persistent Collapsible Sidebar */}
-        <Sidebar
-          collapsed={collapsed}
-          onToggleCollapse={() => setCollapsed(!collapsed)}
-          mobileOpen={mobileOpen}
-          onCloseMobile={() => setMobileOpen(false)}
-        />
+      <div className="min-h-screen bg-ivory font-sans text-charcoal antialiased flex flex-col">
+        {/* Editorial Top Navigation */}
+        <Navigation />
 
-        {/* Main Content Viewport */}
-        <div
-          className={clsx(
-            'flex-1 flex flex-col transition-all duration-300 ease-in-out min-h-screen',
-            collapsed ? 'md:pl-18' : 'md:pl-64'
-          )}
-        >
-          {/* Top Sticky Header */}
-          <Header onOpenMobile={() => setMobileOpen(true)} />
+        {/* Main Content */}
+        <main className="flex-1 w-full">
+          <Suspense fallback={<LoadingSpinner size="lg" label="Loading module..." className="min-h-[50vh]" />}>
+            <Routes>
+              <Route path="/" element={<Overview />} />
+              <Route path="/market-trends" element={<MarketTrends />} />
+              <Route path="/forecasting" element={<Forecasting />} />
+              <Route path="/neighborhood" element={<NeighborhoodIntelligence />} />
+              <Route path="/neighborhoods" element={<NeighborhoodIntelligence />} />
+              <Route path="/neighborhood/compare" element={<NeighborhoodComparison />} />
+              <Route path="/neighborhoods/compare" element={<NeighborhoodComparison />} />
+              <Route path="/transformation" element={<UrbanTransformation />} />
+              <Route path="/urban-transformation" element={<UrbanTransformation />} />
+              <Route path="/affordability" element={<Affordability />} />
+              <Route path="/data-sources" element={<DataSources />} />
+              <Route path="/methodology" element={<Methodology />} />
+              {/* Fallback route */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Suspense>
+        </main>
 
-          {/* Main Content Area */}
-          <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
-            <Suspense fallback={<LoadingSpinner size="lg" label="Loading module..." className="min-h-[50vh]" />}>
-              <Routes>
-                <Route path="/" element={<Overview />} />
-                <Route path="/market-trends" element={<MarketTrends />} />
-                <Route path="/forecasting" element={<Forecasting />} />
-                <Route path="/neighborhood" element={<NeighborhoodIntelligence />} />
-                <Route path="/neighborhoods" element={<NeighborhoodIntelligence />} />
-                <Route path="/neighborhood/compare" element={<NeighborhoodComparison />} />
-                <Route path="/neighborhoods/compare" element={<NeighborhoodComparison />} />
-                <Route path="/transformation" element={<UrbanTransformation />} />
-                <Route path="/urban-transformation" element={<UrbanTransformation />} />
-                <Route path="/affordability" element={<Affordability />} />
-                <Route path="/data-sources" element={<DataSources />} />
-                <Route path="/methodology" element={<Methodology />} />
-                {/* Fallback route */}
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </Suspense>
-          </main>
-
-          {/* Footer Note */}
-          <footer className="py-4 px-6 border-t border-slate-200 text-center text-xs text-slate-500 bg-white/50">
-            <span>UrbanLens &copy; {new Date().getFullYear()} — Urban Market Intelligence &amp; Housing Affordability Analytics Platform. </span>
-            <span className="text-indigo-600 font-medium">Empirical RBI HPI &amp; OSM Data Integrated &middot; Documented Demarcation for Synthetic Testing</span>
-          </footer>
-        </div>
+        {/* Minimal Editorial Footer */}
+        <footer className="border-t border-stone bg-paper">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <span className="font-serif font-semibold text-forest text-sm">UrbanLens</span>
+                <span className="text-sage text-xs">© {new Date().getFullYear()}</span>
+              </div>
+              <p className="text-xs text-sage text-center sm:text-right max-w-md leading-relaxed">
+                Urban Intelligence Atlas · RBI HPI & OSM data integrated with documented synthetic test demarcation
+              </p>
+            </div>
+          </div>
+        </footer>
       </div>
     </BrowserRouter>
   );

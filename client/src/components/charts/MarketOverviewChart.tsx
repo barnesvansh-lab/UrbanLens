@@ -16,7 +16,7 @@ interface MarketOverviewChartProps {
   height?: number;
 }
 
-const COLORS = ['#6366f1', '#ec4899', '#06b6d4', '#10b981', '#f59e0b'];
+const COLORS = ['#183D35', '#C56C4B', '#7D6355', '#9EAA9C', '#B48448'];
 
 export const MarketOverviewChart: React.FC<MarketOverviewChartProps> = ({
   data,
@@ -32,14 +32,17 @@ export const MarketOverviewChart: React.FC<MarketOverviewChartProps> = ({
   const formatYAxis = (val: number) => `₹${Math.round(val / 1000)}k`;
 
   return (
-    <div className="w-full bg-white rounded-xl border border-slate-200/80 p-4 sm:p-5 shadow-xs">
+    <div className="w-full bg-paper rounded-lg border border-stone/60 p-5 sm:p-6">
       <div className="flex items-center justify-between gap-2 mb-4">
         <div>
-          <h3 className="text-base font-semibold text-slate-800">
-            Neighborhood Capital Value Benchmark
+          <span className="text-[10px] font-semibold uppercase tracking-wider text-sage block mb-0.5">
+            Spatial Valuation
+          </span>
+          <h3 className="font-serif text-lg font-semibold text-charcoal">
+            Capital Value Benchmarks
           </h3>
-          <p className="text-xs text-slate-500">
-            Current average asking & transacted rate per sq.ft across synthetic nodes
+          <p className="text-xs text-sage mt-0.5">
+            Average transacted rate per sq.ft by sector
           </p>
         </div>
       </div>
@@ -47,17 +50,17 @@ export const MarketOverviewChart: React.FC<MarketOverviewChartProps> = ({
       <div style={{ width: '100%', height }}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={chartData} margin={{ top: 15, right: 20, left: 0, bottom: 20 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#D9D5CA" strokeOpacity={0.6} vertical={false} />
             <XAxis
               dataKey="name"
-              stroke="#64748b"
+              stroke="#9EAA9C"
               fontSize={11}
               tickLine={false}
               interval={0}
-              tick={{ fill: '#475569' }}
+              tick={{ fill: '#252B29', fontSize: 11 }}
             />
             <YAxis
-              stroke="#94a3b8"
+              stroke="#9EAA9C"
               fontSize={11}
               domain={[0, 42000]}
               tickFormatter={formatYAxis}
@@ -66,16 +69,17 @@ export const MarketOverviewChart: React.FC<MarketOverviewChartProps> = ({
             />
             <Tooltip
               contentStyle={{
-                backgroundColor: '#0f172a',
+                backgroundColor: '#FAF8F5',
                 borderRadius: '8px',
-                border: 'none',
-                color: '#fff',
+                border: '1px solid #D9D5CA',
+                color: '#252B29',
                 fontSize: '12px',
+                boxShadow: '0 4px 16px rgba(24, 61, 53, 0.08)',
               }}
               formatter={(val: any) => [`₹${Number(val).toLocaleString('en-IN')} / sq.ft`, 'Avg Price']}
-              labelStyle={{ fontWeight: 600, color: '#94a3b8' }}
+              labelStyle={{ fontWeight: 600, color: '#183D35' }}
             />
-            <Bar dataKey="avgPrice" radius={[6, 6, 0, 0]} maxBarSize={52}>
+            <Bar dataKey="avgPrice" radius={[4, 4, 0, 0]} maxBarSize={48}>
               {chartData.map((_, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}

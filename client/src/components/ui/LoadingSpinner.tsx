@@ -1,5 +1,4 @@
 import React from 'react';
-import { Loader2 } from 'lucide-react';
 import clsx from 'clsx';
 
 interface LoadingSpinnerProps {
@@ -11,30 +10,32 @@ interface LoadingSpinnerProps {
 export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   size = 'md',
   label = 'Loading...',
-  className = '',
+  className,
 }) => {
   const sizeClasses = {
-    sm: 'w-4 h-4',
-    md: 'w-6 h-6',
-    lg: 'w-8 h-8',
+    sm: 'w-5 h-5 border-2',
+    md: 'w-8 h-8 border-2',
+    lg: 'w-12 h-12 border-[3px]',
   };
 
   return (
     <div
-      role="status"
       className={clsx(
-        'flex flex-col items-center justify-center gap-2 py-8 text-slate-500',
+        'flex flex-col items-center justify-center gap-3',
         className
       )}
+      role="status"
+      aria-live="polite"
     >
-      <Loader2
+      <div
         className={clsx(
-          'animate-spin text-indigo-600',
+          'rounded-full border-stone border-t-terracotta animate-spin',
           sizeClasses[size]
         )}
       />
-      {label && <span className="text-xs font-medium text-slate-500">{label}</span>}
-      <span className="sr-only">Loading</span>
+      {label && (
+        <span className="text-sm text-sage font-medium">{label}</span>
+      )}
     </div>
   );
 };

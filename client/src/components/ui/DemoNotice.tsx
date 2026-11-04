@@ -20,17 +20,17 @@ export const DemoNotice: React.FC<DemoNoticeProps> = ({
   return (
     <div
       role="alert"
-      className={`relative flex items-center justify-between gap-3 px-4 py-2.5 rounded-lg border border-amber-300 bg-amber-50 text-amber-900 text-xs sm:text-sm font-medium shadow-xs ${className}`}
+      className={`relative flex items-center justify-between gap-3 px-4 py-2.5 rounded-lg border border-terracotta/30 bg-terracotta/5 text-charcoal text-xs sm:text-sm font-medium ${className}`}
     >
       <div className="flex items-center gap-2.5 flex-1">
-        <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" aria-hidden="true" />
+        <AlertTriangle className="w-4 h-4 text-terracotta shrink-0" aria-hidden="true" />
         <span className="leading-snug">{customMessage || DEMO_NOTICE}</span>
       </div>
       {dismissible && (
         <button
           type="button"
           onClick={() => setDismissed(true)}
-          className="text-amber-700 hover:text-amber-900 rounded p-1 hover:bg-amber-100 transition-colors shrink-0"
+          className="text-terracotta hover:text-charcoal rounded p-1 hover:bg-terracotta/10 transition-colors shrink-0"
           title="Dismiss warning"
           aria-label="Dismiss warning"
         >
