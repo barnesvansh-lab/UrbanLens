@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, MapPin, Database, Sparkles } from 'lucide-react';
+import { ArrowRight, MapPin, Database, Sparkles, TrendingUp, Calculator } from 'lucide-react';
 import { DemoNotice } from '../components/ui/DemoNotice';
 import { MetricCard } from '../components/ui/MetricCard';
 import { DataStatusBadge } from '../components/ui/DataStatusBadge';
@@ -126,6 +126,93 @@ export const Overview: React.FC = () => {
             )}
           </div>
         </div>
+      </div>
+
+      {/* 4 Core Intelligence Modules Navigation Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <Link
+          to="/market-trends"
+          className="group p-4 bg-white rounded-xl border border-slate-200/80 hover:border-indigo-300 hover:shadow-md transition flex flex-col justify-between"
+        >
+          <div>
+            <div className="w-9 h-9 rounded-lg bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 mb-3 group-hover:bg-indigo-600 group-hover:text-white transition">
+              <TrendingUp className="w-5 h-5" />
+            </div>
+            <h4 className="text-sm font-bold text-slate-800 group-hover:text-indigo-600 transition flex items-center justify-between">
+              <span>Market Intelligence</span>
+              <ArrowRight className="w-4 h-4 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition" />
+            </h4>
+            <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+              RBI House Price Index (2010–2025) across 10 major metropolitan cities with rolling CAGR analysis.
+            </p>
+          </div>
+          <span className="mt-3 text-[11px] font-semibold text-indigo-600 group-hover:underline">
+            Explore Market Trends &rarr;
+          </span>
+        </Link>
+
+        <Link
+          to="/neighborhood"
+          className="group p-4 bg-white rounded-xl border border-slate-200/80 hover:border-emerald-300 hover:shadow-md transition flex flex-col justify-between"
+        >
+          <div>
+            <div className="w-9 h-9 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 mb-3 group-hover:bg-emerald-600 group-hover:text-white transition">
+              <MapPin className="w-5 h-5" />
+            </div>
+            <h4 className="text-sm font-bold text-slate-800 group-hover:text-emerald-600 transition flex items-center justify-between">
+              <span>Neighborhood Intel</span>
+              <ArrowRight className="w-4 h-4 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition" />
+            </h4>
+            <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+              OpenStreetMap amenity density (schools, healthcare, transit) across 4 South Mumbai sub-regions.
+            </p>
+          </div>
+          <span className="mt-3 text-[11px] font-semibold text-emerald-600 group-hover:underline">
+            View Geospatial Map &rarr;
+          </span>
+        </Link>
+
+        <Link
+          to="/transformation"
+          className="group p-4 bg-white rounded-xl border border-slate-200/80 hover:border-purple-300 hover:shadow-md transition flex flex-col justify-between"
+        >
+          <div>
+            <div className="w-9 h-9 rounded-lg bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 mb-3 group-hover:bg-purple-600 group-hover:text-white transition">
+              <Sparkles className="w-5 h-5" />
+            </div>
+            <h4 className="text-sm font-bold text-slate-800 group-hover:text-purple-600 transition flex items-center justify-between">
+              <span>Transformation Intel</span>
+              <ArrowRight className="w-4 h-4 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition" />
+            </h4>
+            <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+              14 indicators across 8 domains with rolling Z-score anomaly detection and 5-pillar evidence engine.
+            </p>
+          </div>
+          <span className="mt-3 text-[11px] font-semibold text-purple-600 group-hover:underline">
+            Audit Transformation &rarr;
+          </span>
+        </Link>
+
+        <Link
+          to="/affordability"
+          className="group p-4 bg-white rounded-xl border border-slate-200/80 hover:border-amber-300 hover:shadow-md transition flex flex-col justify-between"
+        >
+          <div>
+            <div className="w-9 h-9 rounded-lg bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 mb-3 group-hover:bg-amber-600 group-hover:text-white transition">
+              <Calculator className="w-5 h-5" />
+            </div>
+            <h4 className="text-sm font-bold text-slate-800 group-hover:text-amber-600 transition flex items-center justify-between">
+              <span>Affordability Engine</span>
+              <ArrowRight className="w-4 h-4 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition" />
+            </h4>
+            <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+              Reducing-balance EMI, statutory upfront charges, rent-vs-buy equivalence, and FOIR borrowing limit.
+            </p>
+          </div>
+          <span className="mt-3 text-[11px] font-semibold text-amber-600 group-hover:underline">
+            Simulate Affordability &rarr;
+          </span>
+        </Link>
       </div>
 
       {/* Primary Analytics Charts */}

@@ -49,6 +49,33 @@ async function apiFetch<T>(path: string): Promise<{ data: T | null; error: ApiEr
   }
 }
 
+async function apiPost<T>(path: string, body: any): Promise<{ data: T | null; error: ApiError | null }> {
+  try {
+    const res = await fetch(`${API_BASE}${path}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({
+        error: `HTTP error ${res.status}: ${res.statusText}`,
+        code: `HTTP_${res.status}`,
+      }));
+      return { data: null, error: err };
+    }
+    const data = await res.json();
+    return { data, error: null };
+  } catch (e: any) {
+    return {
+      data: null,
+      error: {
+        error: e.message || 'Network error connecting to UrbanLens backend API',
+        code: 'NETWORK_ERROR',
+      },
+    };
+  }
+}
+
 function cleanParams(params?: Record<string, string | undefined>): string {
   if (!params) return '';
   const searchParams = new URLSearchParams();
@@ -93,5 +120,13 @@ export const apiClient = {
   compareTransformationAreas: (ids: string[]) => apiFetch<{ requested_ids: string[]; found_count: number; areas: ApiNeighborhoodRegionDetail[]; comparison_disclaimer: string }>(
     `/transformation/comparison?ids=${encodeURIComponent(ids.join(','))}`
   ),
+  getAffordabilityAssumptions: () => apiFetch<any>('/affordability/assumptions'),
+  getAffordabilityMarketContext: () => apiFetch<any>('/affordability/market-context'),
+  calculateEmi: (body: any) => apiPost<any>('/affordability/emi', body),
+  calculateUpfrontCosts: (body: any) => apiPost<any>('/affordability/upfront-costs', body),
+  calculateOwnershipCost: (body: any) => apiPost<any>('/affordability/ownership-cost', body),
+  calculateRentVsBuy: (body: any) => apiPost<any>('/affordability/rent-vs-buy', body),
+  calculateHouseholdAffordability: (body: any) => apiPost<any>('/affordability/household', body),
+  calculateScenarios: (body: any) => apiPost<any>('/affordability/scenarios', body),
 };
 
