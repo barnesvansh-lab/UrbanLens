@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-30T13:33:49.427637+00:00",
+  "generated_at": "2026-10-30T13:53:22.570963+00:00",
   "pipeline_version": "2.0.0",
   "data_audit": {
     "total_sources_evaluated": 9,
@@ -13,6 +13,42 @@
     "verified_real_count": 6,
     "data_unavailable_count": 10,
     "proxy_count": 1
+  },
+  "series_validation": {
+    "hpi_completeness": {
+      "total_records": 60,
+      "valid_records": 60,
+      "missing_records": 0,
+      "completeness_ratio": 1.0,
+      "completeness_pct": 100.0,
+      "is_sufficient": true,
+      "sufficiency_threshold_pct": 85.0,
+      "verdict": "SUFFICIENT",
+      "message": "Series has 60/60 valid observations (100.0% complete)."
+    },
+    "hpi_continuity": {
+      "is_continuous": true,
+      "gaps_detected": [],
+      "total_gaps": 0,
+      "observation_count": 60,
+      "status": "continuous"
+    }
+  },
+  "compatibility_audit": {
+    "hpi_vs_osm": {
+      "verdict": "INCOMPATIBLE",
+      "is_compatible": false,
+      "dataset_a": "RBI House Price Index",
+      "dataset_b": "OpenStreetMap Amenities",
+      "incompatibilities": [
+        "Geographic resolution mismatch: 'RBI House Price Index' is at city level, while 'OpenStreetMap Amenities' is at sub-district level. Direct statistical regression or spatial subtraction introduces severe ecological fallacy.",
+        "Temporal frequency mismatch: 'OpenStreetMap Amenities' is a single static snapshot, whereas 'RBI House Price Index' is a dynamic quarterly time series. Historical growth rates cannot be imputed to static snapshot data."
+      ],
+      "caveats": [
+        "Unit divergence: 'RBI House Price Index' uses index_points, while 'OpenStreetMap Amenities' uses civic_feature_count. Normalized comparison requires mathematical rescaling or independent dimensional display."
+      ],
+      "recommendation": "Do NOT merge or regress these datasets directly. Analyze and display them as contextual multi-scalar perspectives with transparent boundaries."
+    }
   },
   "data_integrity_rules": [
     "Never conflate city-level housing price rises with localized gentrification.",

@@ -356,6 +356,31 @@ export interface TransformationQualityPayload {
     data_unavailable_count: number;
     proxy_count: number;
   };
+  series_validation?: {
+    hpi_completeness?: {
+      total_records: number;
+      valid_records: number;
+      missing_records: number;
+      completeness_ratio: number;
+      completeness_pct: number;
+      is_sufficient: boolean;
+      verdict: string;
+    };
+    hpi_continuity?: {
+      is_continuous: boolean;
+      total_gaps: number;
+      status: string;
+    };
+  };
+  compatibility_audit?: {
+    hpi_vs_osm?: {
+      verdict: string;
+      is_compatible: boolean;
+      incompatibilities: string[];
+      caveats: string[];
+      recommendation: string;
+    };
+  };
   data_integrity_rules: string[];
 }
 
@@ -409,3 +434,232 @@ export interface TransformationDataSourceItem {
   suitable_for_historical_analysis: boolean;
   integrated_in_pipeline: boolean;
 }
+
+// ── Milestone 7: Housing Affordability Intelligence Engine ────────────────────
+
+export interface AmortizationYearPoint {
+  year: number;
+  opening_balance: number;
+  annual_emi: number;
+  principal_paid: number;
+  interest_paid: number;
+  closing_balance: number;
+  cumulative_principal: number;
+  cumulative_interest: number;
+  homeowner_equity: number;
+}
+
+export interface EmiCalculationRequest {
+  property_price: number;
+  down_payment_pct?: number;
+  down_payment_amount?: number;
+  annual_interest_rate: number;
+  tenure_years: number;
+  extra_monthly_payment?: number;
+}
+
+export interface EmiCalculationResult {
+  property_price: number;
+  down_payment: number;
+  loan_principal: number;
+  annual_interest_rate: number;
+  monthly_interest_rate: number;
+  tenure_years: number;
+  tenure_months: number;
+  monthly_emi: number;
+  total_interest: number;
+  total_payment: number;
+  ltv_ratio: number;
+  interest_to_principal_ratio: number;
+  extra_monthly_payment: number;
+  effective_tenure_months: number;
+  interest_saved_by_prepayment: number;
+  amortization_schedule: AmortizationYearPoint[];
+  disclaimers: string[];
+}
+
+export interface UpfrontCostRequest {
+  property_price: number;
+  down_payment_pct?: number;
+  down_payment_amount?: number;
+  stamp_duty_pct?: number;
+  registration_fee?: number;
+  loan_processing_rate_pct?: number;
+  loan_processing_cap?: number;
+  legal_doc_fee?: number;
+  brokerage_pct?: number;
+  moving_expenses?: number;
+  interiors_furnishing?: number;
+  other_charges?: number;
+}
+
+export interface UpfrontCostResult {
+  property_price: number;
+  down_payment: number;
+  stamp_duty: number;
+  registration_fee: number;
+  loan_processing_fee: number;
+  legal_doc_fee: number;
+  brokerage_fee: number;
+  moving_expenses: number;
+  interiors_furnishing: number;
+  other_charges: number;
+  total_statutory_charges: number;
+  total_ancillary_costs: number;
+  total_upfront_cash_required: number;
+  down_payment_pct_of_price: number;
+  ancillary_pct_of_price: number;
+  total_cash_to_price_ratio_pct: number;
+  disclaimers: string[];
+}
+
+export interface OwnershipCostRequest {
+  monthly_emi: number;
+  society_maintenance_monthly?: number;
+  property_tax_annual?: number;
+  home_insurance_annual?: number;
+  utilities_monthly?: number;
+  repairs_reserve_monthly?: number;
+  other_recurring_monthly?: number;
+  monthly_gross_income?: number;
+}
+
+export interface OwnershipCostResult {
+  monthly_emi: number;
+  monthly_maintenance: number;
+  monthly_property_tax: number;
+  monthly_insurance: number;
+  monthly_utilities: number;
+  monthly_repairs_reserve: number;
+  monthly_other: number;
+  total_monthly_non_emi_expenses: number;
+  total_monthly_ownership_cost: number;
+  total_annual_ownership_cost: number;
+  emi_share_pct: number;
+  non_emi_share_pct: number;
+  housing_expense_to_income_ratio_pct: number | null;
+  disclaimers: string[];
+}
+
+export interface RentVsBuyYearPoint {
+  year: number;
+  monthly_rent: number;
+  monthly_buy_outflow: number;
+  annual_rent_outflow: number;
+  annual_buy_outflow: number;
+  property_value: number;
+  remaining_loan_balance: number;
+  buyer_net_equity: number;
+  renter_investment_portfolio: number;
+  net_buy_advantage: number;
+}
+
+export interface RentVsBuyRequest {
+  property_price: number;
+  down_payment_pct?: number;
+  annual_interest_rate?: number;
+  loan_tenure_years?: number;
+  initial_monthly_rent: number;
+  annual_rent_increase_pct?: number;
+  property_appreciation_pct?: number;
+  maintenance_monthly?: number;
+  property_tax_annual?: number;
+  upfront_acquisition_cost_pct?: number;
+  investment_return_pct?: number;
+  analysis_period_years?: number;
+  rental_deposit_months?: number;
+}
+
+export interface RentVsBuyResult {
+  property_price: number;
+  initial_capital_deployed: number;
+  initial_rental_deposit: number;
+  initial_renter_portfolio: number;
+  analysis_period_years: number;
+  terminal_property_value: number;
+  terminal_loan_balance: number;
+  buyer_terminal_wealth: number;
+  renter_terminal_wealth: number;
+  net_buy_advantage: number;
+  break_even_year: number | null;
+  verdict_summary: string;
+  annual_trajectory: RentVsBuyYearPoint[];
+  assumptions_used: {
+    property_appreciation_pct: number;
+    annual_rent_increase_pct: number;
+    investment_return_pct: number;
+    mortgage_interest_rate_pct: number;
+  };
+  disclaimers: string[];
+}
+
+export interface HouseholdAffordabilityRequest {
+  monthly_gross_income: number;
+  additional_monthly_income?: number;
+  existing_loan_emis?: number;
+  essential_monthly_expenses?: number;
+  available_liquid_savings?: number;
+  target_property_price?: number;
+  annual_interest_rate?: number;
+  loan_tenure_years?: number;
+  target_down_payment_pct?: number;
+  foir_guideline_pct?: number;
+  ancillary_cost_buffer_pct?: number;
+}
+
+export interface HouseholdAffordabilityResult {
+  total_monthly_income: number;
+  existing_debt_obligations: number;
+  current_foir_pct: number;
+  disposable_surplus: number;
+  foir_threshold_used_pct: number;
+  max_allowable_housing_emi: number;
+  projected_post_purchase_foir_pct: number;
+  max_affordable_loan_principal: number;
+  cash_constrained_property_budget: number | null;
+  loan_constrained_property_budget: number;
+  binding_max_property_budget: number;
+  target_property_price: number | null;
+  affordability_gap: number | null;
+  is_affordable: boolean | null;
+  actionable_recommendations: string[];
+  disclaimers: string[];
+}
+
+export interface FinancialScenarioConfig {
+  id: string;
+  name: string;
+  description: string;
+  property_price: number;
+  down_payment_pct: number;
+  annual_interest_rate: number;
+  loan_tenure_years: number;
+  monthly_rent: number;
+  rent_increase_pct: number;
+  property_appreciation_pct: number;
+  investment_return_pct: number;
+  monthly_income: number;
+  existing_emis: number;
+}
+
+export interface FinancialScenarioResultItem {
+  id: string;
+  name: string;
+  description: string;
+  property_price: number;
+  monthly_emi: number;
+  total_interest: number;
+  total_upfront_cash: number;
+  ten_year_buyer_equity: number;
+  ten_year_renter_portfolio: number;
+  ten_year_buy_advantage: number;
+  foir_pct: number;
+  affordability_verdict: string;
+}
+
+export interface ScenarioComparisonResult {
+  comparison_horizon_years: number;
+  scenarios: FinancialScenarioResultItem[];
+  disclaimers: string[];
+}
+

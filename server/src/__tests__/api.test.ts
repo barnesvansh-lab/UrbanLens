@@ -383,4 +383,38 @@ describe('UrbanLens Express API Endpoints', () => {
     assert.ok(qRes.body.indicators_audit);
     assert.ok(Array.isArray(qRes.body.data_integrity_rules));
   });
+
+  it('37. GET /api/transformation/indicators?data_status=bad_status → 400 INVALID_STATUS_FILTER', async () => {
+    const res = await request('GET', '/api/transformation/indicators?data_status=bad_status');
+    assert.strictEqual(res.status, 400);
+    assert.strictEqual(res.body.code, 'INVALID_STATUS_FILTER');
+  });
+
+  it('38. GET /api/transformation/comparison (missing ids) → 400 MISSING_IDS', async () => {
+    const res = await request('GET', '/api/transformation/comparison');
+    assert.strictEqual(res.status, 400);
+    assert.strictEqual(res.body.code, 'MISSING_IDS');
+  });
+
+  it('39. GET /api/transformation/data-sources → returns complete 14-dataset provenance inventory', async () => {
+    const res = await request('GET', '/api/transformation/data-sources');
+    assert.strictEqual(res.status, 200);
+    assert.strictEqual(res.body.total, 14);
+    assert.strictEqual(res.body.sources.length, 14);
+    for (const src of res.body.sources) {
+      assert.ok(src.id, 'Source missing id');
+      assert.ok(src.name, 'Source missing name');
+      assert.ok(src.status, 'Source missing status');
+      assert.ok(Array.isArray(src.reliability_limitations), 'Source missing limitations');
+    }
+  });
+
+  it('40. GET /api/transformation/quality → includes series validation & compatibility audit', async () => {
+    const res = await request('GET', '/api/transformation/quality');
+    assert.strictEqual(res.status, 200);
+    assert.ok(res.body.series_validation, 'Missing series_validation in quality report');
+    assert.strictEqual(res.body.series_validation.hpi_completeness.is_sufficient, true);
+    assert.strictEqual(res.body.series_validation.hpi_continuity.is_continuous, true);
+    assert.ok(res.body.compatibility_audit, 'Missing compatibility_audit in quality report');
+  });
 });

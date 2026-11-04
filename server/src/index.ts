@@ -5,18 +5,21 @@ import dataRouter from './routes/data';
 import neighborhoodsRouter from './routes/neighborhoods';
 import forecastingRouter from './routes/forecasting';
 import transformationRouter from './routes/transformation';
+import affordabilityRouter from './routes/affordability';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const CORS_ORIGIN = process.env.CORS_ORIGIN || '*';
 
-app.use(cors());
-app.use(express.json());
+app.use(cors({ origin: CORS_ORIGIN }));
+app.use(express.json({ limit: '1mb' }));
 
 app.use('/api', healthRouter);
 app.use('/api/data', dataRouter);
 app.use('/api/neighborhoods', neighborhoodsRouter);
 app.use('/api/forecasting', forecastingRouter);
 app.use('/api/transformation', transformationRouter);
+app.use('/api/affordability', affordabilityRouter);
 
 // Global error handler — never exposes stack traces
 app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {

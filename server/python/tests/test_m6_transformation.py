@@ -41,6 +41,17 @@ from transformation.indicator_analysis import (
 from transformation.evidence_engine import (
     evaluate_transformation_evidence,
 )
+from transformation.normalization import (
+    min_max_scale,
+    z_score_standardize,
+    robust_scale_iqr,
+    validate_composite_normalization,
+)
+from transformation.compatibility import (
+    evaluate_series_completeness,
+    check_quarterly_continuity,
+    validate_cross_dataset_compatibility,
+)
 
 DATA_DIR = os.path.join(SRC_DIR, "data", "processed")
 
@@ -283,6 +294,110 @@ class TestProcessedJsonArtifacts(unittest.TestCase):
         with open(p, "r", encoding="utf-8") as f:
             d = json.load(f)
             self.assertIn("hpi_summary", d)
+
+
+class TestNormalization(unittest.TestCase):
+    """Unit tests for mathematical normalization and compositing guards."""
+
+    def test_min_max_scale_basic(self):
+        vals = [10.0, 20.0, 30.0]
+        scaled = min_max_scale(vals, 0.0, 1.0)
+        self.assertEqual(scaled, [0.0, 0.5, 1.0])
+
+    def test_min_max_scale_preserves_none(self):
+        vals = [10.0, None, 30.0]
+        scaled = min_max_scale(vals)
+        self.assertEqual(scaled[0], 0.0)
+        self.assertIsNone(scaled[1])
+        self.assertEqual(scaled[2], 1.0)
+
+    def test_min_max_scale_zero_variance(self):
+        vals = [5.0, 5.0, 5.0]
+        scaled = min_max_scale(vals, 0.0, 1.0)
+        self.assertEqual(scaled, [0.5, 0.5, 0.5])
+
+    def test_z_score_standardize(self):
+        vals = [10.0, 20.0, 30.0]
+        stdized = z_score_standardize(vals)
+        self.assertAlmostEqual(stdized[1], 0.0, places=2)
+        self.assertLess(stdized[0], 0.0)
+        self.assertGreater(stdized[2], 0.0)
+
+    def test_robust_scale_iqr(self):
+        vals = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]
+        scaled = robust_scale_iqr(vals)
+        self.assertEqual(len(scaled), 8)
+        self.assertIsNotNone(scaled[0])
+
+    def test_validate_composite_normalization_rejects_geo_mismatch(self):
+        indicators = [
+            {"id": "a", "geography_level": "city", "unit": "index_points", "value": 100},
+            {"id": "b", "geography_level": "ward", "unit": "index_points", "value": 120},
+        ]
+        res = validate_composite_normalization(indicators)
+        self.assertFalse(res["valid"])
+        self.assertEqual(res["verdict"], "INVALID_COMPOSITE")
+
+    def test_validate_composite_normalization_rejects_missing_values(self):
+        indicators = [
+            {"id": "a", "geography_level": "ward", "unit": "count", "value": 15},
+            {"id": "b", "geography_level": "ward", "unit": "count", "value": None},
+        ]
+        res = validate_composite_normalization(indicators)
+        self.assertFalse(res["valid"])
+        self.assertEqual(res["verdict"], "INVALID_COMPOSITE")
+
+
+class TestCompatibility(unittest.TestCase):
+    """Unit tests for completeness, continuity, and cross-dataset compatibility."""
+
+    def test_evaluate_series_completeness_sufficient(self):
+        obs = [{"value": 10.0 + i} for i in range(12)]
+        res = evaluate_series_completeness(obs)
+        self.assertTrue(res["is_sufficient"])
+        self.assertEqual(res["completeness_pct"], 100.0)
+
+    def test_evaluate_series_completeness_insufficient(self):
+        obs = [{"value": 10.0 if i < 3 else None} for i in range(10)]
+        res = evaluate_series_completeness(obs)
+        self.assertFalse(res["is_sufficient"])
+        self.assertEqual(res["verdict"], "INSUFFICIENT")
+
+    def test_check_quarterly_continuity_continuous(self):
+        dates = ["2022-03-31", "2022-06-30", "2022-09-30", "2022-12-31"]
+        res = check_quarterly_continuity(dates)
+        self.assertTrue(res["is_continuous"])
+        self.assertEqual(res["total_gaps"], 0)
+
+    def test_check_quarterly_continuity_detects_gap(self):
+        # Missing Q3 2022 (gap of ~183 days)
+        dates = ["2022-03-31", "2022-06-30", "2022-12-31"]
+        res = check_quarterly_continuity(dates)
+        self.assertFalse(res["is_continuous"])
+        self.assertEqual(res["total_gaps"], 1)
+
+    def test_cross_dataset_compatibility_incompatible_spatial_scale(self):
+        src_a = {"name": "City HPI", "geographic_level": "city", "cadence": "quarterly"}
+        src_b = {"name": "Ward Amenity Density", "geographic_level": "ward", "cadence": "quarterly"}
+        res = validate_cross_dataset_compatibility(src_a, src_b)
+        self.assertFalse(res["is_compatible"])
+        self.assertEqual(res["verdict"], "INCOMPATIBLE")
+        self.assertTrue(any("ecological fallacy" in r.lower() for r in res["incompatibilities"]))
+
+    def test_cross_dataset_compatibility_snapshot_vs_quarterly(self):
+        src_a = {"name": "City HPI", "geographic_level": "city", "cadence": "quarterly"}
+        src_b = {"name": "OSM Snapshot", "geographic_level": "city", "cadence": "static_snapshot"}
+        res = validate_cross_dataset_compatibility(src_a, src_b)
+        self.assertFalse(res["is_compatible"])
+        self.assertEqual(res["verdict"], "INCOMPATIBLE")
+        self.assertTrue(any("static snapshot" in r.lower() for r in res["incompatibilities"]))
+
+    def test_cross_dataset_compatibility_aligned_series(self):
+        src_a = {"name": "RBI HPI", "geographic_level": "city", "cadence": "quarterly", "unit": "index_points"}
+        src_b = {"name": "NHB RESIDEX", "geographic_level": "city", "cadence": "quarterly", "unit": "index_points"}
+        res = validate_cross_dataset_compatibility(src_a, src_b)
+        self.assertTrue(res["is_compatible"])
+        self.assertEqual(res["verdict"], "COMPATIBLE")
 
 
 if __name__ == "__main__":

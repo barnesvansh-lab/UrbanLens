@@ -29,6 +29,11 @@ from transformation.temporal_analysis import analyze_hpi_series
 from transformation.anomaly_detection import detect_anomalies
 from transformation.indicator_analysis import build_comprehensive_indicator_framework
 from transformation.evidence_engine import evaluate_transformation_evidence
+from transformation.compatibility import (
+    evaluate_series_completeness,
+    check_quarterly_continuity,
+    validate_cross_dataset_compatibility,
+)
 
 DATA_DIR = os.path.join(PYTHON_DIR, "data", "processed")
 HPI_CSV = os.path.join(DATA_DIR, "processed_hpi.csv")
@@ -81,6 +86,18 @@ def run():
     mumbai_hpi = load_mumbai_hpi_observations()
     print(f"  Loaded {len(mumbai_hpi)} real Mumbai HPI observations.")
 
+    # 1b. Missing-Data & Cadence Validation
+    hpi_completeness = evaluate_series_completeness(mumbai_hpi, expected_field="value")
+    hpi_dates = [obs["date"] for obs in mumbai_hpi]
+    hpi_continuity = check_quarterly_continuity(hpi_dates)
+    print(f"  HPI Data Validation: {hpi_completeness['valid_records']}/{hpi_completeness['total_records']} valid "
+          f"({hpi_completeness['completeness_pct']}%), continuous={hpi_continuity['is_continuous']}.")
+
+    # Cross-dataset compatibility check (HPI vs OSM Amenities)
+    hpi_meta = {"name": "RBI House Price Index", "geographic_level": "city", "cadence": "quarterly", "unit": "index_points"}
+    osm_meta = {"name": "OpenStreetMap Amenities", "geographic_level": "sub-district", "cadence": "static_snapshot", "unit": "civic_feature_count"}
+    hpi_osm_compat = validate_cross_dataset_compatibility(hpi_meta, osm_meta)
+
     neighborhood_data = load_neighborhood_analytics()
     if neighborhood_data:
         print(f"  Loaded neighborhood analytics ({len(neighborhood_data.get('regions', []))} sub-regions).")
@@ -126,6 +143,13 @@ def run():
             "verified_real_count": verified_count,
             "data_unavailable_count": unavail_count,
             "proxy_count": proxy_count,
+        },
+        "series_validation": {
+            "hpi_completeness": hpi_completeness,
+            "hpi_continuity": hpi_continuity,
+        },
+        "compatibility_audit": {
+            "hpi_vs_osm": hpi_osm_compat,
         },
         "data_integrity_rules": [
             "Never conflate city-level housing price rises with localized gentrification.",

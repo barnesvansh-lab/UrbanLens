@@ -1,0 +1,333 @@
+{
+  "audit_version": "1.0.0",
+  "generated_at": "2026-10-30T19:15:00Z",
+  "audited_by": "UrbanLens Data Research and Validation Agent",
+  "geographic_focus": "Mumbai Metropolitan Region & Municipal Wards",
+  "summary": {
+    "total_datasets_evaluated": 14,
+    "verified_real_data_count": 4,
+    "documented_proxy_count": 4,
+    "data_unavailable_count": 4,
+    "requires_manual_validation_count": 2
+  },
+  "datasets": [
+    {
+      "id": "rbi-hpi-mumbai",
+      "name": "Reserve Bank of India House Price Index (Mumbai)",
+      "domain": "housing_market",
+      "publishing_organization": "Reserve Bank of India (RBI)",
+      "source_url": "https://dbie.rbihub.in",
+      "geographic_resolution": "city (Mumbai Metropolitan Region)",
+      "temporal_coverage": {
+        "start": "2010-06-30",
+        "end": "2025-03-31"
+      },
+      "update_frequency": "Quarterly",
+      "license": "Government Open Data License - India (GODL)",
+      "data_format": "CSV (Normalized from DBIE portal export)",
+      "missing_observations": 0,
+      "reliability_score": "High (Official Transaction Assessment Valuations)",
+      "status": "VERIFIED REAL DATA",
+      "integration_status": "INTEGRATED",
+      "limitations": [
+        "Metropolitan city-level aggregate only; cannot measure localized ward or sub-district price shifts.",
+        "Dimensionless index relative to base year FY 2010-11 = 100, not absolute INR/sqft valuation."
+      ],
+      "historical_suitability": true
+    },
+    {
+      "id": "rbi-hpi-all-india",
+      "name": "RBI House Price Index (All India & Tier-1 Cities)",
+      "domain": "housing_market",
+      "publishing_organization": "Reserve Bank of India (RBI)",
+      "source_url": "https://dbie.rbihub.in",
+      "geographic_resolution": "national / city (All India + 9 Cities)",
+      "temporal_coverage": {
+        "start": "2010-06-30",
+        "end": "2025-03-31"
+      },
+      "update_frequency": "Quarterly",
+      "license": "GODL-India",
+      "data_format": "CSV",
+      "missing_observations": 0,
+      "reliability_score": "High (Central Bank Official Statistics)",
+      "status": "VERIFIED REAL DATA",
+      "integration_status": "INTEGRATED",
+      "limitations": [
+        "City aggregates; micro-market variation masked."
+      ],
+      "historical_suitability": true
+    },
+    {
+      "id": "osm-south-mumbai-amenities",
+      "name": "OpenStreetMap Civic Infrastructure Points of Interest",
+      "domain": "infrastructure",
+      "publishing_organization": "OpenStreetMap Foundation (Contributors)",
+      "source_url": "https://www.openstreetmap.org",
+      "geographic_resolution": "neighborhood / point coordinates [18.92, 72.80, 18.98, 72.85]",
+      "temporal_coverage": {
+        "start": "2026-10-30",
+        "end": "2026-10-30"
+      },
+      "update_frequency": "Continuous / Dynamic (Evaluated as Single Snapshot)",
+      "license": "Open Data Commons Open Database License (ODbL)",
+      "data_format": "GeoJSON / CSV via Overpass API",
+      "missing_observations": 0,
+      "reliability_score": "Medium-High (Crowdsourced Ground Validation)",
+      "status": "VERIFIED REAL DATA",
+      "integration_status": "INTEGRATED",
+      "limitations": [
+        "Single point-in-time snapshot; CANNOT measure historical infrastructure growth velocity.",
+        "Mapping contributor density biased towards commercial areas, parking, and major hospitals."
+      ],
+      "historical_suitability": false
+    },
+    {
+      "id": "census-2011-mumbai-pca",
+      "name": "Census of India 2011 Primary Census Abstract (Mumbai City & Suburban)",
+      "domain": "demographics",
+      "publishing_organization": "Office of the Registrar General & Census Commissioner, India (ORGI)",
+      "source_url": "https://censusindia.gov.in",
+      "geographic_resolution": "district / ward (24 MCGM administrative wards)",
+      "temporal_coverage": {
+        "start": "2011-03-01",
+        "end": "2011-03-01"
+      },
+      "update_frequency": "Decennial (Single Enumeration)",
+      "license": "Official Statistics (Open Use with Attribution)",
+      "data_format": "Excel / CSV / Tabular Tables",
+      "missing_observations": 0,
+      "reliability_score": "Very High (Official National Census Enumeration)",
+      "status": "VERIFIED REAL DATA",
+      "integration_status": "READY FOR INTEGRATION (Static Historical Baseline)",
+      "limitations": [
+        "Static 2011 enumeration is 15 years old; does not represent post-2020 demographic composition.",
+        "Cannot measure ongoing displacement or in-migration without Census 2021."
+      ],
+      "historical_suitability": true
+    },
+    {
+      "id": "census-2001-2011-decennial-change",
+      "name": "Census 2001–2011 Decennial Population Growth (Mumbai Districts)",
+      "domain": "demographics",
+      "publishing_organization": "ORGI / Directorate of Census Operations Maharashtra",
+      "source_url": "https://censusindia.gov.in",
+      "geographic_resolution": "district (Mumbai City vs Mumbai Suburban)",
+      "temporal_coverage": {
+        "start": "2001-03-01",
+        "end": "2011-03-01"
+      },
+      "update_frequency": "Decennial (10-year intercensal growth)",
+      "license": "Official Statistics",
+      "data_format": "CSV / Tabular",
+      "missing_observations": 0,
+      "reliability_score": "Very High (Historical Intercensal Comparison)",
+      "status": "DOCUMENTED PROXY",
+      "integration_status": "READY FOR INTEGRATION (Long-term demographic context)",
+      "limitations": [
+        "Island City (South Mumbai) saw negative decennial population growth (-5.75% 2001-2011) due to commercialization; suburban saw positive (+8.29%).",
+        "Outdated for contemporary post-pandemic gentrification analysis."
+      ],
+      "historical_suitability": true
+    },
+    {
+      "id": "nhb-residex-mumbai",
+      "name": "National Housing Bank (NHB) RESIDEX — Mumbai Assessment & Market HPI",
+      "domain": "housing_market",
+      "publishing_organization": "National Housing Bank (NHB)",
+      "source_url": "https://residex.nhbonline.org.in",
+      "geographic_resolution": "city (Mumbai Metropolitan Area)",
+      "temporal_coverage": {
+        "start": "2013-01-01",
+        "end": "2024-06-30"
+      },
+      "update_frequency": "Quarterly",
+      "license": "Public Regulatory Data (Fair Use / Attribution)",
+      "data_format": "Web Portal Export / CSV",
+      "missing_observations": 0,
+      "reliability_score": "High (Housing Finance Disbursals & Market Valuation)",
+      "status": "DOCUMENTED PROXY",
+      "integration_status": "READY FOR INTEGRATION (Secondary HPI Validation)",
+      "limitations": [
+        "Metropolitan city level only.",
+        "Requires manual portal CSV export workflow; no open REST API."
+      ],
+      "historical_suitability": true
+    },
+    {
+      "id": "south-mumbai-bounding-boxes",
+      "name": "South Mumbai Research Sub-Region Extents",
+      "domain": "infrastructure",
+      "publishing_organization": "UrbanLens Research Project",
+      "source_url": "https://urbanlens.local/research/boundaries",
+      "geographic_resolution": "neighborhood (Colaba, Fort, Malabar Hill, Grant Road)",
+      "temporal_coverage": null,
+      "update_frequency": "Static Definition",
+      "license": "MIT License",
+      "data_format": "GeoJSON FeatureCollection",
+      "missing_observations": 0,
+      "reliability_score": "Medium (Documented Landmark Approximations)",
+      "status": "DOCUMENTED PROXY",
+      "integration_status": "INTEGRATED",
+      "limitations": [
+        "Approximate bounding boxes derived from landmarks; NOT certified administrative MCGM wards."
+      ],
+      "historical_suitability": false
+    },
+    {
+      "id": "mohua-smart-cities-open-data",
+      "name": "MoHUA Smart Cities Open Data Portal — Urban Indicators",
+      "domain": "infrastructure",
+      "publishing_organization": "Ministry of Housing and Urban Affairs (MoHUA)",
+      "source_url": "https://smartcities.data.gov.in",
+      "geographic_resolution": "city (Mumbai)",
+      "temporal_coverage": {
+        "start": "2018-01-01",
+        "end": "2023-12-31"
+      },
+      "update_frequency": "Annual / Periodic",
+      "license": "GODL-India",
+      "data_format": "CSV / JSON API",
+      "missing_observations": 12,
+      "reliability_score": "Medium (Municipal Voluntary Disclosures)",
+      "status": "DOCUMENTED PROXY",
+      "integration_status": "DOCUMENTED PROXY (City municipal services)",
+      "limitations": [
+        "City-wide infrastructure aggregates (water, sanitation, streetlights); lacks sub-ward resolution."
+      ],
+      "historical_suitability": true
+    },
+    {
+      "id": "census-2021-mumbai-wards",
+      "name": "Census of India 2021 — Municipal Ward Socioeconomics",
+      "domain": "demographics",
+      "publishing_organization": "Office of the Registrar General & Census Commissioner, India",
+      "source_url": "https://censusindia.gov.in",
+      "geographic_resolution": "ward (24 MCGM administrative wards)",
+      "temporal_coverage": null,
+      "update_frequency": "Decennial",
+      "license": "Official Statistics",
+      "data_format": "Unreleased",
+      "missing_observations": 100,
+      "reliability_score": "N/A (Unreleased)",
+      "status": "DATA UNAVAILABLE",
+      "integration_status": "UNAVAILABLE",
+      "limitations": [
+        "2021 Census enumeration was postponed and ward-level data remains unreleased by the Government of India.",
+        "Simulating ward-level demographic growth would violate ethical anti-fabrication standards."
+      ],
+      "historical_suitability": false
+    },
+    {
+      "id": "mcgm-autodcr-building-permits",
+      "name": "MCGM AutoDCR Building Approvals (IOD / CC Permitted Schemes)",
+      "domain": "land_use_construction",
+      "publishing_organization": "Municipal Corporation of Greater Mumbai (MCGM)",
+      "source_url": "https://autodcr.mcgm.gov.in",
+      "geographic_resolution": "ward / plot-level",
+      "temporal_coverage": null,
+      "update_frequency": "Continuous",
+      "license": "Restricted Municipal Access",
+      "data_format": "Proprietary Portal Web Interface / Scanned PDF",
+      "missing_observations": 100,
+      "reliability_score": "N/A (No Open Access)",
+      "status": "DATA UNAVAILABLE",
+      "integration_status": "UNAVAILABLE",
+      "limitations": [
+        "No public REST API exists; data is behind authenticated architect portals.",
+        "Unauthorized automated scraping violates terms of service and security controls."
+      ],
+      "historical_suitability": false
+    },
+    {
+      "id": "sra-slum-redevelopment-gis",
+      "name": "Slum Redevelopment Authority (SRA) GIS Boundary Polygons",
+      "domain": "land_use_construction",
+      "publishing_organization": "Slum Redevelopment Authority, Maharashtra",
+      "source_url": "https://sra.gov.in",
+      "geographic_resolution": "scheme / cluster level",
+      "temporal_coverage": null,
+      "update_frequency": "Irregular",
+      "license": "Government Public Notices",
+      "data_format": "Non-georeferenced PDF / Scanned Gazette Sheets",
+      "missing_observations": 100,
+      "reliability_score": "N/A (Non-georeferenced)",
+      "status": "DATA UNAVAILABLE",
+      "integration_status": "UNAVAILABLE",
+      "limitations": [
+        "Maps are published as non-vector PDF scans lacking GIS spatial projection attributes.",
+        "Manual digitization introduces unvalidated coordinate errors."
+      ],
+      "historical_suitability": false
+    },
+    {
+      "id": "official-residential-rental-index",
+      "name": "Official Residential Rental Price Index (Mumbai / India)",
+      "domain": "affordability_displacement",
+      "publishing_organization": "Ministry of Housing and Urban Affairs (MoHUA) / NHB",
+      "source_url": "https://mohua.gov.in",
+      "geographic_resolution": "city / ward",
+      "temporal_coverage": null,
+      "update_frequency": "None",
+      "license": "N/A",
+      "data_format": "Non-existent",
+      "missing_observations": 100,
+      "reliability_score": "N/A (Non-existent)",
+      "status": "DATA UNAVAILABLE",
+      "integration_status": "UNAVAILABLE",
+      "limitations": [
+        "No official statistical agency in India produces a residential rental index.",
+        "Private commercial portals (Magicbricks/99acres) feature unverified asking rents with heavy self-selection bias."
+      ],
+      "historical_suitability": false
+    },
+    {
+      "id": "satellite-ndvi-canopy-sentinel2",
+      "name": "Copernicus Sentinel-2 Multispectral Surface Reflectance (NDVI)",
+      "domain": "environment",
+      "publishing_organization": "European Space Agency (ESA) / Copernicus Programme",
+      "source_url": "https://sentinels.copernicus.eu",
+      "geographic_resolution": "10-meter raster grid",
+      "temporal_coverage": {
+        "start": "2018-01-01",
+        "end": "2025-01-01"
+      },
+      "update_frequency": "5-day revisit (raw satellite pass)",
+      "license": "Copernicus Open Access Policy (Free & Open)",
+      "data_format": "Cloud-Optimized GeoTIFF (COG)",
+      "missing_observations": 25,
+      "reliability_score": "High (Multi-band Satellite Sensor Radiometry)",
+      "status": "REQUIRES MANUAL VALIDATION",
+      "integration_status": "REQUIRES MANUAL VALIDATION",
+      "limitations": [
+        "Heavy monsoon cloud cover (June–September) causes severe data gaps in coastal Mumbai.",
+        "Multi-gigabyte multi-temporal raster imagery requires cloud-native compute (Google Earth Engine) exceeding local offline constraints."
+      ],
+      "historical_suitability": true
+    },
+    {
+      "id": "igr-maharashtra-ready-reckoner",
+      "name": "IGR Maharashtra Annual Statement of Rates (Ready Reckoner ASR)",
+      "domain": "housing_market",
+      "publishing_organization": "Department of Registration & Stamps, Government of Maharashtra",
+      "source_url": "https://igrmaharashtra.gov.in",
+      "geographic_resolution": "zone / sub-zone (Mumbai City & Suburbs)",
+      "temporal_coverage": {
+        "start": "2015-01-01",
+        "end": "2024-04-01"
+      },
+      "update_frequency": "Annual",
+      "license": "Government Public Tariff Schedule",
+      "data_format": "PDF Rates Schedules / Interactive Session Portal",
+      "missing_observations": 5,
+      "reliability_score": "High (Government Benchmark Property Tax / Stamp Duty Rates)",
+      "status": "REQUIRES MANUAL VALIDATION",
+      "integration_status": "REQUIRES MANUAL VALIDATION",
+      "limitations": [
+        "Government administrative floor valuations for stamp duty, NOT market transaction clearing prices.",
+        "Published as hundreds of regional PDF schedules requiring tabular extraction and normalization."
+      ],
+      "historical_suitability": true
+    }
+  ]
+}

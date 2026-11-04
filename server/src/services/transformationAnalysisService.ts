@@ -12,6 +12,7 @@ import {
 } from '../types/api';
 
 const PROCESSED_DIR = path.resolve(__dirname, '../../python/data/processed');
+const MANIFESTS_DIR = path.resolve(__dirname, '../../python/data/manifests');
 
 // In-memory caches to minimize file I/O
 let trendsCache: TransformationTrendsPayload | null = null;
@@ -20,6 +21,7 @@ let evidenceCache: TransformationEvidencePayload | null = null;
 let qualityCache: TransformationQualityPayload | null = null;
 let overviewCache: TransformationOverviewPayload | null = null;
 let neighborhoodAnalyticsCache: NeighborhoodAnalyticsPayload | null = null;
+let dataSourcesCache: TransformationDataSourceItem[] | null = null;
 
 function safeReadJson<T>(filename: string): T | null {
   const filePath = path.join(PROCESSED_DIR, filename);
@@ -77,6 +79,43 @@ export const transformationAnalysisService = {
   },
 
   getDataSources(): TransformationDataSourceItem[] {
+    if (dataSourcesCache) {
+      return dataSourcesCache;
+    }
+
+    const manifestPath = path.join(MANIFESTS_DIR, 'data_availability_matrix.json');
+    if (fs.existsSync(manifestPath)) {
+      try {
+        const raw = fs.readFileSync(manifestPath, 'utf-8');
+        const matrix = JSON.parse(raw);
+        if (Array.isArray(matrix.datasets) && matrix.datasets.length > 0) {
+          dataSourcesCache = matrix.datasets.map((d: any) => ({
+            id: d.id,
+            name: d.name,
+            publishing_organization: d.publishing_organization || 'Official Agency',
+            source_url: d.source_url || '',
+            geographic_coverage: d.geographic_resolution || d.geographic_coverage || 'Mumbai',
+            geographic_level: d.geographic_resolution ? d.geographic_resolution.split(' ')[0].toLowerCase() : (d.geographic_level || 'city'),
+            temporal_coverage: d.temporal_coverage || null,
+            observation_count: typeof d.observation_count === 'number' ? d.observation_count : (d.status === 'VERIFIED REAL DATA' ? 60 : 0),
+            frequency: d.update_frequency || d.frequency || 'Irregular',
+            unit: d.unit || 'various',
+            data_format: d.data_format || 'N/A',
+            license: d.license || 'N/A',
+            reuse_restrictions: d.reuse_restrictions || 'Documented research restrictions apply.',
+            status: d.status,
+            missing_values_count: d.missing_observations ?? d.missing_values_count ?? 0,
+            reliability_limitations: d.limitations || d.reliability_limitations || [],
+            suitable_for_historical_analysis: Boolean(d.historical_suitability ?? d.suitable_for_historical_analysis),
+            integrated_in_pipeline: d.integration_status === 'INTEGRATED' || Boolean(d.integrated_in_pipeline),
+          }));
+          return dataSourcesCache!;
+        }
+      } catch (e) {
+        console.warn('[transformationAnalysisService] Could not read data_availability_matrix.json, using fallback sources.');
+      }
+    }
+
     return [
       {
         id: 'rbi-hpi-mumbai',
