@@ -60,6 +60,37 @@ router.get('/predict', (req: Request, res: Response) => {
     });
   }
 
+  // Real mode requires a specific geography to forecast real observations
+  if (mode === 'real' && !geography) {
+    return res.json({
+      status: 'unavailable',
+      reason: `No real-data observations available for unspecified geography and metric '${metric}'. Please specify a valid geography.`,
+      geography: 'unknown',
+      metric,
+      unit: 'index_points',
+      geography_level: 'city',
+      data_status: 'unavailable',
+      source_names: [],
+      training_period: null,
+      validation_period: null,
+      n_training: 0,
+      n_validation: 0,
+      model_name: 'none',
+      model_version: 'none',
+      horizon: horizonNum,
+      forecast_dates: [],
+      point_forecasts: [],
+      lower_bounds: null,
+      upper_bounds: null,
+      observations: [],
+      forecast: [],
+      evaluation: null,
+      warnings: ['Forecasting unavailable: Real data required but not found in ingested datasets.'],
+      limitations: ['Real RBI / NHB data pipeline pending live ingestion.'],
+      generated_at: new Date().toISOString(),
+    } as ForecastResponse);
+  }
+
   // Build Python args
   const pythonArgs = [
     path.join(PYTHON_DIR, 'run_forecast.py'),
