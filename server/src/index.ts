@@ -9,12 +9,36 @@ import affordabilityRouter from './routes/affordability';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-const allowedOrigins = process.env.CORS_ORIGIN
-  ? process.env.CORS_ORIGIN.split(',').map((o) => o.trim())
-  : ['http://localhost:5173', 'http://127.0.0.1:5173'];
 
-app.use(cors({ origin: allowedOrigins }));
+// Allow CORS from configured origins, or allow all origins (including Vercel deployments and localhost)
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? (process.env.CORS_ORIGIN === '*' ? true : process.env.CORS_ORIGIN.split(',').map((o) => o.trim()))
+  : true;
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true,
+}));
 app.use(express.json({ limit: '1mb' }));
+
+// Root welcome & health route
+app.get('/', (_req: express.Request, res: express.Response) => {
+  res.json({
+    name: 'UrbanLens API Gateway',
+    version: '0.2.0',
+    status: 'online',
+    timestamp: new Date().toISOString(),
+    endpoints: {
+      health: '/api/health',
+      data_sources: '/api/data/sources',
+      data_series: '/api/data/series',
+      neighborhoods: '/api/neighborhoods',
+      forecasting: '/api/forecasting/predict',
+      transformation: '/api/transformation/summary',
+      affordability: '/api/affordability/calculate',
+    },
+  });
+});
 
 app.use('/api', healthRouter);
 app.use('/api/data', dataRouter);

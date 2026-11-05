@@ -24,7 +24,8 @@ import {
   ApiTransformationAreaDetailResponse,
 } from './types';
 
-const API_BASE = '/api';
+const rawApiBase = import.meta.env.VITE_API_URL as string | undefined;
+const API_BASE = rawApiBase ? rawApiBase.replace(/\/$/, '') : '/api';
 
 async function apiFetch<T>(path: string): Promise<{ data: T | null; error: ApiError | null }> {
   try {
